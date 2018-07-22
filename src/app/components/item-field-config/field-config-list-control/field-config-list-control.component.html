@@ -3,17 +3,17 @@
         <div class="card-header">
           <span class="float-left mt-1"><b>Item:</b> CAL-176-000</span>
           <div class="float-right">
-                <button class="btn btn-primary mr-2"
-                        (click)="onResetClick()">
-                    <i class="fa fa-refresh" aria-hidden="true"></i>
-                </button>
                 <button class="btn btn-primary" (click)="onBackClick()">Back</button>
           </div>
         </div>
         <div class="card-body">
             <app-excluded-fields [fieldConfigs]="itemFieldConfigHolder.noActiveFieldConfigs"
                                (onChoseFields)="onChoseFields($event)"></app-excluded-fields>
-
+            <div class="float-right">
+                    <button class="btn btn-primary ml-1"
+                    (click)="onResetClick()">
+                <i class="fa fa-refresh" aria-hidden="true"></i>
+            </button>
             <button class="btn btn-primary ml-1"
                     (click)="onSaveClick()"           
                     title="Save">
@@ -24,6 +24,7 @@
                     title="Save For All">
                 <i class="fa fa-copy" aria-hidden="true"></i>
             </button>
+            </div>
         </div>
     </div>
 </div>

@@ -7,6 +7,8 @@ import { ItemFieldConfigHolder } from '../../../shared/utils/item-field-config-h
 import { SaveItemFieldConfigDto } from '../../../shared/dto/save-item-field-config.dto';
 import { ItemFieldConfigHttpService } from '../../../shared/service/http/item-field-config-http.service';
 import { ProgressBarService } from '../../../shared/service/progress-bar.service';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { SaveForAllDialogComponent } from '../save-for-all-dialog/save-for-all-dialog.component';
 
 @Component({
   selector: 'app-field-config-list-control',
@@ -22,7 +24,8 @@ export class FieldConfigListControlComponent implements OnInit {
   constructor(
     private router: Router,
     private itemFieldConfigHttpService: ItemFieldConfigHttpService,
-    private progressBarService: ProgressBarService
+    private progressBarService: ProgressBarService,
+    public dialog: MatDialog
   ) { }
 
   ngOnInit() {
@@ -39,6 +42,12 @@ export class FieldConfigListControlComponent implements OnInit {
 
   onChoseFields(fieldConfigNames: string[]) {
     this.itemFieldConfigHolder.createNewItemFieldConfigs(fieldConfigNames);
+  }
+
+  onSaveAllForItem() {
+      let dialogRef = this.dialog.open(SaveForAllDialogComponent, {
+        width: '300px'
+     });
   }
 
   onSaveClick() {
