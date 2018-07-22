@@ -1,0 +1,20 @@
+.delete-wrapper {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.item-link {
+    display: block;
+    color: #000;
+}
+
+.item-link:hover {
+    text-decoration: none;
+    color: #000;
+}
+
+.list-group-item {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}

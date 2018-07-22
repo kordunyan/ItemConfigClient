@@ -1,0 +1,25 @@
+<div class="form-group row" *ngFor="let field of fields">
+  <label class="col-sm-5 col-form-label">{{ field.fieldConfigName }}:</label>
+  <div class="col-sm-7">
+    <input type="text" 
+           class="form-control" 
+           [(ngModel)]="field.value"
+           name="fieldValue">
+  </div>
+</div>
+<div class="form-group row">
+  <div class="col-sm">
+      <div class="float-right">
+          <button class="btn btn-primary mr-1 btn-sm"
+                  (click)="onSaveClick()"
+                  title="Save">
+            <i class="fa fa-save" aria-hidden="true"></i>
+          </button>
+          <button class="btn btn-info mr-1 btn-sm"
+                  (click)="onSaveAllForItem()"
+                  title="Save For All">
+            <i class="fa fa-copy" aria-hidden="true"></i>
+          </button>
+      </div>
+  </div>
+</div>

@@ -1,0 +1,40 @@
+<div class="accordion">
+  <div class="card">
+    <div class="card-header" id="headingTwo">
+      <h6 class="mb-0">
+        <div class="float-left mt-2" *ngFor="let field of itemFieldsHolder.multipleItemFields">
+          <span class="mr-4"><b>{{ field.fieldConfigName }}: </b>{{ field.value }}</span> 
+        </div>
+        <button class="btn btn-link collapsed float-right" 
+                type="button" 
+                (click)="onShow()"
+                data-toggle="collapse" 
+                aria-expanded="false">
+          <i class="fa {{ show.isShow ? 'fa-angle-down' : 'fa-angle-right' }}" aria-hidden="true"></i>
+        </button>
+        <div class="delete-wrapper">
+          <button class="edit-btn" (click)="onGoItemFieldConfig()"><i class="fa fa-sliders" aria-hidden="true"></i> </button>
+          <button class="edit-btn" (click)="onCopyCLick()"><i class="fa fa-copy" aria-hidden="true"></i> </button>
+          <app-delete [all]="false" (onOkChoosen)="onDelete()"></app-delete>
+        </div>
+      </h6>
+    </div>
+    <div class="collapse" [ngClass]="{'show': show.isShow}">
+      <div class="card-body">
+          <app-item-location-enablement [item]="item"
+                                        (onSavedForAllItems)="onSavedForAllItems()"></app-item-location-enablement>
+          <app-item-field *ngFor="let field of itemFieldsHolder.itemFields" 
+                          (onAllUpdated)="allUpdated()"
+                          (onFieldDeleted)="onFieldDeleted($event)"
+                          [field]="field"></app-item-field>
+          
+          <app-new-item-fields [fields]="itemFieldsHolder.newItemFields"
+                               (onSave)="onSaveNewFields($event)"
+                               (onSaveForAll)="onSaveNewFieldsForAll($event)"
+                                *ngIf="itemFieldsHolder.newItemFields.length"></app-new-item-fields>
+          
+          <app-excluded-fields [fieldConfigs]="itemFieldsHolder.noActiveFieldConfigs"
+                               (onChoseFields)="onChoseFields($event)"></app-excluded-fields>
+      </div>
+    </div>
+  </div>

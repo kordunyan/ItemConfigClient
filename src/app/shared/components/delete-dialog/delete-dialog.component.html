@@ -1,0 +1,15 @@
+<h1 mat-dialog-title>Are you sure to delete?</h1>
+<div mat-dialog-content> 
+</div>
+<div mat-dialog-actions>
+    <div class="text-right w-100">
+        <button class="btn btn-light mr-2" 
+                (click)="onCancel()">Cancel</button>
+        <button class="btn btn-info mr-2" 
+                *ngIf="data.all"
+                [mat-dialog-close]="2">All</button>
+        <button class="btn btn-primary" 
+                [mat-dialog-close]="1" 
+                cdkFocusInitial>Ok</button>
+    </div>
+</div>

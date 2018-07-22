@@ -1,0 +1,38 @@
+<td scope="row align-middle">{{ itemFieldConfig.fieldConfigName }}</td>
+<td class="text-center align-middle">
+  <mat-slide-toggle [(ngModel)]="itemFieldConfig.active"></mat-slide-toggle>
+</td>
+<td class="text-center align-middle">
+  <mat-checkbox [(ngModel)]="itemFieldConfig.required"
+                [disabled]="!itemFieldConfig.active"></mat-checkbox>
+</td>
+<td class="text-center align-middle">
+  <mat-checkbox [(ngModel)]="itemFieldConfig.editable"
+                [disabled]="!itemFieldConfig.active"></mat-checkbox>
+</td>
+<td>
+  <input type="text" 
+        class="form-control" 
+        [attr.disabled]="!itemFieldConfig.active ? '' : null"
+        [(ngModel)]="itemFieldConfig.dataSourceName"/>
+</td>
+<td>
+  <input type="text" 
+          class="form-control"
+          [attr.disabled]="!itemFieldConfig.active ? '' : null"
+          [(ngModel)]="itemFieldConfig.predefinedValue" />
+</td>
+<td>
+  <input type="text" 
+         class="form-control"
+         [attr.disabled]="!itemFieldConfig.active ? '' : null"
+         [(ngModel)]="itemFieldConfig.filterRegex" />
+</td>
+<td class="text-center align-middle">
+  <mat-checkbox [(ngModel)]="itemFieldConfig.storeLastUserInput"
+                [disabled]="!itemFieldConfig.active"></mat-checkbox>
+</td>
+<td class="text-center align-middle">
+  <mat-checkbox [(ngModel)]="itemFieldConfig.canAddLater"
+                [disabled]="!itemFieldConfig.active"></mat-checkbox>
+</td>

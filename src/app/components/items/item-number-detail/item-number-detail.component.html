@@ -1,0 +1,18 @@
+<div class="card mt-4">
+  <div class="card-header">
+    <span class="float-left mt-1"><b>Item:</b> {{ itemNumber }}</span>
+    <a class="btn float-right btn-primary" routerLink="/items" role="button">Back</a>
+    <button class="btn btn-primary float-right mr-2" (click)="onToggle()">
+      <i class="fa {{ isAllShow ? 'fa-angle-down' : 'fa-angle-right' }}" aria-hidden="true"></i>
+    </button>
+  </div>
+  <div class="card-body" *ngIf="!isLoading">
+    <app-item-detail *ngFor="let item of items; let i = index" 
+                    [fieldConfigs]="fieldConfigs"  
+                    [show]="shownItems[i]"
+                    (onChangeForAllItems)="onChangeForAllItems()"
+                    (onSavedNewFieldsForAll)="onSavedNewFieldsForAll($event)"
+                    (onDeletedItem)="onDeletedItem($event)"
+                    [item]="item"></app-item-detail>
+  </div>
+</div>

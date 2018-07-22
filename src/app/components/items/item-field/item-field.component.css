@@ -1,0 +1,16 @@
+.form-group {
+    position: relative;
+}
+
+.edit-btn-wrap {
+    position: absolute;
+    top: 5;
+    right: 7px;
+}
+
+.edit-btn {
+    background: transparent;
+    border:none;
+    outline: none;
+    cursor: pointer;
+}

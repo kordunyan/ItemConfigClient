@@ -1,0 +1,14 @@
+<h1 mat-dialog-title>Choose Field</h1>
+<div mat-dialog-content> 
+  <mat-form-field class="w-100">
+    <mat-select placeholder="Field" [formControl]="fieldConfigs" multiple>
+      <mat-option *ngFor="let field of fieldConfigList" [value]="field.name">{{field.name}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+    <div class="text-right w-100">
+        <button class="btn btn-light mr-2" (click)="onNoClick()">Close</button>
+        <button class="btn btn-primary" [mat-dialog-close]="fieldConfigs.value" cdkFocusInitial>Ok</button>
+    </div>
+</div>

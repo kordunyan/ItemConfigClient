@@ -1,0 +1,51 @@
+<div class="card mt-4">
+  <div class="card-header">
+    <span class="float-left mt-1">New Item</span>
+    <button class="btn float-right btn-primary" (click)="onBackClick()" role="button">Back</button>
+  </div>
+  <div class="card-body">
+    
+    <form *ngIf="isLoaded" #newItemForm="ngForm">
+      <div class="form-group text-center">
+        <mat-checkbox name="isIpps" [(ngModel)]="isIpps">IPPS</mat-checkbox>
+        <span class="mr-4"></span>
+        <mat-checkbox name="isSb" [(ngModel)]="isSb">SB</mat-checkbox>
+      </div>
+      
+      <div class="form-group row" *ngFor="let field of itemMultipleFields">
+        <label class="col-sm-4 col-form-label label-for-multiple">{{ field.fieldConfigName }}</label>
+        <div class="col-sm-8">
+          <app-chips [values]="field.values"></app-chips>
+        </div>
+      </div>
+
+      <div class="form-group row" *ngFor="let field of itemFields; let i = index">
+        <label for="field{{i}}" class="col-sm-4 col-form-label">{{ field.fieldConfigName }}</label>
+        <div class="col-sm-8">
+          <input type="text" 
+                name="{{field.fieldConfigName}}"
+                appRequiredField="{{field.fieldConfigName}}"
+                [(ngModel)]="field.value"
+                [ngClass]="{'is-invalid': input.invalid && (input.dirty || input.touched) }"
+                class="form-control" 
+                #input="ngModel"
+                id="field{{i}}">
+          <div class="invalid-feedback">
+            Field is required
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-6">
+          <app-excluded-fields [fieldConfigs]="excludedFieldConfigs"
+                               (onChoseFields)="addFieldsFromExcluded($event)"></app-excluded-fields>
+        </div>
+        <div class="col-sm-6 text-right">
+          <button class="btn btn-success"
+                  [disabled]="!newItemForm.form.valid || isSaveProcess" 
+                  (click)="onSave()">Save New Item</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

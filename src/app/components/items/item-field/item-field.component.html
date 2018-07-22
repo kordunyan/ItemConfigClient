@@ -1,0 +1,43 @@
+<div class="form-group row">
+  <label class="col-sm-5 col-form-label">{{ field.fieldConfigName }}:</label>
+  <div class="col-sm-7">
+    <input type="text" 
+           class="form-control-plaintext"
+           *ngIf="!isEdit"
+           readonly
+           [(value)]="field.value">
+    
+    <input type="text" 
+           class="form-control" 
+           [(ngModel)]="field.value"
+           (input)="onChangeValue()"
+           name="fieldValue"
+           *ngIf="isEdit">
+  </div>
+
+  <div class="col-sm-8 offset-sm-4 mt-2" *ngIf="isEdit">
+    <button class="btn float-right btn-danger mr-1 btn-sm" 
+            (click)="onCancelClick()">
+            <i class="fa fa-close" aria-hidden="true"></i>
+    </button>
+    <button class="btn float-right btn-info mr-1 btn-sm"
+            [disabled]="!isChangedValue"
+            (click)="onSaveAllForItem()"
+            title="Save For All">
+      <i class="fa fa-copy" aria-hidden="true"></i>
+    </button>
+    <button class="btn float-right btn-primary mr-1 btn-sm"
+            (click)="onSaveClick()"
+            [disabled]="!isChangedValue"
+            title="Save">
+      <i class="fa fa-save" aria-hidden="true"></i>
+    </button>
+  </div>
+  <div class="edit-btn-wrap text-right" *ngIf="!isEdit">
+      <button class="edit-btn" (click)="onEditClick()">
+          <i class="fa fa-edit" aria-hidden="true"></i>    
+      </button>
+      <app-delete (onOkChoosen)="onDelete()"
+                  (onAllChoosen)="onDeleteForAll()"></app-delete>
+    </div>
+</div>

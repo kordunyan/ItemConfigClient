@@ -1,0 +1,8 @@
+.progress-block {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-left: -25px;
+    margin-top: -25px;
+    z-index: 9999;
+}

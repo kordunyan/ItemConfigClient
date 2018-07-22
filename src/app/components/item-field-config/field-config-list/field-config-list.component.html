@@ -1,0 +1,27 @@
+<app-field-config-list-control (onReset)="onReset()"
+                                (onItemFieldConfigChanged)="onItemFieldConfigChanged()"
+                               *ngIf="isLoaded"
+                                [itemFieldConfigHolder]="itemFieldConfigHolder"></app-field-config-list-control>
+<div class="table-wrapper" *ngIf="isLoaded">
+    <table class="table table-hover">
+          <thead>
+              <tr>
+                <th>Field Config Name</th>
+                <th class="text-center">Is Active</th>
+                <th class="text-center">Is Required</th>
+                <th class="text-center">Is Editable</th>
+                <th>Source Name</th>
+                <th>Value</th>
+                <th>Filter Regex</th>
+                <th class="text-center">Store</th>
+                <th class="text-center">Add Later</th>
+              </tr>
+            </thead>
+          <tbody>
+            <tr app-field-config-row
+                [ngClass]="{'no-acitve': !itemFieldConfig.active, 'new-item': !itemFieldConfig.id && itemFieldConfig.active}"  
+                *ngFor="let itemFieldConfig of itemFieldConfigHolder.item.itemFieldConfigs"
+                [itemFieldConfig]="itemFieldConfig"></tr>
+          </tbody>
+      </table>     
+</div>
