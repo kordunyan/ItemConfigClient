@@ -8,16 +8,28 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 })
 export class SaveForAllDialogComponent {
 
+  public static readonly ONLY_FOR_NEW = 'ONLY_FOR_NEW';
+  public static readonly OVERRIDE_CHANGED = 'OVERRIDE_CHANGED';
+
   saveStrategy: string;
 
   constructor(
     public dialogRef: MatDialogRef<SaveForAllDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) { 
+    this.saveStrategy = this.getOverideChangeOptionValue();
   }
 
   onCancel() {
     this.dialogRef.close(); 
+  }
+
+  getOnlyForNewOptionValue(): string {
+    return SaveForAllDialogComponent.ONLY_FOR_NEW;
+  }
+
+  getOverideChangeOptionValue(): string {
+    return SaveForAllDialogComponent.OVERRIDE_CHANGED; 
   }
 
 }

@@ -48,9 +48,19 @@ export class FieldConfigListControlComponent implements OnInit {
       let dialogRef = this.dialog.open(SaveForAllDialogComponent, {
         width: '300px'
      });
+
+    dialogRef.afterClosed().subscribe(saveForAllStrategy => {
+      if (saveForAllStrategy) {
+        this.saveItemFieldConfig(true, saveForAllStrategy);
+      }
+    });
   }
 
   onSaveClick() {
+    this.saveItemFieldConfig(false);
+  }
+
+  private saveItemFieldConfig(saveForAll: boolean, saveForAllStrategy?: string) {
     let changedItemFields = this.itemFieldConfigHolder.getChangedItemFields(); 
     if (changedItemFields == null || changedItemFields.length == 0) {
       return;
@@ -59,13 +69,14 @@ export class FieldConfigListControlComponent implements OnInit {
     let saveItemFieldConfigDto = new SaveItemFieldConfigDto(
       Item.copyWithoutFieldConfigs(this.itemFieldConfigHolder.item),
       changedItemFields,
-      false,
-      false
+      saveForAll,
+      saveForAllStrategy
     );
+
     this.itemFieldConfigHttpService.save(saveItemFieldConfigDto).subscribe(
       (result) => {
         this.progressBarService.hide();
-        this.onItemFieldConfigChanged.emit();
+        //this.onItemFieldConfigChanged.emit();
       }, 
       (error) => {
         this.progressBarService.hide();

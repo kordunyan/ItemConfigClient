@@ -6,7 +6,7 @@ export class SaveItemFieldConfigDto {
         public item: Item,
         public itemFieldConfigs: ItemFieldConfig[],
         public saveForAll: boolean,
-        public newOnlyForAll: boolean
+        public saveForAllStrategy?: string
     ) {
 
     }
