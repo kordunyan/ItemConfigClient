@@ -63,6 +63,7 @@ export class ItemFieldConfigHolder extends AbstractItemFieldConfigHolder{
     resetItemFieldConfigs() {
         this.copyItemFieldConfigs(this.itemFieldConfigsCopy, this.item.itemFieldConfigs);
         this.createNoActiveFieldConfigs();
+        this.sortItemFieldConfigs(this.item.itemFieldConfigs);
     }
 
     copyItemFieldConfigs(src: ItemFieldConfig[], dest: ItemFieldConfig[]) {

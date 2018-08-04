@@ -9,6 +9,7 @@ import { ItemFieldConfigHttpService } from '../../../shared/service/http/item-fi
 import { ProgressBarService } from '../../../shared/service/progress-bar.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { SaveForAllDialogComponent } from '../save-for-all-dialog/save-for-all-dialog.component';
+import {MessageService} from '../../../shared/service/message.service';
 
 @Component({
   selector: 'app-field-config-list-control',
@@ -17,15 +18,16 @@ import { SaveForAllDialogComponent } from '../save-for-all-dialog/save-for-all-d
 })
 export class FieldConfigListControlComponent implements OnInit {
 
-  @Input("itemFieldConfigHolder") itemFieldConfigHolder: ItemFieldConfigHolder;
-  @Output("onReset") onReset = new EventEmitter();
-  @Output("onItemFieldConfigChanged") onItemFieldConfigChanged = new EventEmitter();
+  @Input('itemFieldConfigHolder') itemFieldConfigHolder: ItemFieldConfigHolder;
+  @Output('onReset') onReset = new EventEmitter();
+  @Output('onItemFieldConfigChanged') onItemFieldConfigChanged = new EventEmitter();
 
   constructor(
     private router: Router,
     private itemFieldConfigHttpService: ItemFieldConfigHttpService,
     private progressBarService: ProgressBarService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private messageService: MessageService,
   ) { }
 
   ngOnInit() {
@@ -36,7 +38,7 @@ export class FieldConfigListControlComponent implements OnInit {
   }
 
   onBackClick() {
-    let fieldItemNumber = ItemManager.getItemField(this.itemFieldConfigHolder.item, AppProperties.FIELD_D2COMM_ITEM_NUMBER); 
+    const fieldItemNumber = ItemManager.getItemField(this.itemFieldConfigHolder.item, AppProperties.FIELD_D2COMM_ITEM_NUMBER);
     this.router.navigate(['/items', fieldItemNumber.value]);
   }
 
@@ -61,7 +63,7 @@ export class FieldConfigListControlComponent implements OnInit {
   }
 
   private saveItemFieldConfig(saveForAll: boolean, saveForAllStrategy?: string) {
-    let changedItemFields = this.itemFieldConfigHolder.getChangedItemFields(); 
+    let changedItemFields = this.itemFieldConfigHolder.getChangedItemFields();
     if (changedItemFields == null || changedItemFields.length == 0) {
       return;
     }
@@ -75,9 +77,10 @@ export class FieldConfigListControlComponent implements OnInit {
 
     this.itemFieldConfigHttpService.save(saveItemFieldConfigDto).subscribe(
       (result) => {
+        this.messageService.success('Item fields configs have been succesfuly updated');
         this.progressBarService.hide();
-        //this.onItemFieldConfigChanged.emit();
-      }, 
+        this.onItemFieldConfigChanged.emit();
+      },
       (error) => {
         this.progressBarService.hide();
         console.error(error);
