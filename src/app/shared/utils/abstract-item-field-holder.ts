@@ -8,7 +8,6 @@ export abstract class AbstractItemFieldConfigHolder {
     public item: Item,
     public fieldConfigs: FieldConfig[]
   ) {
-    this.createNoActiveFieldConfigs();
   }
 
   abstract createNoActiveFieldConfigs();

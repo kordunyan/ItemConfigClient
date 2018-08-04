@@ -1,5 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { ItemFieldConfig } from '../../../shared/domain/item-field-config';
+import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
+import {ItemFieldConfig} from '../../../shared/domain/item-field-config';
 
 @Component({
   selector: '[app-field-config-row]',
@@ -8,11 +8,17 @@ import { ItemFieldConfig } from '../../../shared/domain/item-field-config';
 })
 export class FieldConfigRowComponent implements OnInit {
 
-  @Input("itemFieldConfig") itemFieldConfig: ItemFieldConfig;
+  @Input('itemFieldConfig') itemFieldConfig: ItemFieldConfig;
+  @Output('changeSelection') changeSelection = new EventEmitter();
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
+  }
+
+  onChangeSelection() {
+    this.changeSelection.emit();
   }
 
 }

@@ -10,6 +10,7 @@ import { FieldConfigHttpService } from '../../../shared/service/http/field-confi
 import { ItemFieldConfigHolder } from '../../../shared/utils/item-field-config-holder';
 import { FieldConfig } from '../../../shared/domain/field-config';
 import { AppProperties } from '../../../shared/domain/app-properties';
+import {MatCheckboxChange} from '@angular/material';
 
 @Component({
   selector: 'app-field-config-list',
@@ -37,6 +38,7 @@ export class FieldConfigListComponent implements OnInit {
       this.fieldConfigHttpService.getAll()
     ).subscribe(
       (result) => {
+        // result[0] = Item, result[1] = fieldConfigs
         this.itemFieldConfigHolder = new ItemFieldConfigHolder(result[0], result[1]);
         this.progressBarService.hide();
         this.isLoaded = true;
@@ -47,23 +49,31 @@ export class FieldConfigListComponent implements OnInit {
   onReset() {
     this.progressBarService.show();
     this.itemFieldConfigHolder.resetItemFieldConfigs();
-    this.progressBarService.hide();  
+    this.progressBarService.hide();
   }
 
   onItemFieldConfigChanged() {
     this.reloadItem();
   }
 
+  selectDeselectAll() {
+    this.itemFieldConfigHolder.selectDeselectAllItemFieldConfigs();
+  }
+
+  changeSelection() {
+    this.itemFieldConfigHolder.updateAllItemSelected();
+  }
+
   reloadItem() {
     this.progressBarService.show();
     this.route.paramMap.pipe(
-      switchMap((params: ParamMap) => this.itemHttpService.getById(params.get(AppProperties.REQUEST_PARAM_ITEM_ID))) 
+      switchMap((params: ParamMap) => this.itemHttpService.getById(params.get(AppProperties.REQUEST_PARAM_ITEM_ID)))
     )
     .subscribe(
       (item: Item) => {
         this.itemFieldConfigHolder.setItem(item);
         this.progressBarService.hide();
-      }, 
+      },
       (error) => {
         this.progressBarService.hide();
         console.error(error);

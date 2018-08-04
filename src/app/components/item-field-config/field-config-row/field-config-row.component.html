@@ -36,3 +36,7 @@
   <mat-checkbox [(ngModel)]="itemFieldConfig.canAddLater"
                 [disabled]="!itemFieldConfig.active"></mat-checkbox>
 </td>
+<td class="text-center align-middle">
+  <mat-checkbox [(ngModel)]="itemFieldConfig.checked"
+                (change)="onChangeSelection()"></mat-checkbox>
+</td>
