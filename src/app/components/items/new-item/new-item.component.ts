@@ -19,16 +19,17 @@ import { Observable, of} from 'rxjs';
 import { CopyItemDto } from '../../../shared/dto/copy-iten.dto';
 
 
+
 @Component({
   selector: 'app-new-item',
   templateUrl: './new-item.component.html',
   styleUrls: ['./new-item.component.css']
 })
 export class NewItemComponent implements OnInit {
-  
+
 
   fieldConfigs: FieldConfig[] = [];
-  excludedFieldConfigs: FieldConfig[] = []; 
+  excludedFieldConfigs: FieldConfig[] = [];
   isLoaded = false;
   isSaveProcess = false;
   itemFields: Field[] = [];
@@ -46,7 +47,8 @@ export class NewItemComponent implements OnInit {
     private messageService: MessageService,
     private progressBarService: ProgressBarService,
     private fieldService: FieldService
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     this.progressBarService.show();
@@ -56,7 +58,7 @@ export class NewItemComponent implements OnInit {
         first(),
         switchMap((params: ParamMap) => this.itemHttpService.getById(params.get('id')))
       ),
-      this.fieldConfigService.getByOwner(AppProperties.OWNER_ITEM)  
+      this.fieldConfigService.getByOwner(AppProperties.OWNER_ITEM)
     ).subscribe((result) => {
       this.copyItem = result[0];
       this.fieldConfigs = result[1];
@@ -81,7 +83,7 @@ export class NewItemComponent implements OnInit {
       } else if (this.fieldService.isDefaultExcluded(fieldConfig)) {
         this.excludedFieldConfigs.push(fieldConfig);
       } else {
-        this.addItemField(fieldConfig)
+        this.addItemField(fieldConfig);
       }
     });
   }
@@ -136,7 +138,7 @@ export class NewItemComponent implements OnInit {
 
   createItems(): Item[] {
     let result: Item[] = [];
-    let noEmptyFields =  this.fieldService.filterEmptyFields(this.itemFields);
+    let noEmptyFields = this.fieldService.filterEmptyFields(this.itemFields);
     let noEmptyMultipleFields = this.fieldService.filterEmptyMultipleFiels(this.itemMultipleFields);
 
     if (noEmptyMultipleFields.length) {
@@ -152,17 +154,17 @@ export class NewItemComponent implements OnInit {
   createCombinations(multipleFields: MultipleField[], combination: Field[], onCombinationCreate) {
     let multipleField = multipleFields.pop();
     multipleField.values.forEach(value => {
-        //create copy of combination with new field
-        let newCombination: Field[] = [new Field(multipleField.fieldConfigName, value)].concat(combination);
-        if (multipleFields.length) {
-          //pass copy of multipleFields (slice create a copy of array)
-          this.createCombinations(multipleFields.slice(), newCombination, onCombinationCreate);
-        } else {
-          onCombinationCreate(newCombination);  
-        }
+      // create copy of combination with new field
+      let newCombination: Field[] = [new Field(multipleField.fieldConfigName, value)].concat(combination);
+      if (multipleFields.length) {
+        // pass copy of multipleFields (slice create a copy of array)
+        this.createCombinations(multipleFields.slice(), newCombination, onCombinationCreate);
+      } else {
+        onCombinationCreate(newCombination);
+      }
     });
   }
-  
+
   addFieldsFromExcluded(fieldConfigNames: string[]) {
     fieldConfigNames.forEach(fieldConfigName => {
       let fieldConfig = this.findExcludedField(fieldConfigName);

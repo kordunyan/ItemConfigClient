@@ -1,34 +1,33 @@
-import { Item } from "../domain/item";
-import { FieldConfig } from "../domain/field-config";
+import {Item} from '../domain/item';
+import {FieldConfig} from '../domain/field-config';
 
 export abstract class AbstractItemFieldConfigHolder {
-    public noActiveFieldConfigs: FieldConfig[] = [];
-    
-    constructor(
-        public item: Item, 
-        public fieldConfigs: FieldConfig[]
-    ) {
-        this.createNoActiveFieldConfigs();
-    }
+  public noActiveFieldConfigs: FieldConfig[] = [];
 
-    abstract createNoActiveFieldConfigs();
+  constructor(
+    public item: Item,
+    public fieldConfigs: FieldConfig[]
+  ) {
+  }
 
-    sortFieldConfigs(fieldConfigs: FieldConfig[]) {
-        this.sortFields(fieldConfigs, (fieldConfig: FieldConfig) => fieldConfig.name.toLowerCase());
-    }
+  abstract createNoActiveFieldConfigs();
 
-    sortFields(fieldConfigs: any[], consumer) {
-        fieldConfigs.sort((fieldA: FieldConfig, fieldB: FieldConfig) => {
-            let a = consumer(fieldA);
-            let b = consumer(fieldB);
-            if (a === b) {
-                return 0;
-            }
-            return (a > b)? 1 : -1;
-        });
-    }
+  sortFieldConfigs(fieldConfigs: FieldConfig[]) {
+    this.sortFields(fieldConfigs, (fieldConfig: FieldConfig) => fieldConfig.name.toLowerCase());
+  }
 
-    public removeNoActiveField(fieldConfigName: string) {
-        this.noActiveFieldConfigs.splice(this.noActiveFieldConfigs.findIndex(fieldConfig => fieldConfig.name === fieldConfigName), 1);
-    }
+  sortFields(fieldConfigs: any[], getFieldToCompare) {
+    fieldConfigs.sort((fieldA: FieldConfig, fieldB: FieldConfig) => {
+      let a = getFieldToCompare(fieldA);
+      let b = getFieldToCompare(fieldB);
+      if (a === b) {
+        return 0;
+      }
+      return (a > b) ? 1 : -1;
+    });
+  }
+
+  public removeNoActiveField(fieldConfigName: string) {
+    this.noActiveFieldConfigs.splice(this.noActiveFieldConfigs.findIndex(fieldConfig => fieldConfig.name === fieldConfigName), 1);
+  }
 }

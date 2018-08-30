@@ -10,6 +10,7 @@ import { FieldConfigHttpService } from '../../../shared/service/http/field-confi
 import { ItemFieldConfigHolder } from '../../../shared/utils/item-field-config-holder';
 import { FieldConfig } from '../../../shared/domain/field-config';
 import { AppProperties } from '../../../shared/domain/app-properties';
+import {MatCheckboxChange} from '@angular/material';
 
 @Component({
   selector: 'app-field-config-list',
@@ -17,34 +18,6 @@ import { AppProperties } from '../../../shared/domain/app-properties';
   styleUrls: ['./field-config-list.component.css']
 })
 export class FieldConfigListComponent implements OnInit {
-
-  itemFieldConfigs: ItemFieldConfig[] = [
-    new ItemFieldConfig('GARMENT_PART_MAIN_0', true, true, true, null, null, '^.*1*.$', false, true, 1),
-    new ItemFieldConfig('GARMENT_PART_MAIN_0_FIBER_1', true, true, true, null, 'cotton', null, false, true, 2),
-    new ItemFieldConfig('GARMENT_PART_MAIN_0_FIBER_2', true, true, true, null, null, null, false, true, 3),
-    new ItemFieldConfig('GARMENT_PART_MAIN_0_FIBER_3', true, true, true, null, null, null, true, true, 4),
-    new ItemFieldConfig('GARMENT_PART_MAIN_0_FIBER_4', true, true, true, null, null, null, false, true, 5), 
-    new ItemFieldConfig('GARMENT_PART_MAIN_0_FIBER_5', true, true, true, null, null, null, false, false, 6),
-    new ItemFieldConfig('GARMENT_PART_MAIN_1', false, true, true, null, null, null, false, true, 7),
-    new ItemFieldConfig('GARMENT_PART_MAIN_1_FIBER_1', true, true, true, 'Source Name', null, null, false, true, 8),
-    new ItemFieldConfig('GARMENT_PART_MAIN_1_FIBER_2', true, false, true, null, null, null, false, true, 9),
-    new ItemFieldConfig('GARMENT_PART_MAIN_1_FIBER_3', true, true, true, null, null, null, false, true, 10),
-    new ItemFieldConfig('GARMENT_PART_MAIN_1_FIBER_4', true, true, true, null, null, null, false, true, 11),
-    new ItemFieldConfig('GARMENT_PART_MAIN_1_FIBER_5', true, true, true, null, null, null, false, true, 12),
-    new ItemFieldConfig('GARMENT_PART_MAIN_2', true, true, true, null, null, null, false, true, 13),
-    new ItemFieldConfig('GARMENT_PART_MAIN_2_FIBER_1', true, true, true, null, null, null, false, true, 14),
-    new ItemFieldConfig('GARMENT_PART_MAIN_2_FIBER_2', true, true, true, null, null, null, false, true, 15),
-    new ItemFieldConfig('GARMENT_PART_MAIN_2_FIBER_3', true, true, true, null, null, null, false, true, 16),
-    new ItemFieldConfig('GARMENT_PART_MAIN_2_FIBER_4', true, true, true, null, null, null, false, true, 17),
-    new ItemFieldConfig('GARMENT_PART_MAIN_2_FIBER_5', true, true, true, null, null, null, false, true, 18),
-    new ItemFieldConfig('GARMENT_PART_MAIN_3', true, true, true, null, null, null, false, true, 19),
-    new ItemFieldConfig('GARMENT_PART_MAIN_3_FIBER_1', true, true, true, null, null, null, false, true, 20),
-    new ItemFieldConfig('GARMENT_PART_MAIN_3_FIBER_2', true, true, true, null, null, null, false, true, 21),
-    new ItemFieldConfig('STYLE', true, true, true, null, null, null, false, true,22),
-    new ItemFieldConfig('EOD', true, true, true, null, null, null, false, true, 23),
-    new ItemFieldConfig('COO', true, true, true, null, null, null, false, true, 24),
-  ];
-
   isLoaded = false;
   itemFieldConfigHolder: ItemFieldConfigHolder;
 
@@ -65,6 +38,7 @@ export class FieldConfigListComponent implements OnInit {
       this.fieldConfigHttpService.getAll()
     ).subscribe(
       (result) => {
+        // result[0] = Item, result[1] = fieldConfigs
         this.itemFieldConfigHolder = new ItemFieldConfigHolder(result[0], result[1]);
         this.progressBarService.hide();
         this.isLoaded = true;
@@ -75,23 +49,31 @@ export class FieldConfigListComponent implements OnInit {
   onReset() {
     this.progressBarService.show();
     this.itemFieldConfigHolder.resetItemFieldConfigs();
-    this.progressBarService.hide();  
+    this.progressBarService.hide();
   }
 
   onItemFieldConfigChanged() {
     this.reloadItem();
   }
 
+  selectDeselectAll() {
+    this.itemFieldConfigHolder.selectDeselectAllItemFieldConfigs();
+  }
+
+  changeSelection() {
+    this.itemFieldConfigHolder.updateAllItemSelected();
+  }
+
   reloadItem() {
     this.progressBarService.show();
     this.route.paramMap.pipe(
-      switchMap((params: ParamMap) => this.itemHttpService.getById(params.get(AppProperties.REQUEST_PARAM_ITEM_ID))) 
+      switchMap((params: ParamMap) => this.itemHttpService.getById(params.get(AppProperties.REQUEST_PARAM_ITEM_ID)))
     )
     .subscribe(
       (item: Item) => {
         this.itemFieldConfigHolder.setItem(item);
         this.progressBarService.hide();
-      }, 
+      },
       (error) => {
         this.progressBarService.hide();
         console.error(error);
