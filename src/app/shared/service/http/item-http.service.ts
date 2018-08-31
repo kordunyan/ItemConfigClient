@@ -5,6 +5,7 @@ import { Observable, of} from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { MessageService } from "../message.service";
 import { Item } from "../../domain/item";
+import { CopyItemDto } from "../../dto/copy-iten.dto";
 
 @Injectable({
     providedIn: 'root',
@@ -28,6 +29,13 @@ export class ItemHttpService extends AbstractHttpService {
         return this.http.post(this.getRelatedUrl('/save-all'), items, this.getHttpOptions())
             .pipe(
                 catchError(this.handleTrowableError('Failed to save all items', [items]))
+            );
+    }
+
+    public copyAll(copyItemDto: CopyItemDto) {
+        return this.http.post(this.getRelatedUrl('/copy-all'), copyItemDto, this.getHttpOptions())
+            .pipe(
+                catchError(this.handleTrowableError('Failed to copy all items', copyItemDto))
             );
     }
 
