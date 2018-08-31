@@ -12,6 +12,7 @@ import {SaveForAllDialogComponent} from '../save-for-all-dialog/save-for-all-dia
 import {MessageService} from '../../../shared/service/message.service';
 import {DeleteComponent} from '../../../shared/components/delete/delete.component';
 import {ItemWithItemFieldConfigDto} from '../../../shared/dto/item-with-item-field-config.dto';
+import {MultipleEditDialogComponent} from '../multiple-edit-dialog/multiple-edit-dialog.component';
 
 @Component({
   selector: 'app-field-config-list-control',
@@ -132,6 +133,15 @@ export class FieldConfigListControlComponent implements OnInit {
         console.error(error);
       }
     );
+  }
+
+  openMultipleEditDialog() {
+    let dialogRef = this.dialog.open(MultipleEditDialogComponent, {
+       width: '1200px',
+       data: {
+         itemFieldConfigs: this.itemFieldConfigHolder.item.itemFieldConfigs
+       }
+    });
   }
 
 }
