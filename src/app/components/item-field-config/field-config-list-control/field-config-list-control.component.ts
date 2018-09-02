@@ -14,6 +14,8 @@ import {DeleteComponent} from '../../../shared/components/delete/delete.componen
 import {ItemWithItemFieldConfigDto} from '../../../shared/dto/item-with-item-field-config.dto';
 import { ItemCrudOperationsDto } from '../../../shared/dto/item-crud-operations.dto';
 import { ItemFieldConfig } from '../../../shared/domain/item-field-config';
+import { MultipleEditDialogComponent } from '../multiple-edit-dialog/multiple-edit-dialog.component';
+
 
 @Component({
   selector: 'app-field-config-list-control',
@@ -142,6 +144,15 @@ export class FieldConfigListControlComponent implements OnInit {
         console.error(error);
       }
     );
+  }
+
+  openMultipleEditDialog() {
+    let dialogRef = this.dialog.open(MultipleEditDialogComponent, {
+       width: '1200px',
+       data: {
+         itemFieldConfigs: this.itemFieldConfigHolder.item.itemFieldConfigs
+       }
+    });
   }
 
 }

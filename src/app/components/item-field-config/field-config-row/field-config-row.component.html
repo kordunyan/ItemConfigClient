@@ -3,12 +3,14 @@
   <mat-slide-toggle [(ngModel)]="itemFieldConfig.active"></mat-slide-toggle>
 </td>
 <td class="text-center align-middle">
-  <mat-checkbox [(ngModel)]="itemFieldConfig.required"
-                [disabled]="!itemFieldConfig.active"></mat-checkbox>
+  <input type="checkbox"
+         [disabled]="!itemFieldConfig.active"
+         [(ngModel)]="itemFieldConfig.required">
 </td>
 <td class="text-center align-middle">
-  <mat-checkbox [(ngModel)]="itemFieldConfig.editable"
-                [disabled]="!itemFieldConfig.active"></mat-checkbox>
+  <input type="checkbox"
+         [disabled]="!itemFieldConfig.active"
+         [(ngModel)]="itemFieldConfig.editable">
 </td>
 <td>
   <input type="text" 
@@ -29,14 +31,18 @@
          [(ngModel)]="itemFieldConfig.filterRegex" />
 </td>
 <td class="text-center align-middle">
-  <mat-checkbox [(ngModel)]="itemFieldConfig.storeLastUserInput"
-                [disabled]="!itemFieldConfig.active"></mat-checkbox>
+  <input type="checkbox"
+         [disabled]="!itemFieldConfig.active"
+         [(ngModel)]="itemFieldConfig.storeLastUserInput">
 </td>
 <td class="text-center align-middle">
-  <mat-checkbox [(ngModel)]="itemFieldConfig.canAddLater"
-                [disabled]="!itemFieldConfig.active"></mat-checkbox>
+  <input type="checkbox"
+         [disabled]="!itemFieldConfig.active"
+         [(ngModel)]="itemFieldConfig.canAddLater">
 </td>
 <td class="text-center align-middle">
-  <mat-checkbox [(ngModel)]="itemFieldConfig.checked"
-                (change)="onChangeSelection()"></mat-checkbox>
+  <input type="checkbox"
+         [disabled]="!itemFieldConfig.active"
+         (change)="onChangeSelection()"
+         [(ngModel)]="itemFieldConfig.checked">
 </td>

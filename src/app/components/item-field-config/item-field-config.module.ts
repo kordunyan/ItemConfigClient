@@ -8,6 +8,7 @@ import { FieldConfigListComponent } from './field-config-list/field-config-list.
 import { FieldConfigRowComponent } from './field-config-row/field-config-row.component';
 import { FieldConfigListControlComponent } from './field-config-list-control/field-config-list-control.component';
 import { SaveForAllDialogComponent } from './save-for-all-dialog/save-for-all-dialog.component';
+import { MultipleEditDialogComponent } from './multiple-edit-dialog/multiple-edit-dialog.component';
 
 @NgModule({
   imports: [
@@ -21,10 +22,12 @@ import { SaveForAllDialogComponent } from './save-for-all-dialog/save-for-all-di
     FieldConfigListComponent,
     FieldConfigRowComponent,
     FieldConfigListControlComponent,
-    SaveForAllDialogComponent
+    SaveForAllDialogComponent,
+    MultipleEditDialogComponent
   ],
   entryComponents: [
-    SaveForAllDialogComponent  
+    SaveForAllDialogComponent,
+    MultipleEditDialogComponent
   ],
   exports: [
     ItemFieldConfigRoutingModule

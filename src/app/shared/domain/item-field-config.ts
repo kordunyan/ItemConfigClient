@@ -7,7 +7,7 @@ export class ItemFieldConfig {
   public static readonly DEFAULT_PREDEFINED_VALUE = null;
   public static readonly DEFAULT_FILTER_REGEX = null;
   public static readonly DEFAULT_CAN_ADD_LATER = false;
-  public static readonly DEFAULT_STORE_LAST_USER_INPUT = true;
+  public static readonly DEFAULT_STORE_LAST_USER_INPUT = false;
 
   constructor(
     public fieldConfigName: string,

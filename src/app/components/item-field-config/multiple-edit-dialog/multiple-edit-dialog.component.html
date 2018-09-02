@@ -1,0 +1,29 @@
+<h1 mat-dialog-title>Multiple fields Edit</h1>
+<div mat-dialog-content>
+  <div class="radio-wrapper">
+
+    <form class="example-form">
+      <mat-form-field style="width: 100%" class="example-full-width">
+        <input type="text" placeholder="Pick one" aria-label="Number" matInput [formControl]="fieldConfigNameInput" [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option *ngFor="let itemFieldConfig of filteredItemFieldConfigs | async" [value]="itemFieldConfig.fieldConfigName">
+            {{itemFieldConfig.fieldConfigName}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </form>
+
+
+
+
+  </div>
+</div>
+<div mat-dialog-actions>
+  <div class="text-right w-100">
+    <button class="btn btn-light mr-2"
+            (click)="onCancel()">Cancel</button>
+    <button class="btn btn-primary"
+            [mat-dialog-close]="'1'"
+            cdkFocusInitial>Ok</button>
+  </div>
+</div>
