@@ -12,6 +12,8 @@ import {SaveForAllDialogComponent} from '../save-for-all-dialog/save-for-all-dia
 import {MessageService} from '../../../shared/service/message.service';
 import {DeleteComponent} from '../../../shared/components/delete/delete.component';
 import {ItemWithItemFieldConfigDto} from '../../../shared/dto/item-with-item-field-config.dto';
+import { ItemCrudOperationsDto } from '../../../shared/dto/item-crud-operations.dto';
+import { ItemFieldConfig } from '../../../shared/domain/item-field-config';
 
 @Component({
   selector: 'app-field-config-list-control',
@@ -71,9 +73,9 @@ export class FieldConfigListControlComponent implements OnInit {
     const itemFieldConfigs = this.itemFieldConfigHolder.getSelectedItemFieldConfigs();
     if (itemFieldConfigs.length === 0) {
       return;
-    }
+    }  
     this.progressBarService.show();
-    this.itemFieldConfigHttpService.delete(new ItemWithItemFieldConfigDto(this.itemFieldConfigHolder.item, itemFieldConfigs))
+    this.itemFieldConfigHttpService.delete(this.buildCrudOperationsDto(itemFieldConfigs))
       .subscribe(
         (result) => {
           this.messageService.success('Item field configs have succesfult deleted');
@@ -84,17 +86,24 @@ export class FieldConfigListControlComponent implements OnInit {
           this.progressBarService.hide();
           console.error(error);
         }
-      );
+      );  
+  }
+
+  private buildCrudOperationsDto(itemFieldConfigs: ItemFieldConfig[]): ItemCrudOperationsDto{
+    return new ItemCrudOperationsDto(
+      Item.copyWithoutFieldConfigs(this.itemFieldConfigHolder.item),
+      [ItemManager.getItemFieldValue(this.itemFieldConfigHolder.item, AppProperties.FIELD_D2COMM_ITEM_NUMBER)],
+      itemFieldConfigs
+    )
   }
 
   onDeleteForAll() {
-    console.log('Delete for all');
     const itemFieldConfigs = this.itemFieldConfigHolder.getSelectedItemFieldConfigs();
     if (itemFieldConfigs.length === 0) {
       return;
     }
     this.progressBarService.show();
-    this.itemFieldConfigHttpService.deleteForAll(new ItemWithItemFieldConfigDto(this.itemFieldConfigHolder.item, itemFieldConfigs))
+    this.itemFieldConfigHttpService.deleteForAll(this.buildCrudOperationsDto(itemFieldConfigs))
       .subscribe(
         (result) => {
           this.messageService.success('Item field configs have succesfult deleted for all items');
@@ -116,6 +125,7 @@ export class FieldConfigListControlComponent implements OnInit {
     this.progressBarService.show();
     let saveItemFieldConfigDto = new SaveItemFieldConfigDto(
       Item.copyWithoutFieldConfigs(this.itemFieldConfigHolder.item),
+      [ItemManager.getItemFieldValue(this.itemFieldConfigHolder.item, AppProperties.FIELD_D2COMM_ITEM_NUMBER)],
       changedItemFields,
       saveForAll,
       saveForAllStrategy
