@@ -12,6 +12,8 @@ import { DeleteDialog } from './delete-dialog/delete-dialog.component';
 import { ChooseFieldDialog } from './choose-field/choose-field.component';
 import { ExcludedFieldsComponent } from './excluded-fields/excluded-fields.component';
 import { ExportComponent } from './export/export.component';
+import { ItemNumbersSelectDialog } from './item-numbers-select-dialog/item-numbers-select-dialog';
+import { InsertItemNumberDialog } from './insert-item-number-dialog/insert-item-number-dialog';
 
 @NgModule({
   imports: [
@@ -29,11 +31,15 @@ import { ExportComponent } from './export/export.component';
     DeleteDialog,
     ChooseFieldDialog,
     ExcludedFieldsComponent,
-    ExportComponent
+    ExportComponent,
+    ItemNumbersSelectDialog,
+    InsertItemNumberDialog
   ],
   entryComponents: [
     DeleteDialog,
-    ChooseFieldDialog
+    ChooseFieldDialog,
+    ItemNumbersSelectDialog,
+    InsertItemNumberDialog
   ],
   exports: [
     NotFoundComponent,
@@ -47,7 +53,8 @@ import { ExportComponent } from './export/export.component';
     DeleteDialog,
     ChooseFieldDialog,
     ExcludedFieldsComponent,
-    ExportComponent
+    ExportComponent,
+    ItemNumbersSelectDialog
   ]
 })
 export class MainComponentsModule { }
