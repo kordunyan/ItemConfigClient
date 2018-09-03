@@ -1,9 +1,9 @@
 import {Component, OnInit, Inject} from '@angular/core';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatAutocompleteSelectedEvent} from '@angular/material';
 import {ItemFieldConfig} from '../../../shared/domain/item-field-config';
 import {FormControl} from '@angular/forms';
 import {Observable} from 'rxjs';
-import {map, startWith} from 'rxjs/operators';
+import {debounceTime, map, startWith} from 'rxjs/operators';
 
 @Component({
   selector: 'app-multiple-edit-dialog',
@@ -22,12 +22,21 @@ export class MultipleEditDialogComponent {
     this.itemFieldConfigs = data.itemFieldConfigs;
 
     this.filteredItemFieldConfigs = this.fieldConfigNameInput.valueChanges.pipe(
+      debounceTime(200),
       startWith<string>(''),
       map(fieldConfigName => {
         return fieldConfigName ? this._filter(fieldConfigName) : this.itemFieldConfigs.slice();
       })
     );
 
+  }
+
+  onFieldConfigSelected(event: MatAutocompleteSelectedEvent) {
+    console.log(this.getItemFieldConfig(event.option.value));
+  }
+
+  getItemFieldConfig(fieldConfigName) {
+    return this.itemFieldConfigs.find(itemFieldConfig => itemFieldConfig.fieldConfigName === fieldConfigName);
   }
 
   private _filter(fieldConfigName: string): ItemFieldConfig[] {
