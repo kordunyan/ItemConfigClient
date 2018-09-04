@@ -6,9 +6,9 @@ import { Observable, of} from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { MessageService } from "../message.service";
 
-@Injectable({
-    providedIn: 'root',
-})
+    @Injectable({
+        providedIn: 'root',
+    })
 export class FieldConfigHttpService extends AbstractHttpService {
 
     private static BASE_PATH = '/field_config';

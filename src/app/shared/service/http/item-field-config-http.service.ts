@@ -7,6 +7,7 @@ import {MessageService} from '../message.service';
 import {ItemFieldConfig} from '../../domain/item-field-config';
 import {SaveItemFieldConfigDto} from '../../dto/save-item-field-config.dto';
 import {ItemWithItemFieldConfigDto} from '../../dto/item-with-item-field-config.dto';
+import { ItemCrudOperationsDto } from '../../dto/item-crud-operations.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -26,17 +27,17 @@ export class ItemFieldConfigHttpService extends AbstractHttpService {
       );
   }
 
-  public delete(itemWithItemFieldConfigs: ItemWithItemFieldConfigDto): Observable<any> {
-    return this.http.post(this.getRelatedUrl('/delete'), itemWithItemFieldConfigs, this.getHttpOptions())
+  public delete(crudOperationsDto: ItemCrudOperationsDto): Observable<any> {
+    return this.http.post(this.getRelatedUrl('/delete'), crudOperationsDto, this.getHttpOptions())
       .pipe(
-        catchError(this.handleTrowableError(`Failed delete item fields configs`, itemWithItemFieldConfigs))
+        catchError(this.handleTrowableError(`Failed delete item fields configs`, crudOperationsDto))
       );
   }
 
-  public deleteForAll(itemWithItemFieldConfigs: ItemWithItemFieldConfigDto): Observable<any> {
-    return this.http.post(this.getRelatedUrl('/deleteForAll'), itemWithItemFieldConfigs, this.getHttpOptions())
+  public deleteForAll(crudOperationsDto: ItemCrudOperationsDto): Observable<any> {
+    return this.http.post(this.getRelatedUrl('/deleteForAll'), crudOperationsDto, this.getHttpOptions())
       .pipe(
-        catchError(this.handleTrowableError(`Failed delete item fields configs for all items`, itemWithItemFieldConfigs))
+        catchError(this.handleTrowableError(`Failed delete item fields configs for all items`, crudOperationsDto))
       );
   }
 }

@@ -12,6 +12,14 @@ export class ItemManager {
                 : null;
     }
 
+    public static getItemFieldValue(item: Item, fieldConfigName: string): string {
+        const field = ItemManager.getItemField(item, fieldConfigName);
+        if (field) {
+            return field.value;
+        }
+        return null;
+    }
+
     public static getItemFieldConfig(item: Item, fieldConfigName: string) {
         if (!item) {
             return null;
