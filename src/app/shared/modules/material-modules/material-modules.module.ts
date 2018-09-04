@@ -10,6 +10,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import {MatInputModule} from '@angular/material/input';
+import {MatListModule} from '@angular/material/list';
 
 @NgModule({
   imports: [
@@ -23,7 +24,8 @@ import {MatInputModule} from '@angular/material/input';
     MatSlideToggleModule,
     MatRadioModule,
     MatAutocompleteModule,
-    MatInputModule
+    MatInputModule,
+    MatListModule
   ],
   exports: [
     MatCheckboxModule,
@@ -36,7 +38,8 @@ import {MatInputModule} from '@angular/material/input';
     MatSlideToggleModule,
     MatRadioModule,
     MatAutocompleteModule,
-    MatInputModule
+    MatInputModule,
+    MatListModule
   ],
   declarations: []
 })
