@@ -1,5 +1,5 @@
 .table-wrapper {
-    margin: 30px 20px 0 20px;   
+    margin: 30px 12px 0 20px;
     overflow: auto;
     max-height: 650px;
     border: 2px solid #dee2e6;
@@ -10,12 +10,12 @@
 }
 
 .table-wrapper table {
-    margin-bottom: 0px;
-    border-top: 0px;
+    margin-bottom: 0;
+    border-top: 0;
 }
 
 .table thead th {
-    border-top: 0px;
+    border-top: 0;
 }
 
 .new-item {

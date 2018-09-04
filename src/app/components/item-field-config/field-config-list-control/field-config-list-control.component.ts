@@ -28,6 +28,8 @@ export class FieldConfigListControlComponent implements OnInit {
   @Output('onReset') onReset = new EventEmitter();
   @Output('onItemFieldConfigChanged') onItemFieldConfigChanged = new EventEmitter();
 
+  itemNumber: string;
+
   public btnType = DeleteComponent.DELETE_BTN_TYPE_DANGER;
 
   constructor(
@@ -40,6 +42,7 @@ export class FieldConfigListControlComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.itemNumber = this.getCurrentItemNumber();
   }
 
   onResetClick() {
@@ -53,6 +56,10 @@ export class FieldConfigListControlComponent implements OnInit {
 
   onChoseFields(fieldConfigNames: string[]) {
     this.itemFieldConfigHolder.createNewItemFieldConfigs(fieldConfigNames);
+  }
+
+  getCurrentItemNumber() {
+    return ItemManager.getItemFieldValue(this.itemFieldConfigHolder.item, AppProperties.FIELD_D2COMM_ITEM_NUMBER);
   }
 
   onSaveAllForItem() {
@@ -94,7 +101,7 @@ export class FieldConfigListControlComponent implements OnInit {
   private buildCrudOperationsDto(itemFieldConfigs: ItemFieldConfig[]): ItemCrudOperationsDto{
     return new ItemCrudOperationsDto(
       Item.copyWithoutFieldConfigs(this.itemFieldConfigHolder.item),
-      [ItemManager.getItemFieldValue(this.itemFieldConfigHolder.item, AppProperties.FIELD_D2COMM_ITEM_NUMBER)],
+      [this.getCurrentItemNumber()],
       itemFieldConfigs
     )
   }
@@ -127,7 +134,7 @@ export class FieldConfigListControlComponent implements OnInit {
     this.progressBarService.show();
     let saveItemFieldConfigDto = new SaveItemFieldConfigDto(
       Item.copyWithoutFieldConfigs(this.itemFieldConfigHolder.item),
-      [ItemManager.getItemFieldValue(this.itemFieldConfigHolder.item, AppProperties.FIELD_D2COMM_ITEM_NUMBER)],
+      [this.getCurrentItemNumber()],
       changedItemFields,
       saveForAll,
       saveForAllStrategy

@@ -25,7 +25,7 @@ export class ExcludedFieldsComponent implements OnInit {
       data: {
         fieldConfigs: this.fieldConfigs
       },
-      width: '300px',
+      width: '450px',
    });
 
    dialogRef.afterClosed().subscribe(result => {
