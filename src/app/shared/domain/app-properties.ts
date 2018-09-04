@@ -17,4 +17,6 @@ export class AppProperties {
     ];
 
     public static readonly REQUEST_PARAM_ITEM_ID = 'itemId';
+
+    public static readonly MULTIPLE_FIELDS_SORT_ORDER = ['CLOTHING_TYPE', 'SEASON'];
 }

@@ -10,6 +10,7 @@ import { FieldConfig } from '../../../shared/domain/field-config';
 import { ProgressBarService } from '../../../shared/service/progress-bar.service';
 import { Field } from '../../../shared/domain/field';
 import { FieldService } from '../../../shared/service/field.service';
+import { ItemManager } from '../../../shared/utils/item.manager';
 
 @Component({
   selector: 'app-item-number-detail',
@@ -54,11 +55,16 @@ export class ItemNumberDetailComponent implements OnInit {
     ).subscribe((result: any) => {
       this.items = result[0];
       this.fieldConfigs = result[1];
+      this.sortItems();
       if (onLoadCallback) {
         onLoadCallback(result);
       }
       this.progresBarService.hide();
     });
+  }
+
+  private sortItems() {
+    ItemManager.sortItemsByMultipleFields(this.items, this.fieldConfigs);  
   }
 
   onToggle() {
