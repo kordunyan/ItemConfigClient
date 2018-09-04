@@ -28,7 +28,7 @@ export class ExcludedFieldsComponent implements OnInit {
       width: '450px',
    });
 
-   dialogRef.afterClosed().subscribe(result => {
+   dialogRef.beforeClose().subscribe(result => {
       if (result) {
         this.onChooseFields.emit(result);  
       }

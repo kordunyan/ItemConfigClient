@@ -34,8 +34,8 @@ export class ItemNumbersSelectDialog implements OnInit {
     this.selectedItemNumbers = [];
   }
 
-  testClick(){
-    console.log(this.selectedItemNumbers);
+  okClick() {
+    this.dialogRef.close(this.selectedItemNumbers);
   }
 
   openInsertItem() {
@@ -43,7 +43,7 @@ export class ItemNumbersSelectDialog implements OnInit {
       width: '400px',
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.beforeClose().subscribe(result => {
       if (result) {
         let newItemNumbers = [];
         result.forEach(itemNumber => {

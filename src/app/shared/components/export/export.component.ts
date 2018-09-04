@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { ExportHttpService } from '../../service/http/export.http.service';
-import { MatDialog } from '@angular/material';
-import { ItemNumbersSelectDialog } from '../item-numbers-select-dialog/item-numbers-select-dialog';
-import { ItemHttpService } from '../../service/http/item-http.service';
+import {Component, OnInit} from '@angular/core';
+import {ExportHttpService} from '../../service/http/export.http.service';
+import {MatDialog} from '@angular/material';
+import {ItemNumbersSelectDialog} from '../item-numbers-select-dialog/item-numbers-select-dialog';
+import {ItemHttpService} from '../../service/http/item-http.service';
 import {ProgressBarService} from '../../service/progress-bar.service';
 import {FileUtils} from '../../utils/file_utils';
 
@@ -20,7 +20,8 @@ export class ExportComponent implements OnInit {
     public dialog: MatDialog,
     private itemService: ItemHttpService,
     private progressBarService: ProgressBarService
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     this.itemService.getAllItemValues().subscribe((numbers: string[]) => {
@@ -39,8 +40,22 @@ export class ExportComponent implements OnInit {
       });
   }
 
-  exportBy() {
-    let itemNumbers = ['045938-B', '045938-W'];
+  onExportBy() {
+    let dialogRef = this.dialog.open(ItemNumbersSelectDialog, {
+      data: {
+        itemNumbers: this.itemNumbers
+      },
+      width: '500px',
+    });
+
+    dialogRef.beforeClose().subscribe(result => {
+      if (result && result.length > 0) {
+        this.exportBy(result);
+      }
+    });
+  }
+
+  exportBy(itemNumbers: string[]) {
     this.progressBarService.show();
     this.exportService.exportByItemNumbers(itemNumbers).subscribe(
       (result) => {
@@ -51,15 +66,6 @@ export class ExportComponent implements OnInit {
         this.progressBarService.hide();
       }
     );
-  }
-
-  onExportBy() {
-    let dialogRef = this.dialog.open(ItemNumbersSelectDialog, {
-      data: {
-        itemNumbers: this.itemNumbers
-      },
-      width: '500px',
-    });
   }
 
 }
