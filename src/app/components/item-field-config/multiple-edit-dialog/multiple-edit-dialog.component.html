@@ -6,15 +6,15 @@
       <mat-form-field style="width: 100%" class="example-full-width">
         <input type="text" placeholder="Field config name" aria-label="Number" matInput [formControl]="fieldConfigNameInput" [matAutocomplete]="auto">
         <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onFieldConfigSelected($event)">
-          <mat-option *ngFor="let itemFieldConfig of filteredItemFieldConfigs | async" [value]="itemFieldConfig.fieldConfigName">
-            {{itemFieldConfig.fieldConfigName}}
+          <mat-option *ngFor="let selectedItemFieldConfig of filteredItemFieldConfigs | async" [value]="selectedItemFieldConfig.fieldConfigName">
+            {{selectedItemFieldConfig.fieldConfigName}}
           </mat-option>
         </mat-autocomplete>
       </mat-form-field>
     </form>
 
-    <div>
-      <table class="table table-hover table-sm">
+    <div *ngIf="selectedItemFieldConfig">
+      <table class="table table-bordered" >
         <thead>
         <tr>
           <th class="text-center align-middle">Is Active</th>
@@ -29,9 +29,71 @@
         </thead>
         <tbody>
           <tr>
-
+            <td class="text-center align-middle">
+              <mat-slide-toggle [(ngModel)]="selectedItemFieldConfig.active"></mat-slide-toggle>
+            </td>
+            <td class="text-center align-middle">
+              <input type="checkbox"
+                     [disabled]="!selectedItemFieldConfig.active"
+                     [(ngModel)]="selectedItemFieldConfig.required">
+            </td>
+            <td class="text-center align-middle">
+              <input type="checkbox"
+                     [disabled]="!selectedItemFieldConfig.active"
+                     [(ngModel)]="selectedItemFieldConfig.editable">
+            </td>
+            <td>
+              <input type="text"
+                     class="form-control"
+                     [attr.disabled]="!selectedItemFieldConfig.active ? '' : null"
+                     [(ngModel)]="selectedItemFieldConfig.dataSourceName"/>
+            </td>
+            <td>
+              <input type="text"
+                     class="form-control"
+                     [attr.disabled]="!selectedItemFieldConfig.active ? '' : null"
+                     [(ngModel)]="selectedItemFieldConfig.predefinedValue" />
+            </td>
+            <td>
+              <input type="text"
+                     class="form-control"
+                     [attr.disabled]="!selectedItemFieldConfig.active ? '' : null"
+                     [(ngModel)]="selectedItemFieldConfig.filterRegex" />
+            </td>
+            <td class="text-center align-middle">
+              <input type="checkbox"
+                     [disabled]="!selectedItemFieldConfig.active"
+                     [(ngModel)]="selectedItemFieldConfig.storeLastUserInput">
+            </td>
+            <td class="text-center align-middle">
+              <input type="checkbox"
+                     [disabled]="!selectedItemFieldConfig.active"
+                     [(ngModel)]="selectedItemFieldConfig.canAddLater">
+            </td>
           </tr>
       </table>
+      <form>
+        <div class="form-row">
+          <div class="form-group col-md-11">
+            <input type="text"
+                   class="form-control"
+                   id="fieldConfigNameRegex"
+                   name="fieldConfigNameRegex"
+                   [(ngModel)]="fieldConfigNameRegex"
+                   placeholder="Field Config Name Regex">
+          </div>
+          <div class="form-group col-md-1 text-right">
+            <label for="fieldConfigNameRegex"></label>
+            <button class="btn btn-primary"
+                    (click)="searchFieldConfigsByregex()">Search</button>
+          </div>
+        </div>
+      </form>
+
+      <app-item-field-configs-table
+        [itemFieldConfigs]="matchedItemFieldConfigs"
+        [withSelection]="false"></app-item-field-configs-table>
+
     </div>
 
   </div>

@@ -1,23 +1,6 @@
 .table-wrapper {
-    margin: 30px 12px 0 20px;
-    overflow: auto;
-    max-height: 650px;
-    border: 2px solid #dee2e6;
-}
-
-.no-acitve {
-    background: #F3F3F3;
-}
-
-.table-wrapper table {
-    margin-bottom: 0;
-    border-top: 0;
-}
-
-.table thead th {
-    border-top: 0;
-}
-
-.new-item {
-    background: rgb(255, 254, 205);
+  margin: 30px 12px 0 20px;
+  overflow: auto;
+  max-height: 650px;
+  border: 2px solid #dee2e6;
 }

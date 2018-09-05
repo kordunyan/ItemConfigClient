@@ -8,7 +8,6 @@ import {ItemFieldConfigManager} from './item-field-config-manager';
 export class ItemFieldConfigHolder extends AbstractItemFieldConfigHolder {
   itemFieldConfigsCopy: ItemFieldConfig[] = [];
   itemFieldConfigsCopyMap = {};
-  allItemsSelected = false;
 
   constructor(
     public item: Item,
@@ -71,14 +70,6 @@ export class ItemFieldConfigHolder extends AbstractItemFieldConfigHolder {
   copyItemFieldConfigs(src: ItemFieldConfig[], dest: ItemFieldConfig[]) {
     dest.length = 0;
     src.forEach(itemFieldConfig => dest.push(ItemFieldConfig.copy(itemFieldConfig)));
-  }
-
-  selectDeselectAllItemFieldConfigs() {
-    this.item.itemFieldConfigs.forEach(itemFieldConfig => itemFieldConfig.checked = this.allItemsSelected);
-  }
-
-  updateAllItemSelected() {
-    this.allItemsSelected = this.getSelectedItemFieldConfigs().length === this.item.itemFieldConfigs.length;
   }
 
   getSelectedItemFieldConfigs(): ItemFieldConfig[] {

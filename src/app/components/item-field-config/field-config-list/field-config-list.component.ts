@@ -1,15 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { ItemFieldConfig } from '../../../shared/domain/item-field-config';
-import { Item } from '../../../shared/domain/item';
-import { ItemHttpService } from '../../../shared/service/http/item-http.service';
-import { forkJoin } from 'rxjs';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { first, switchMap } from '../../../../../node_modules/rxjs/operators';
-import { ProgressBarService } from '../../../shared/service/progress-bar.service';
-import { FieldConfigHttpService } from '../../../shared/service/http/field-config-http.service';
-import { ItemFieldConfigHolder } from '../../../shared/utils/item-field-config-holder';
-import { FieldConfig } from '../../../shared/domain/field-config';
-import { AppProperties } from '../../../shared/domain/app-properties';
+import {Component, OnInit} from '@angular/core';
+import {ItemFieldConfig} from '../../../shared/domain/item-field-config';
+import {Item} from '../../../shared/domain/item';
+import {ItemHttpService} from '../../../shared/service/http/item-http.service';
+import {forkJoin} from 'rxjs';
+import {Router, ActivatedRoute, ParamMap} from '@angular/router';
+import {first, switchMap} from '../../../../../node_modules/rxjs/operators';
+import {ProgressBarService} from '../../../shared/service/progress-bar.service';
+import {FieldConfigHttpService} from '../../../shared/service/http/field-config-http.service';
+import {ItemFieldConfigHolder} from '../../../shared/utils/item-field-config-holder';
+import {FieldConfig} from '../../../shared/domain/field-config';
+import {AppProperties} from '../../../shared/domain/app-properties';
 import {MatCheckboxChange} from '@angular/material';
 
 @Component({
@@ -26,7 +26,8 @@ export class FieldConfigListComponent implements OnInit {
     private fieldConfigHttpService: FieldConfigHttpService,
     private route: ActivatedRoute,
     private progressBarService: ProgressBarService
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     this.progressBarService.show();
@@ -52,10 +53,6 @@ export class FieldConfigListComponent implements OnInit {
     this.progressBarService.hide();
   }
 
-  onItemFieldConfigChanged() {
-    this.reloadItem();
-  }
-
   selectDeselectAll() {
     this.itemFieldConfigHolder.selectDeselectAllItemFieldConfigs();
   }
@@ -64,20 +61,24 @@ export class FieldConfigListComponent implements OnInit {
     this.itemFieldConfigHolder.updateAllItemSelected();
   }
 
+  onItemFieldConfigChanged() {
+    this.reloadItem();
+  }
+
   reloadItem() {
     this.progressBarService.show();
     this.route.paramMap.pipe(
       switchMap((params: ParamMap) => this.itemHttpService.getById(params.get(AppProperties.REQUEST_PARAM_ITEM_ID)))
     )
-    .subscribe(
-      (item: Item) => {
-        this.itemFieldConfigHolder.setItem(item);
-        this.progressBarService.hide();
-      },
-      (error) => {
-        this.progressBarService.hide();
-        console.error(error);
-      });
+      .subscribe(
+        (item: Item) => {
+          this.itemFieldConfigHolder.setItem(item);
+          this.progressBarService.hide();
+        },
+        (error) => {
+          this.progressBarService.hide();
+          console.error(error);
+        });
   }
 
 }

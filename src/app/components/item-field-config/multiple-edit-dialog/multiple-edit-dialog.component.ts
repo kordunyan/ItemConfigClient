@@ -15,6 +15,10 @@ export class MultipleEditDialogComponent {
   itemFieldConfigs: ItemFieldConfig[];
   filteredItemFieldConfigs: Observable<ItemFieldConfig[]>;
 
+  selectedItemFieldConfig: ItemFieldConfig;
+  fieldConfigNameRegex = 'GARMENT_PART_MAIN_[0-9]$';
+  matchedItemFieldConfigs: ItemFieldConfig[] = [];
+
   constructor(
     public dialogRef: MatDialogRef<MultipleEditDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
@@ -31,8 +35,16 @@ export class MultipleEditDialogComponent {
 
   }
 
+  searchFieldConfigsByregex() {
+    const regex = new RegExp(this.fieldConfigNameRegex);
+    this.matchedItemFieldConfigs = this.itemFieldConfigs.filter(itemFieldConfig => {
+      return regex.test(itemFieldConfig.fieldConfigName)
+        && itemFieldConfig.fieldConfigName !== this.selectedItemFieldConfig.fieldConfigName;
+    });
+  }
+
   onFieldConfigSelected(event: MatAutocompleteSelectedEvent) {
-    console.log(this.getItemFieldConfig(event.option.value));
+    this.selectedItemFieldConfig = this.getItemFieldConfig(event.option.value);
   }
 
   getItemFieldConfig(fieldConfigName) {

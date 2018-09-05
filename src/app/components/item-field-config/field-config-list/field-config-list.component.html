@@ -3,30 +3,7 @@
                                *ngIf="isLoaded"
                                 [itemFieldConfigHolder]="itemFieldConfigHolder"></app-field-config-list-control>
 <div class="table-wrapper" *ngIf="isLoaded">
-    <table class="table table-hover table-sm">
-          <thead>
-              <tr>
-                <th class="align-middle">Field Config Name</th>
-                <th class="text-center align-middle">Is Active</th>
-                <th class="text-center align-middle">Is Required</th>
-                <th class="text-center align-middle">Is Editable</th>
-                <th class="align-middle">Source Name</th>
-                <th class="align-middle">Value</th>
-                <th class="align-middle">Filter Regex</th>
-                <th class="text-center align-middle">Store</th>
-                <th class="text-center align-middle">Add Later</th>
-                <th class="text-center align-middle">
-                  <mat-checkbox [(ngModel)]="itemFieldConfigHolder.allItemsSelected"
-                                (change)="selectDeselectAll()"></mat-checkbox>
-                </th>
-              </tr>
-            </thead>
-          <tbody>
-            <tr app-field-config-row
-                (changeSelection)="changeSelection()"
-                [ngClass]="{'no-acitve': !itemFieldConfig.active, 'new-item': !itemFieldConfig.id && itemFieldConfig.active}"  
-                *ngFor="let itemFieldConfig of itemFieldConfigHolder.item.itemFieldConfigs"
-                [itemFieldConfig]="itemFieldConfig"></tr>
-          </tbody>
-      </table>     
+    <app-item-field-configs-table
+      [itemFieldConfigs]="itemFieldConfigHolder.item.itemFieldConfigs"
+      [withSelection]="true"></app-item-field-configs-table>
 </div>

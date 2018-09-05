@@ -1,15 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, ParamMap } from '@angular/router';
-import { ItemHttpService } from '../../../shared/service/http/item-http.service';
-import { switchMap, delay, first  } from 'rxjs/operators';
-import { Item } from '../../../shared/domain/item';
-import { forkJoin, of } from 'rxjs';
-import { FieldConfigHttpService } from '../../../shared/service/http/field-config-http.service';
-import { AppProperties } from '../../../shared/domain/app-properties';
-import { FieldConfig } from '../../../shared/domain/field-config';
-import { ProgressBarService } from '../../../shared/service/progress-bar.service';
-import { Field } from '../../../shared/domain/field';
-import { FieldService } from '../../../shared/service/field.service';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, ParamMap} from '@angular/router';
+import {ItemHttpService} from '../../../shared/service/http/item-http.service';
+import {switchMap, delay, first} from 'rxjs/operators';
+import {Item} from '../../../shared/domain/item';
+import {forkJoin, of} from 'rxjs';
+import {FieldConfigHttpService} from '../../../shared/service/http/field-config-http.service';
+import {AppProperties} from '../../../shared/domain/app-properties';
+import {FieldConfig} from '../../../shared/domain/field-config';
+import {ProgressBarService} from '../../../shared/service/progress-bar.service';
+import {Field} from '../../../shared/domain/field';
+import {FieldService} from '../../../shared/service/field.service';
 
 @Component({
   selector: 'app-item-number-detail',
@@ -19,7 +19,7 @@ import { FieldService } from '../../../shared/service/field.service';
 export class ItemNumberDetailComponent implements OnInit {
 
   items: Item[] = [];
-  shownItems: {isShow: boolean}[] = [];
+  shownItems: { isShow: boolean }[] = [];
   fieldConfigs = {};
   itemNumber: string;
   isAllShow: boolean = false;
@@ -30,13 +30,14 @@ export class ItemNumberDetailComponent implements OnInit {
     private fieldConfigHttpService: FieldConfigHttpService,
     private progresBarService: ProgressBarService,
     private fieldService: FieldService
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     this.loadData(() => {
       for (let i = 0; i < this.items.length; i++) {
         this.shownItems.push({isShow: false});
-      }  
+      }
     });
   }
 
@@ -44,13 +45,13 @@ export class ItemNumberDetailComponent implements OnInit {
     this.progresBarService.show();
     forkJoin(
       this.route.paramMap.pipe(
-        first(), 
+        first(),
         switchMap((params: ParamMap) => {
-            this.itemNumber = params.get('itemNumber');
-            return this.itemHttpService.getItemsByNumber(this.itemNumber)
+          this.itemNumber = params.get('itemNumber');
+          return this.itemHttpService.getItemsByNumber(this.itemNumber);
         })
       ),
-      this.fieldConfigHttpService.getByOwner(AppProperties.OWNER_ITEM)
+      this.fieldConfigHttpService.getByOwnerMap(AppProperties.OWNER_ITEM)
     ).subscribe((result: any) => {
       this.items = result[0];
       this.fieldConfigs = result[1];
