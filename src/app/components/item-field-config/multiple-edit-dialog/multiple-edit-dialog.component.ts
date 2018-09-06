@@ -4,6 +4,7 @@ import {ItemFieldConfig} from '../../../shared/domain/item-field-config';
 import {FormControl} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {debounceTime, map, startWith} from 'rxjs/operators';
+import {ItemFieldConfigHolder} from '../../../shared/utils/item-field-config-holder';
 
 @Component({
   selector: 'app-multiple-edit-dialog',
@@ -16,8 +17,11 @@ export class MultipleEditDialogComponent {
   filteredItemFieldConfigs: Observable<ItemFieldConfig[]>;
 
   selectedItemFieldConfig: ItemFieldConfig;
+  selectedItemFieldConfigCopy: ItemFieldConfig;
   fieldConfigNameRegex = 'GARMENT_PART_MAIN_[0-9]$';
-  matchedItemFieldConfigs: ItemFieldConfig[] = [];
+  matchedItemFieldConfigsCopy: ItemFieldConfig[] = [];
+  matchedFieldConfigsMap =  {};
+
 
   constructor(
     public dialogRef: MatDialogRef<MultipleEditDialogComponent>,
@@ -32,19 +36,28 @@ export class MultipleEditDialogComponent {
         return fieldConfigName ? this._filter(fieldConfigName) : this.itemFieldConfigs.slice();
       })
     );
+  }
 
+  onChangeFieldValue(fieldName) {
+    if (this.matchedItemFieldConfigsCopy.length === 0) {
+      return;
+    }
+    this.matchedItemFieldConfigsCopy.forEach(fieldConfig => fieldConfig[fieldName] = this.selectedItemFieldConfigCopy[fieldName]);
   }
 
   searchFieldConfigsByregex() {
     const regex = new RegExp(this.fieldConfigNameRegex);
-    this.matchedItemFieldConfigs = this.itemFieldConfigs.filter(itemFieldConfig => {
+    const matchedFieldConfigs = this.itemFieldConfigs.filter(itemFieldConfig => {
       return regex.test(itemFieldConfig.fieldConfigName)
         && itemFieldConfig.fieldConfigName !== this.selectedItemFieldConfig.fieldConfigName;
     });
+    this.matchedFieldConfigsMap = ItemFieldConfigHolder.createItemFieldConfigMap(matchedFieldConfigs);
+    ItemFieldConfigHolder.copyItemFieldConfigs(matchedFieldConfigs, this.matchedItemFieldConfigsCopy);
   }
 
   onFieldConfigSelected(event: MatAutocompleteSelectedEvent) {
     this.selectedItemFieldConfig = this.getItemFieldConfig(event.option.value);
+    this.selectedItemFieldConfigCopy = ItemFieldConfig.copy(this.selectedItemFieldConfig);
   }
 
   getItemFieldConfig(fieldConfigName) {

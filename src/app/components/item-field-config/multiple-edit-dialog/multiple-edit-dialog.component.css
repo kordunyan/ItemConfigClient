@@ -1,0 +1,5 @@
+.table-wrapper {
+  overflow: auto;
+  max-height: 340px;
+  border: 2px solid #dee2e6;
+}

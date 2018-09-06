@@ -18,8 +18,8 @@ export class ItemFieldConfigHolder extends AbstractItemFieldConfigHolder {
   }
 
   initItemFieldConfig() {
-    this.copyItemFieldConfigs(this.item.itemFieldConfigs, this.itemFieldConfigsCopy);
-    this.createItemFieldConfigMap();
+    ItemFieldConfigHolder.copyItemFieldConfigs(this.item.itemFieldConfigs, this.itemFieldConfigsCopy);
+    this.itemFieldConfigsCopyMap = ItemFieldConfigHolder.createItemFieldConfigMap(this.item.itemFieldConfigs);
     this.sortItemFieldConfigs(this.item.itemFieldConfigs);
     this.createNoActiveFieldConfigs();
   }
@@ -29,11 +29,12 @@ export class ItemFieldConfigHolder extends AbstractItemFieldConfigHolder {
     this.initItemFieldConfig();
   }
 
-  createItemFieldConfigMap() {
-    this.itemFieldConfigsCopyMap = {};
-    this.itemFieldConfigsCopy.forEach((itemFieldConfig: ItemFieldConfig) => {
-      this.itemFieldConfigsCopyMap[itemFieldConfig.fieldConfigName] = itemFieldConfig;
+  public static createItemFieldConfigMap(itemFieldConfigs: ItemFieldConfig[]) {
+    const itemFieldConfigsCopyMap = {};
+    itemFieldConfigs.forEach((itemFieldConfig: ItemFieldConfig) => {
+      itemFieldConfigsCopyMap[itemFieldConfig.fieldConfigName] = itemFieldConfig;
     });
+    return itemFieldConfigsCopyMap;
   }
 
   createNoActiveFieldConfigs() {
@@ -62,18 +63,22 @@ export class ItemFieldConfigHolder extends AbstractItemFieldConfigHolder {
   }
 
   resetItemFieldConfigs() {
-    this.copyItemFieldConfigs(this.itemFieldConfigsCopy, this.item.itemFieldConfigs);
+    ItemFieldConfigHolder.copyItemFieldConfigs(this.itemFieldConfigsCopy, this.item.itemFieldConfigs);
     this.createNoActiveFieldConfigs();
     this.sortItemFieldConfigs(this.item.itemFieldConfigs);
   }
 
-  copyItemFieldConfigs(src: ItemFieldConfig[], dest: ItemFieldConfig[]) {
+  public static copyItemFieldConfigs(src: ItemFieldConfig[], dest: ItemFieldConfig[]) {
     dest.length = 0;
     src.forEach(itemFieldConfig => dest.push(ItemFieldConfig.copy(itemFieldConfig)));
   }
 
   getSelectedItemFieldConfigs(): ItemFieldConfig[] {
     return this.item.itemFieldConfigs.filter(itemFieldConfig => itemFieldConfig.checked === true);
+  }
+
+  getSelectedNoNewItemFieldConfigs(): ItemFieldConfig[] {
+    return this.getSelectedItemFieldConfigs().filter(itemFieeldConfig => itemFieeldConfig.id !== undefined);
   }
 
   getChangedItemFields(): ItemFieldConfig[] {

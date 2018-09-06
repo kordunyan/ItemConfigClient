@@ -12,9 +12,9 @@ import {SaveForAllDialogComponent} from '../save-for-all-dialog/save-for-all-dia
 import {MessageService} from '../../../shared/service/message.service';
 import {DeleteComponent} from '../../../shared/components/delete/delete.component';
 import {ItemWithItemFieldConfigDto} from '../../../shared/dto/item-with-item-field-config.dto';
-import { ItemCrudOperationsDto } from '../../../shared/dto/item-crud-operations.dto';
-import { ItemFieldConfig } from '../../../shared/domain/item-field-config';
-import { MultipleEditDialogComponent } from '../multiple-edit-dialog/multiple-edit-dialog.component';
+import {ItemCrudOperationsDto} from '../../../shared/dto/item-crud-operations.dto';
+import {ItemFieldConfig} from '../../../shared/domain/item-field-config';
+import {MultipleEditDialogComponent} from '../multiple-edit-dialog/multiple-edit-dialog.component';
 
 
 @Component({
@@ -79,10 +79,10 @@ export class FieldConfigListControlComponent implements OnInit {
   }
 
   onDelete() {
-    const itemFieldConfigs = this.itemFieldConfigHolder.getSelectedItemFieldConfigs();
+    const itemFieldConfigs = this.itemFieldConfigHolder.getSelectedNoNewItemFieldConfigs();
     if (itemFieldConfigs.length === 0) {
       return;
-    }  
+    }
     this.progressBarService.show();
     this.itemFieldConfigHttpService.delete(this.buildCrudOperationsDto(itemFieldConfigs))
       .subscribe(
@@ -95,19 +95,19 @@ export class FieldConfigListControlComponent implements OnInit {
           this.progressBarService.hide();
           console.error(error);
         }
-      );  
+      );
   }
 
-  private buildCrudOperationsDto(itemFieldConfigs: ItemFieldConfig[]): ItemCrudOperationsDto{
+  private buildCrudOperationsDto(itemFieldConfigs: ItemFieldConfig[]): ItemCrudOperationsDto {
     return new ItemCrudOperationsDto(
       Item.copyWithoutFieldConfigs(this.itemFieldConfigHolder.item),
       [this.getCurrentItemNumber()],
       itemFieldConfigs
-    )
+    );
   }
 
   onDeleteForAll() {
-    const itemFieldConfigs = this.itemFieldConfigHolder.getSelectedItemFieldConfigs();
+    const itemFieldConfigs = this.itemFieldConfigHolder.getSelectedNoNewItemFieldConfigs();
     if (itemFieldConfigs.length === 0) {
       return;
     }
@@ -155,10 +155,10 @@ export class FieldConfigListControlComponent implements OnInit {
 
   openMultipleEditDialog() {
     let dialogRef = this.dialog.open(MultipleEditDialogComponent, {
-       width: '1200px',
-       data: {
-         itemFieldConfigs: this.itemFieldConfigHolder.item.itemFieldConfigs
-       }
+      width: '1200px',
+      data: {
+        itemFieldConfigs: this.itemFieldConfigHolder.item.itemFieldConfigs
+      }
     });
   }
 

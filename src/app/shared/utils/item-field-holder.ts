@@ -54,6 +54,10 @@ export class ItemFieldsHolder {
     });
   }
 
+  public getMultipleFieldByName(fieldConfigName): Field {
+    return this.multipleItemFields.find(field => field.fieldConfigName === fieldConfigName);
+  }
+
   public addItemField(field: Field, fieldConfig: FieldConfig) {
     if (fieldConfig.multiple) {
       this.multipleItemFields.push(field);

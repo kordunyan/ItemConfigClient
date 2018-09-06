@@ -13,7 +13,7 @@
       </mat-form-field>
     </form>
 
-    <div *ngIf="selectedItemFieldConfig">
+    <div *ngIf="selectedItemFieldConfigCopy">
       <table class="table table-bordered" >
         <thead>
         <tr>
@@ -30,45 +30,53 @@
         <tbody>
           <tr>
             <td class="text-center align-middle">
-              <mat-slide-toggle [(ngModel)]="selectedItemFieldConfig.active"></mat-slide-toggle>
+              <mat-slide-toggle (change)="onChangeFieldValue('active')"
+                                [(ngModel)]="selectedItemFieldConfigCopy.active"></mat-slide-toggle>
             </td>
             <td class="text-center align-middle">
               <input type="checkbox"
-                     [disabled]="!selectedItemFieldConfig.active"
-                     [(ngModel)]="selectedItemFieldConfig.required">
+                     (change)="onChangeFieldValue('required')"
+                     [disabled]="!selectedItemFieldConfigCopy.active"
+                     [(ngModel)]="selectedItemFieldConfigCopy.required">
             </td>
             <td class="text-center align-middle">
               <input type="checkbox"
-                     [disabled]="!selectedItemFieldConfig.active"
-                     [(ngModel)]="selectedItemFieldConfig.editable">
+                     (change)="onChangeFieldValue('editable')"
+                     [disabled]="!selectedItemFieldConfigCopy.active"
+                     [(ngModel)]="selectedItemFieldConfigCopy.editable">
             </td>
             <td>
               <input type="text"
                      class="form-control"
-                     [attr.disabled]="!selectedItemFieldConfig.active ? '' : null"
-                     [(ngModel)]="selectedItemFieldConfig.dataSourceName"/>
+                     (change)="onChangeFieldValue('dataSourceName')"
+                     [attr.disabled]="!selectedItemFieldConfigCopy.active ? '' : null"
+                     [(ngModel)]="selectedItemFieldConfigCopy.dataSourceName"/>
             </td>
             <td>
               <input type="text"
                      class="form-control"
-                     [attr.disabled]="!selectedItemFieldConfig.active ? '' : null"
-                     [(ngModel)]="selectedItemFieldConfig.predefinedValue" />
+                     (change)="onChangeFieldValue('predefinedValue')"
+                     [attr.disabled]="!selectedItemFieldConfigCopy.active ? '' : null"
+                     [(ngModel)]="selectedItemFieldConfigCopy.predefinedValue" />
             </td>
             <td>
               <input type="text"
                      class="form-control"
-                     [attr.disabled]="!selectedItemFieldConfig.active ? '' : null"
-                     [(ngModel)]="selectedItemFieldConfig.filterRegex" />
+                     (change)="onChangeFieldValue('filterRegex')"
+                     [attr.disabled]="!selectedItemFieldConfigCopy.active ? '' : null"
+                     [(ngModel)]="selectedItemFieldConfigCopy.filterRegex" />
             </td>
             <td class="text-center align-middle">
               <input type="checkbox"
-                     [disabled]="!selectedItemFieldConfig.active"
-                     [(ngModel)]="selectedItemFieldConfig.storeLastUserInput">
+                     (change)="onChangeFieldValue('storeLastUserInput')"
+                     [disabled]="!selectedItemFieldConfigCopy.active"
+                     [(ngModel)]="selectedItemFieldConfigCopy.storeLastUserInput">
             </td>
             <td class="text-center align-middle">
               <input type="checkbox"
-                     [disabled]="!selectedItemFieldConfig.active"
-                     [(ngModel)]="selectedItemFieldConfig.canAddLater">
+                     (change)="onChangeFieldValue('canAddLater')"
+                     [disabled]="!selectedItemFieldConfigCopy.active"
+                     [(ngModel)]="selectedItemFieldConfigCopy.canAddLater">
             </td>
           </tr>
       </table>
@@ -90,10 +98,11 @@
         </div>
       </form>
 
-      <app-item-field-configs-table
-        [itemFieldConfigs]="matchedItemFieldConfigs"
-        [withSelection]="false"></app-item-field-configs-table>
-
+      <div class="table-wrapper" *ngIf="matchedItemFieldConfigsCopy.length !== 0">
+        <app-item-field-configs-table
+          [itemFieldConfigs]="matchedItemFieldConfigsCopy"
+          [withSelection]="false"></app-item-field-configs-table>
+      </div>
     </div>
 
   </div>

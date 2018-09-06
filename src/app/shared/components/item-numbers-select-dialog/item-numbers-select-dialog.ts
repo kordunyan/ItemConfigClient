@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { InsertItemNumberDialog } from '../insert-item-number-dialog/insert-item-number-dialog';
+import {ItemHttpService} from '../../service/http/item-http.service';
 
 @Component({
   selector: 'app-item-numbers-select-dialog',
@@ -15,15 +16,19 @@ export class ItemNumbersSelectDialog implements OnInit {
   constructor(
     public dialog: MatDialog,
     public dialogRef: MatDialogRef<ItemNumbersSelectDialog>,
+    private itemService: ItemHttpService,
       @Inject(MAT_DIALOG_DATA) public data: any
-  ) { 
-    this.itemNumbers = this.data.itemNumbers;
-    this.itemNumbers.forEach(itemNumber => {
-      this.itemNumbersMap[itemNumber] = itemNumber;
+  ) {
+    this.itemService.getAllItemValues().subscribe((numbers: string[]) => {
+      this.itemNumbers = numbers;
+      this.createItemNumbersMap();
     });
   }
 
-  ngOnInit() {
+  createItemNumbersMap() {
+    this.itemNumbers.forEach(itemNumber => {
+      this.itemNumbersMap[itemNumber] = itemNumber;
+    });
   }
 
   onNoClick(): void {
@@ -59,7 +64,7 @@ export class ItemNumbersSelectDialog implements OnInit {
   private updateSelectedItems(newItemNumbers: string[]) {
     let updatedItemNumbers = this.selectedItemNumbers.slice();
     newItemNumbers.forEach(newItemNumber => {
-      if (this.selectedItemNumbers.indexOf(newItemNumber) === -1) {
+      if (updatedItemNumbers.indexOf(newItemNumber) === -1) {
         updatedItemNumbers.push(newItemNumber);
       }
     });

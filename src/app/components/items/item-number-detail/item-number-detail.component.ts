@@ -10,19 +10,10 @@ import {FieldConfig} from '../../../shared/domain/field-config';
 import {ProgressBarService} from '../../../shared/service/progress-bar.service';
 import {Field} from '../../../shared/domain/field';
 import {FieldService} from '../../../shared/service/field.service';
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, ParamMap } from '@angular/router';
-import { ItemHttpService } from '../../../shared/service/http/item-http.service';
-import { switchMap, delay, first  } from 'rxjs/operators';
-import { Item } from '../../../shared/domain/item';
-import { forkJoin, of } from 'rxjs';
-import { FieldConfigHttpService } from '../../../shared/service/http/field-config-http.service';
-import { AppProperties } from '../../../shared/domain/app-properties';
-import { FieldConfig } from '../../../shared/domain/field-config';
-import { ProgressBarService } from '../../../shared/service/progress-bar.service';
-import { Field } from '../../../shared/domain/field';
-import { FieldService } from '../../../shared/service/field.service';
-import { ItemManager } from '../../../shared/utils/item.manager';
+import {ItemManager} from '../../../shared/utils/item.manager';
+
+
+
 
 @Component({
   selector: 'app-item-number-detail',
