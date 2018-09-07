@@ -18,9 +18,9 @@ export class MultipleEditDialogComponent {
 
   selectedItemFieldConfig: ItemFieldConfig;
   selectedItemFieldConfigCopy: ItemFieldConfig;
-  fieldConfigNameRegex = 'GARMENT_PART_MAIN_[0-9]$';
+  fieldConfigNameRegex = '';
   matchedItemFieldConfigsCopy: ItemFieldConfig[] = [];
-  matchedFieldConfigsMap =  {};
+  matchedFieldConfigsMap = {};
 
 
   constructor(
@@ -56,8 +56,34 @@ export class MultipleEditDialogComponent {
   }
 
   onFieldConfigSelected(event: MatAutocompleteSelectedEvent) {
+    this.clearSelection();
     this.selectedItemFieldConfig = this.getItemFieldConfig(event.option.value);
     this.selectedItemFieldConfigCopy = ItemFieldConfig.copy(this.selectedItemFieldConfig);
+  }
+
+  onApplyConfigs() {
+    this.matchedItemFieldConfigsCopy.forEach(itemFieldConfigCopy => {
+      ItemFieldConfig.copyValues(this.selectedItemFieldConfigCopy, itemFieldConfigCopy);
+    });
+  }
+
+  clearSelection() {
+    this.selectedItemFieldConfig = null;
+    this.selectedItemFieldConfigCopy = null;
+    this.matchedItemFieldConfigsCopy = [];
+  }
+
+  updateChangedFields() {
+    if (this.matchedItemFieldConfigsCopy.length === 0) {
+      this.dialogRef.close();
+      return;
+    }
+    ItemFieldConfig.copyValues(this.selectedItemFieldConfigCopy, this.selectedItemFieldConfig);
+    this.matchedItemFieldConfigsCopy.forEach(itemFieldConfigCopy => {
+      let originItemFieldConfig = this.matchedFieldConfigsMap[itemFieldConfigCopy.fieldConfigName];
+      ItemFieldConfig.copyValues(itemFieldConfigCopy, originItemFieldConfig);
+    });
+    this.dialogRef.close();
   }
 
   getItemFieldConfig(fieldConfigName) {

@@ -19,7 +19,7 @@ export class ItemFieldConfigHolder extends AbstractItemFieldConfigHolder {
 
   initItemFieldConfig() {
     ItemFieldConfigHolder.copyItemFieldConfigs(this.item.itemFieldConfigs, this.itemFieldConfigsCopy);
-    this.itemFieldConfigsCopyMap = ItemFieldConfigHolder.createItemFieldConfigMap(this.item.itemFieldConfigs);
+    this.itemFieldConfigsCopyMap = ItemFieldConfigHolder.createItemFieldConfigCopyMap(this.item.itemFieldConfigs);
     this.sortItemFieldConfigs(this.item.itemFieldConfigs);
     this.createNoActiveFieldConfigs();
   }
@@ -27,6 +27,11 @@ export class ItemFieldConfigHolder extends AbstractItemFieldConfigHolder {
   setItem(item: Item) {
     this.item = item;
     this.initItemFieldConfig();
+  }
+
+  public static createItemFieldConfigCopyMap(itemFieldConfigs: ItemFieldConfig[]) {
+    const fieldConfigsCopy = itemFieldConfigs.map(itemFieldConfig => ItemFieldConfig.copy(itemFieldConfig));
+    return ItemFieldConfigHolder.createItemFieldConfigMap(fieldConfigsCopy);
   }
 
   public static createItemFieldConfigMap(itemFieldConfigs: ItemFieldConfig[]) {
@@ -82,6 +87,7 @@ export class ItemFieldConfigHolder extends AbstractItemFieldConfigHolder {
   }
 
   getChangedItemFields(): ItemFieldConfig[] {
+    console.log(this.itemFieldConfigsCopyMap);
     let result: ItemFieldConfig[] = [];
     this.item.itemFieldConfigs.forEach((itemFieldConfig: ItemFieldConfig) => {
       let copiedField = this.itemFieldConfigsCopyMap[itemFieldConfig.fieldConfigName];

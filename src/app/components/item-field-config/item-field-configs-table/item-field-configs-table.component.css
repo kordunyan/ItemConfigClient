@@ -14,3 +14,11 @@
 .new-item {
   background: rgb(255, 254, 205);
 }
+
+.new-item:hover {
+  background: rgb(255, 238, 71);
+}
+
+.new-no-active {
+  background: rgba(198, 169, 48, 0.18);
+}

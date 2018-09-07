@@ -20,7 +20,10 @@
   <tr app-field-config-row
       [withSelection]="withSelection"
       (changeSelection)="onChangeSelection()"
-      [ngClass]="{'no-acitve': !itemFieldConfig.active, 'new-item': !itemFieldConfig.id && itemFieldConfig.active}"
+      [ngClass]="{
+                    'no-acitve': !itemFieldConfig.active && itemFieldConfig.id,
+                    'new-no-active': !itemFieldConfig.active && !itemFieldConfig.id,
+                    'new-item': !itemFieldConfig.id && itemFieldConfig.active}"
       *ngFor="let itemFieldConfig of itemFieldConfigs"
       [itemFieldConfig]="itemFieldConfig"></tr>
   </tbody>
