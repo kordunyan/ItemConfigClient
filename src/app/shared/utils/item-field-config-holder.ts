@@ -8,7 +8,6 @@ import {ItemFieldConfigManager} from './item-field-config-manager';
 export class ItemFieldConfigHolder extends AbstractItemFieldConfigHolder {
   itemFieldConfigsCopy: ItemFieldConfig[] = [];
   itemFieldConfigsCopyMap = {};
-  allItemsSelected = false;
 
   constructor(
     public item: Item,
@@ -19,8 +18,8 @@ export class ItemFieldConfigHolder extends AbstractItemFieldConfigHolder {
   }
 
   initItemFieldConfig() {
-    this.copyItemFieldConfigs(this.item.itemFieldConfigs, this.itemFieldConfigsCopy);
-    this.createItemFieldConfigMap();
+    ItemFieldConfigHolder.copyItemFieldConfigs(this.item.itemFieldConfigs, this.itemFieldConfigsCopy);
+    this.itemFieldConfigsCopyMap = ItemFieldConfigHolder.createItemFieldConfigCopyMap(this.item.itemFieldConfigs);
     this.sortItemFieldConfigs(this.item.itemFieldConfigs);
     this.createNoActiveFieldConfigs();
   }
@@ -30,11 +29,17 @@ export class ItemFieldConfigHolder extends AbstractItemFieldConfigHolder {
     this.initItemFieldConfig();
   }
 
-  createItemFieldConfigMap() {
-    this.itemFieldConfigsCopyMap = {};
-    this.itemFieldConfigsCopy.forEach((itemFieldConfig: ItemFieldConfig) => {
-      this.itemFieldConfigsCopyMap[itemFieldConfig.fieldConfigName] = itemFieldConfig;
+  public static createItemFieldConfigCopyMap(itemFieldConfigs: ItemFieldConfig[]) {
+    const fieldConfigsCopy = itemFieldConfigs.map(itemFieldConfig => ItemFieldConfig.copy(itemFieldConfig));
+    return ItemFieldConfigHolder.createItemFieldConfigMap(fieldConfigsCopy);
+  }
+
+  public static createItemFieldConfigMap(itemFieldConfigs: ItemFieldConfig[]) {
+    const itemFieldConfigsCopyMap = {};
+    itemFieldConfigs.forEach((itemFieldConfig: ItemFieldConfig) => {
+      itemFieldConfigsCopyMap[itemFieldConfig.fieldConfigName] = itemFieldConfig;
     });
+    return itemFieldConfigsCopyMap;
   }
 
   createNoActiveFieldConfigs() {
@@ -63,26 +68,22 @@ export class ItemFieldConfigHolder extends AbstractItemFieldConfigHolder {
   }
 
   resetItemFieldConfigs() {
-    this.copyItemFieldConfigs(this.itemFieldConfigsCopy, this.item.itemFieldConfigs);
+    ItemFieldConfigHolder.copyItemFieldConfigs(this.itemFieldConfigsCopy, this.item.itemFieldConfigs);
     this.createNoActiveFieldConfigs();
     this.sortItemFieldConfigs(this.item.itemFieldConfigs);
   }
 
-  copyItemFieldConfigs(src: ItemFieldConfig[], dest: ItemFieldConfig[]) {
+  public static copyItemFieldConfigs(src: ItemFieldConfig[], dest: ItemFieldConfig[]) {
     dest.length = 0;
     src.forEach(itemFieldConfig => dest.push(ItemFieldConfig.copy(itemFieldConfig)));
   }
 
-  selectDeselectAllItemFieldConfigs() {
-    this.item.itemFieldConfigs.forEach(itemFieldConfig => itemFieldConfig.checked = this.allItemsSelected);
-  }
-
-  updateAllItemSelected() {
-    this.allItemsSelected = this.getSelectedItemFieldConfigs().length === this.item.itemFieldConfigs.length;
-  }
-
   getSelectedItemFieldConfigs(): ItemFieldConfig[] {
     return this.item.itemFieldConfigs.filter(itemFieldConfig => itemFieldConfig.checked === true);
+  }
+
+  getSelectedNoNewItemFieldConfigs(): ItemFieldConfig[] {
+    return this.getSelectedItemFieldConfigs().filter(itemFieeldConfig => itemFieeldConfig.id !== undefined);
   }
 
   getChangedItemFields(): ItemFieldConfig[] {

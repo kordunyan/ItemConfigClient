@@ -5,6 +5,9 @@
     <div class="text-right w-100">
         <button class="btn btn-light mr-2" 
                 (click)="onCancel()">Cancel</button>
+        <button class="btn btn-primary mr-2" 
+                *ngIf="data.withByItemNumbers"
+                [mat-dialog-close]="3">By</button>
         <button class="btn btn-info mr-2" 
                 *ngIf="data.all"
                 [mat-dialog-close]="2">All</button>

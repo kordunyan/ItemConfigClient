@@ -1,4 +1,4 @@
-<td scope="row align-middle">{{ itemFieldConfig.fieldConfigName }}</td>
+<td scope="align-middle">{{ itemFieldConfig.fieldConfigName }}</td>
 <td class="text-center align-middle">
   <mat-slide-toggle [(ngModel)]="itemFieldConfig.active"></mat-slide-toggle>
 </td>
@@ -13,19 +13,19 @@
          [(ngModel)]="itemFieldConfig.editable">
 </td>
 <td>
-  <input type="text" 
-        class="form-control" 
-        [attr.disabled]="!itemFieldConfig.active ? '' : null"
-        [(ngModel)]="itemFieldConfig.dataSourceName"/>
+  <input type="text"
+         class="form-control"
+         [attr.disabled]="!itemFieldConfig.active ? '' : null"
+         [(ngModel)]="itemFieldConfig.dataSourceName"/>
 </td>
 <td>
-  <input type="text" 
-          class="form-control"
-          [attr.disabled]="!itemFieldConfig.active ? '' : null"
-          [(ngModel)]="itemFieldConfig.predefinedValue" />
+  <input type="text"
+         class="form-control"
+         [attr.disabled]="!itemFieldConfig.active ? '' : null"
+         [(ngModel)]="itemFieldConfig.predefinedValue" />
 </td>
 <td>
-  <input type="text" 
+  <input type="text"
          class="form-control"
          [attr.disabled]="!itemFieldConfig.active ? '' : null"
          [(ngModel)]="itemFieldConfig.filterRegex" />
@@ -40,9 +40,8 @@
          [disabled]="!itemFieldConfig.active"
          [(ngModel)]="itemFieldConfig.canAddLater">
 </td>
-<td class="text-center align-middle">
+<td class="text-center align-middle" *ngIf="withSelection">
   <input type="checkbox"
-         [disabled]="!itemFieldConfig.active"
          (change)="onChangeSelection()"
          [(ngModel)]="itemFieldConfig.checked">
 </td>

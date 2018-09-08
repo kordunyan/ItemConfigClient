@@ -5,7 +5,7 @@ import { MessageService } from "../message.service";
 
 @Injectable()
 export abstract class AbstractHttpService {
-    private static API_URL = "http://localhost:8080/api";
+    private static API_URL = 'http://localhost:8080/api';
     private static HEADERS = new HttpHeaders({'Content-Type': 'application/json; charset=utf-8'});
 
     constructor(

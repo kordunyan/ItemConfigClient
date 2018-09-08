@@ -10,7 +10,7 @@ export class DeleteDialog {
 
   public static readonly OK_STATUS: number = 1;
   public static readonly ALL_STATUS: number = 2;
-  
+  public static readonly BY_STATUS: number = 3;
 
   constructor(
     public dialogRef: MatDialogRef<DeleteDialog>,

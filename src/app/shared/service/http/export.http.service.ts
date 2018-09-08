@@ -1,10 +1,9 @@
-import { AbstractHttpService } from "./abstract.service";
-import { Injectable } from "@angular/core";
-import { HttpClient, HttpHeaders  } from "@angular/common/http";
-import { MessageService } from "../message.service";
-import { FieldConfigHttpService } from "./field-config-http.service";
-import { ResponseContentType } from '@angular/http';
-import { map } from "rxjs/operators";
+import { AbstractHttpService } from './abstract.service';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders  } from '@angular/common/http';
+import { MessageService } from '../message.service';
+import {catchError, map} from 'rxjs/operators';
+import {Observable} from 'rxjs';
 
 @Injectable({
     providedIn: 'root',
@@ -16,30 +15,38 @@ export class ExportHttpService extends AbstractHttpService {
         super(http, messageService, ExportHttpService.BASE_PATH);
     }
 
-    exportAll() {
-        this.http.get(this.getRelatedUrl('/generate'), {
+    exportAll(): Observable<any> {
+        return this.http.get(this.getRelatedUrl('/generate'), {
             responseType: 'blob',
-            observe: 'response'
+            observe: 'response',
+            headers: this.getHeaders()
         })
         .pipe(
             map(response => {
                 return {
                  fileData: response.body,
-                 fileName: response.headers.get('Filename')   
-                }
-            })
-        )
-        .subscribe(result => {
-            let url = window.URL.createObjectURL(result.fileData);
-            let a = document.createElement('a');
-            document.body.appendChild(a);
-            a.setAttribute('style', 'display: none');
-            a.href = url;
-            a.download = result.fileName;
-            a.click();
-            window.URL.revokeObjectURL(url);
-            a.remove();
-        });
+                 fileName: response.headers.get('Filename')
+                };
+            }),
+            catchError(this.handleTrowableError(`Failed generate report for all items`))
+        );
+    }
+
+    exportByItemNumbers(itemNumbers: string[]):Observable<any> {
+      return this.http.post(this.getRelatedUrl('/generateby'), itemNumbers, {
+        responseType: 'blob',
+        observe: 'response',
+        headers: this.getHeaders()
+      })
+        .pipe(
+          map(response => {
+            return {
+              fileData: response.body,
+              fileName: response.headers.get('Filename')
+            };
+          }),
+          catchError(this.handleTrowableError(`Failed generate report for items`, itemNumbers))
+        );
     }
 
 }

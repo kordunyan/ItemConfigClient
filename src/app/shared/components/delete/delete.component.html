@@ -1,7 +1,7 @@
 <button class="edit-btn"
+        *ngIf="btnType === getDefaultBtnType()"
         (click)="onBtnClick()"
-        title="Delete" 
-        *ngIf="btnType === getDefaultBtnType()">
+        title="Delete">
   <i class="fa fa-remove" aria-hidden="true"></i>    
 </button>
 <button class="btn btn-danger ml-1"

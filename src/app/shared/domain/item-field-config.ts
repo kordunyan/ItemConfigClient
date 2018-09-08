@@ -1,3 +1,5 @@
+import {FieldConfig} from './field-config';
+
 export class ItemFieldConfig {
 
   public static readonly DEFAULT_ACTIVE = true;
@@ -40,6 +42,17 @@ export class ItemFieldConfig {
     );
   }
 
+  public static copyValues(src: ItemFieldConfig, dest: ItemFieldConfig) {
+    dest.active = src.active;
+    dest.required = src.required;
+    dest.editable = src.editable;
+    dest.dataSourceName = src.dataSourceName;
+    dest.predefinedValue = src.predefinedValue;
+    dest.filterRegex = src.filterRegex;
+    dest.canAddLater = src.canAddLater;
+    dest.storeLastUserInput = src.storeLastUserInput;
+  }
+
   public static default(fieldConfigName: string): ItemFieldConfig {
     return new ItemFieldConfig(
       fieldConfigName,
@@ -53,4 +66,5 @@ export class ItemFieldConfig {
       ItemFieldConfig.DEFAULT_STORE_LAST_USER_INPUT
     );
   }
+
 }

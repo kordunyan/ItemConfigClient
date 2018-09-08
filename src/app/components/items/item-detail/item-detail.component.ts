@@ -8,6 +8,7 @@ import { FieldService } from '../../../shared/service/field.service';
 import { ProgressBarService } from '../../../shared/service/progress-bar.service';
 import { ItemHttpService } from '../../../shared/service/http/item-http.service';
 import { Router } from '@angular/router';
+import {AppProperties} from '../../../shared/domain/app-properties';
 
 @Component({
   selector: 'app-item-detail',
@@ -22,6 +23,7 @@ export class ItemDetailComponent implements OnInit {
   @Output("onSavedNewFieldsForAll") onSaveNewFieldForAll = new EventEmitter<Field[]>();
   @Output("onDeletedItem") onDeletedItem = new EventEmitter<Item>();
 
+  multipleFieldsOrder = AppProperties.MULTIPLE_FIELDS_SORT_ORDER;
   itemFieldsHolder: ItemFieldsHolder;
 
   constructor (

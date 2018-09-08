@@ -9,7 +9,9 @@ import {ItemFieldConfig} from '../../../shared/domain/item-field-config';
 export class FieldConfigRowComponent implements OnInit {
 
   @Input('itemFieldConfig') itemFieldConfig: ItemFieldConfig;
+  @Input('withSelection') withSelection = true;
   @Output('changeSelection') changeSelection = new EventEmitter();
+
 
   constructor() {
   }

@@ -4,17 +4,110 @@
 
     <form class="example-form">
       <mat-form-field style="width: 100%" class="example-full-width">
-        <input type="text" placeholder="Pick one" aria-label="Number" matInput [formControl]="fieldConfigNameInput" [matAutocomplete]="auto">
-        <mat-autocomplete #auto="matAutocomplete">
-          <mat-option *ngFor="let itemFieldConfig of filteredItemFieldConfigs | async" [value]="itemFieldConfig.fieldConfigName">
-            {{itemFieldConfig.fieldConfigName}}
+        <input type="text" placeholder="Field config name" aria-label="Number" matInput [formControl]="fieldConfigNameInput" [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onFieldConfigSelected($event)">
+          <mat-option *ngFor="let selectedItemFieldConfig of filteredItemFieldConfigs | async" [value]="selectedItemFieldConfig.fieldConfigName">
+            {{selectedItemFieldConfig.fieldConfigName}}
           </mat-option>
         </mat-autocomplete>
       </mat-form-field>
     </form>
 
+    <div *ngIf="selectedItemFieldConfigCopy">
+      <table class="table table-bordered" >
+        <thead>
+        <tr>
+          <th class="text-center align-middle">Is Active</th>
+          <th class="text-center align-middle">Is Required</th>
+          <th class="text-center align-middle">Is Editable</th>
+          <th class="align-middle">Source Name</th>
+          <th class="align-middle">Value</th>
+          <th class="align-middle">Filter Regex</th>
+          <th class="text-center align-middle">Store</th>
+          <th class="text-center align-middle">Add Later</th>
+          <th></th>
+        </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="text-center align-middle">
+              <mat-slide-toggle (change)="onChangeFieldValue('active')"
+                                [(ngModel)]="selectedItemFieldConfigCopy.active"></mat-slide-toggle>
+            </td>
+            <td class="text-center align-middle">
+              <input type="checkbox"
+                     (change)="onChangeFieldValue('required')"
+                     [disabled]="!selectedItemFieldConfigCopy.active"
+                     [(ngModel)]="selectedItemFieldConfigCopy.required">
+            </td>
+            <td class="text-center align-middle">
+              <input type="checkbox"
+                     (change)="onChangeFieldValue('editable')"
+                     [disabled]="!selectedItemFieldConfigCopy.active"
+                     [(ngModel)]="selectedItemFieldConfigCopy.editable">
+            </td>
+            <td>
+              <input type="text"
+                     class="form-control"
+                     (change)="onChangeFieldValue('dataSourceName')"
+                     [attr.disabled]="!selectedItemFieldConfigCopy.active ? '' : null"
+                     [(ngModel)]="selectedItemFieldConfigCopy.dataSourceName"/>
+            </td>
+            <td>
+              <input type="text"
+                     class="form-control"
+                     (change)="onChangeFieldValue('predefinedValue')"
+                     [attr.disabled]="!selectedItemFieldConfigCopy.active ? '' : null"
+                     [(ngModel)]="selectedItemFieldConfigCopy.predefinedValue" />
+            </td>
+            <td>
+              <input type="text"
+                     class="form-control"
+                     (change)="onChangeFieldValue('filterRegex')"
+                     [attr.disabled]="!selectedItemFieldConfigCopy.active ? '' : null"
+                     [(ngModel)]="selectedItemFieldConfigCopy.filterRegex" />
+            </td>
+            <td class="text-center align-middle">
+              <input type="checkbox"
+                     (change)="onChangeFieldValue('storeLastUserInput')"
+                     [disabled]="!selectedItemFieldConfigCopy.active"
+                     [(ngModel)]="selectedItemFieldConfigCopy.storeLastUserInput">
+            </td>
+            <td class="text-center align-middle">
+              <input type="checkbox"
+                     (change)="onChangeFieldValue('canAddLater')"
+                     [disabled]="!selectedItemFieldConfigCopy.active"
+                     [(ngModel)]="selectedItemFieldConfigCopy.canAddLater">
+            </td>
+            <td>
+              <button class="btn btn-primary" (click)="onApplyConfigs()">Apply</button>
+            </td>
+          </tr>
+      </table>
+      <form>
+        <div class="form-row">
+          <div class="form-group col-md-11">
+            <input type="text"
+                   class="form-control"
+                   id="fieldConfigNameRegex"
+                   name="fieldConfigNameRegex"
+                   [(ngModel)]="fieldConfigNameRegex"
+                   placeholder="GARMENT_PART_MAIN_[0-9]$">
+          </div>
+          <div class="form-group col-md-1 text-right">
+            <label for="fieldConfigNameRegex"></label>
+            <button class="btn btn-primary"
+                    (click)="searchFieldConfigsByregex()">Search</button>
+          </div>
+        </div>
+      </form>
 
-
+      <div class="table-wrapper" *ngIf="matchedItemFieldConfigsCopy.length !== 0">
+        <app-item-field-configs-table
+          [itemFieldConfigs]="matchedItemFieldConfigsCopy"
+          [withSelection]="false"></app-item-field-configs-table>
+      </div>
+    </div>
 
   </div>
 </div>
@@ -23,7 +116,7 @@
     <button class="btn btn-light mr-2"
             (click)="onCancel()">Cancel</button>
     <button class="btn btn-primary"
-            [mat-dialog-close]="'1'"
+            (click)="updateChangedFields()"
             cdkFocusInitial>Ok</button>
   </div>
 </div>

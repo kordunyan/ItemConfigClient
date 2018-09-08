@@ -1,0 +1,30 @@
+<table class="table table-hover table-sm">
+  <thead>
+  <tr>
+    <th class="align-middle">Field Config Name</th>
+    <th class="text-center align-middle">Is Active</th>
+    <th class="text-center align-middle">Is Required</th>
+    <th class="text-center align-middle">Is Editable</th>
+    <th class="align-middle">Source Name</th>
+    <th class="align-middle">Value</th>
+    <th class="align-middle">Filter Regex</th>
+    <th class="text-center align-middle">Store</th>
+    <th class="text-center align-middle">Add Later</th>
+    <th class="text-center align-middle" *ngIf="withSelection">
+      <mat-checkbox [(ngModel)]="allItemsSelected"
+                    (change)="selectDeselectAll($event)"></mat-checkbox>
+    </th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr app-field-config-row
+      [withSelection]="withSelection"
+      (changeSelection)="onChangeSelection()"
+      [ngClass]="{
+                    'no-acitve': !itemFieldConfig.active && itemFieldConfig.id,
+                    'new-no-active': !itemFieldConfig.active && !itemFieldConfig.id,
+                    'new-item': !itemFieldConfig.id && itemFieldConfig.active}"
+      *ngFor="let itemFieldConfig of itemFieldConfigs"
+      [itemFieldConfig]="itemFieldConfig"></tr>
+  </tbody>
+</table>

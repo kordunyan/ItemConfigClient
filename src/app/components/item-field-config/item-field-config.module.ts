@@ -9,6 +9,7 @@ import { FieldConfigRowComponent } from './field-config-row/field-config-row.com
 import { FieldConfigListControlComponent } from './field-config-list-control/field-config-list-control.component';
 import { SaveForAllDialogComponent } from './save-for-all-dialog/save-for-all-dialog.component';
 import { MultipleEditDialogComponent } from './multiple-edit-dialog/multiple-edit-dialog.component';
+import { ItemFieldConfigsTableComponent } from './item-field-configs-table/item-field-configs-table.component';
 
 @NgModule({
   imports: [
@@ -23,7 +24,8 @@ import { MultipleEditDialogComponent } from './multiple-edit-dialog/multiple-edi
     FieldConfigRowComponent,
     FieldConfigListControlComponent,
     SaveForAllDialogComponent,
-    MultipleEditDialogComponent
+    MultipleEditDialogComponent,
+    ItemFieldConfigsTableComponent
   ],
   entryComponents: [
     SaveForAllDialogComponent,

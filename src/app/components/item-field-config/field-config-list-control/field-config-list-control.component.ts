@@ -12,9 +12,9 @@ import {SaveForAllDialogComponent} from '../save-for-all-dialog/save-for-all-dia
 import {MessageService} from '../../../shared/service/message.service';
 import {DeleteComponent} from '../../../shared/components/delete/delete.component';
 import {ItemWithItemFieldConfigDto} from '../../../shared/dto/item-with-item-field-config.dto';
-import { ItemCrudOperationsDto } from '../../../shared/dto/item-crud-operations.dto';
-import { ItemFieldConfig } from '../../../shared/domain/item-field-config';
-import { MultipleEditDialogComponent } from '../multiple-edit-dialog/multiple-edit-dialog.component';
+import {ItemCrudOperationsDto} from '../../../shared/dto/item-crud-operations.dto';
+import {ItemFieldConfig} from '../../../shared/domain/item-field-config';
+import {MultipleEditDialogComponent} from '../multiple-edit-dialog/multiple-edit-dialog.component';
 import { ItemNumbersSelectDialog } from '../../../shared/components/item-numbers-select-dialog/item-numbers-select-dialog';
 
 
@@ -29,6 +29,8 @@ export class FieldConfigListControlComponent implements OnInit {
   @Output('onReset') onReset = new EventEmitter();
   @Output('onItemFieldConfigChanged') onItemFieldConfigChanged = new EventEmitter();
 
+  itemNumber: string;
+
   public btnType = DeleteComponent.DELETE_BTN_TYPE_DANGER;
 
   constructor(
@@ -41,6 +43,7 @@ export class FieldConfigListControlComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.itemNumber = this.getCurrentItemNumber();
   }
 
   onResetClick() {
@@ -48,12 +51,15 @@ export class FieldConfigListControlComponent implements OnInit {
   }
 
   onBackClick() {
-    const fieldItemNumber = ItemManager.getItemField(this.itemFieldConfigHolder.item, AppProperties.FIELD_D2COMM_ITEM_NUMBER);
-    this.router.navigate(['/items', fieldItemNumber.value]);
+    this.router.navigate(['/items', this.itemNumber]);
   }
 
-  onChoseFields(fieldConfigNames: string[]) {
+  onAddNewFields(fieldConfigNames: string[]) {
     this.itemFieldConfigHolder.createNewItemFieldConfigs(fieldConfigNames);
+  }
+
+  getCurrentItemNumber() {
+    return ItemManager.getItemFieldValue(this.itemFieldConfigHolder.item, AppProperties.FIELD_D2COMM_ITEM_NUMBER);
   }
 
   onSaveAllForItem() {
@@ -75,7 +81,7 @@ export class FieldConfigListControlComponent implements OnInit {
   saveByItemNumbers() {
     let selectItemNumberDialogRef = this.dialog.open(ItemNumbersSelectDialog, {
       width: '500px'
-    });  
+    });
 
     selectItemNumberDialogRef.beforeClose().subscribe((selectedItemNumbers) => {
       if (!selectedItemNumbers || !selectedItemNumbers.length) {
@@ -90,15 +96,13 @@ export class FieldConfigListControlComponent implements OnInit {
         }
       });
     });
-
-
   }
 
   onDelete() {
-    const itemFieldConfigs = this.itemFieldConfigHolder.getSelectedItemFieldConfigs();
+    const itemFieldConfigs = this.itemFieldConfigHolder.getSelectedNoNewItemFieldConfigs();
     if (itemFieldConfigs.length === 0) {
       return;
-    }  
+    }
     this.progressBarService.show();
     this.itemFieldConfigHttpService.delete(this.buildCrudOperationsDto(itemFieldConfigs))
       .subscribe(
@@ -111,24 +115,28 @@ export class FieldConfigListControlComponent implements OnInit {
           this.progressBarService.hide();
           console.error(error);
         }
-      );  
+      );
   }
 
-  private buildCrudOperationsDto(itemFieldConfigs: ItemFieldConfig[]): ItemCrudOperationsDto{
+  private buildCrudOperationsDto(itemFieldConfigs: ItemFieldConfig[], selectedItemNumbers?: string[]): ItemCrudOperationsDto {
+    let itemNumbers = [this.getCurrentItemNumber()];
+    if (selectedItemNumbers && selectedItemNumbers.length > 0) {
+      itemNumbers = itemNumbers.concat(selectedItemNumbers);
+    }
     return new ItemCrudOperationsDto(
       Item.copyWithoutFieldConfigs(this.itemFieldConfigHolder.item),
-      [ItemManager.getItemFieldValue(this.itemFieldConfigHolder.item, AppProperties.FIELD_D2COMM_ITEM_NUMBER)],
+      itemNumbers,
       itemFieldConfigs
-    )
+    );
   }
 
-  onDeleteForAll() {
-    const itemFieldConfigs = this.itemFieldConfigHolder.getSelectedItemFieldConfigs();
+  onDeleteForAll(itemNumbers: string[]) {
+    const itemFieldConfigs = this.itemFieldConfigHolder.getSelectedNoNewItemFieldConfigs();
     if (itemFieldConfigs.length === 0) {
       return;
     }
     this.progressBarService.show();
-    this.itemFieldConfigHttpService.deleteForAll(this.buildCrudOperationsDto(itemFieldConfigs))
+    this.itemFieldConfigHttpService.deleteForAll(this.buildCrudOperationsDto(itemFieldConfigs, itemNumbers))
       .subscribe(
         (result) => {
           this.messageService.success('Item field configs have succesfult deleted for all items');
@@ -144,15 +152,17 @@ export class FieldConfigListControlComponent implements OnInit {
 
   private saveItemFieldConfig(saveForAll: boolean, saveForAllStrategy?: string, selectedItemNumbers?: string[]) {
     let changedItemFields = this.itemFieldConfigHolder.getChangedItemFields();
+
     if (changedItemFields == null || changedItemFields.length === 0) {
       return;
     }
-    this.progressBarService.show();
 
-    let itemNumbers = [ItemManager.getItemFieldValue(this.itemFieldConfigHolder.item, AppProperties.FIELD_D2COMM_ITEM_NUMBER)]; 
+    let itemNumbers = [this.getCurrentItemNumber()];
     if (selectedItemNumbers && selectedItemNumbers.length > 0) {
       itemNumbers = itemNumbers.concat(selectedItemNumbers);
     }
+
+    this.progressBarService.show();
     let saveItemFieldConfigDto = new SaveItemFieldConfigDto(
       Item.copyWithoutFieldConfigs(this.itemFieldConfigHolder.item),
       itemNumbers,
@@ -176,10 +186,10 @@ export class FieldConfigListControlComponent implements OnInit {
 
   openMultipleEditDialog() {
     let dialogRef = this.dialog.open(MultipleEditDialogComponent, {
-       width: '1200px',
-       data: {
-         itemFieldConfigs: this.itemFieldConfigHolder.item.itemFieldConfigs
-       }
+      width: '1200px',
+      data: {
+        itemFieldConfigs: this.itemFieldConfigHolder.item.itemFieldConfigs
+      }
     });
   }
 

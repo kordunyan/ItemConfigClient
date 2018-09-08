@@ -1,14 +1,14 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { InsertItemNumberDialog } from '../insert-item-number-dialog/insert-item-number-dialog';
-import { ItemHttpService } from '../../service/http/item-http.service';
+import {ItemHttpService} from '../../service/http/item-http.service';
 
 @Component({
   selector: 'app-item-numbers-select-dialog',
   templateUrl: './item-numbers-select-dialog.html',
   styleUrls: ['./item-numbers-select-dialog.css']
 })
-export class ItemNumbersSelectDialog implements OnInit {
+export class ItemNumbersSelectDialog {
   private itemNumbersMap = {};
   private itemNumbers: string[] = [];
   private selectedItemNumbers: string[] = [];
@@ -18,21 +18,17 @@ export class ItemNumbersSelectDialog implements OnInit {
     public dialogRef: MatDialogRef<ItemNumbersSelectDialog>,
     private itemService: ItemHttpService,
       @Inject(MAT_DIALOG_DATA) public data: any
-  ) { 
+  ) {
     this.itemService.getAllItemValues().subscribe((numbers: string[]) => {
       this.itemNumbers = numbers;
       this.createItemNumbersMap();
     });
-    
   }
 
   createItemNumbersMap() {
     this.itemNumbers.forEach(itemNumber => {
       this.itemNumbersMap[itemNumber] = itemNumber;
     });
-  }
-
-  ngOnInit() {
   }
 
   onNoClick(): void {
@@ -43,7 +39,7 @@ export class ItemNumbersSelectDialog implements OnInit {
     this.selectedItemNumbers = [];
   }
 
-  onOkClick() {
+  okClick() {
     this.dialogRef.close(this.selectedItemNumbers);
   }
 
@@ -52,7 +48,7 @@ export class ItemNumbersSelectDialog implements OnInit {
       width: '400px',
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.beforeClose().subscribe(result => {
       if (result) {
         let newItemNumbers = [];
         result.forEach(itemNumber => {
@@ -68,7 +64,7 @@ export class ItemNumbersSelectDialog implements OnInit {
   private updateSelectedItems(newItemNumbers: string[]) {
     let updatedItemNumbers = this.selectedItemNumbers.slice();
     newItemNumbers.forEach(newItemNumber => {
-      if (this.selectedItemNumbers.indexOf(newItemNumber) === -1) {
+      if (updatedItemNumbers.indexOf(newItemNumber) === -1) {
         updatedItemNumbers.push(newItemNumber);
       }
     });
