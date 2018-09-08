@@ -11,18 +11,13 @@ import { ItemHttpService } from '../../service/http/item-http.service';
 })
 export class ExportComponent implements OnInit {
 
-  private itemNumbers: string[] = [];
 
   constructor(
     private exportService: ExportHttpService,
     public dialog: MatDialog,
-    private itemService: ItemHttpService,
   ) { }
 
   ngOnInit() {
-    this.itemService.getAllItemValues().subscribe((numbers: string[]) => {
-      this.itemNumbers = numbers;
-    });
   }
 
   exportAll() {
@@ -31,9 +26,6 @@ export class ExportComponent implements OnInit {
 
   onExportBy() {
     let dialogRef = this.dialog.open(ItemNumbersSelectDialog, {
-      data: {
-        itemNumbers: this.itemNumbers
-      },
       width: '500px',
     });
   }

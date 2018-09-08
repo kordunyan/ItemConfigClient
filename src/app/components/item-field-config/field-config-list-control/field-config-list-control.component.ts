@@ -15,6 +15,7 @@ import {ItemWithItemFieldConfigDto} from '../../../shared/dto/item-with-item-fie
 import { ItemCrudOperationsDto } from '../../../shared/dto/item-crud-operations.dto';
 import { ItemFieldConfig } from '../../../shared/domain/item-field-config';
 import { MultipleEditDialogComponent } from '../multiple-edit-dialog/multiple-edit-dialog.component';
+import { ItemNumbersSelectDialog } from '../../../shared/components/item-numbers-select-dialog/item-numbers-select-dialog';
 
 
 @Component({
@@ -60,7 +61,7 @@ export class FieldConfigListControlComponent implements OnInit {
       width: '300px'
     });
 
-    dialogRef.afterClosed().subscribe(saveForAllStrategy => {
+    dialogRef.beforeClose().subscribe(saveForAllStrategy => {
       if (saveForAllStrategy) {
         this.saveItemFieldConfig(true, saveForAllStrategy);
       }
@@ -69,6 +70,28 @@ export class FieldConfigListControlComponent implements OnInit {
 
   onSaveClick() {
     this.saveItemFieldConfig(false);
+  }
+
+  saveByItemNumbers() {
+    let selectItemNumberDialogRef = this.dialog.open(ItemNumbersSelectDialog, {
+      width: '500px'
+    });  
+
+    selectItemNumberDialogRef.beforeClose().subscribe((selectedItemNumbers) => {
+      if (!selectedItemNumbers || !selectedItemNumbers.length) {
+        return;
+      }
+      let saveStrategyDialogRef = this.dialog.open(SaveForAllDialogComponent, {
+        width: '300px'
+      });
+      saveStrategyDialogRef.beforeClose().subscribe((saveForAllStrategy) => {
+        if (saveForAllStrategy) {
+          this.saveItemFieldConfig(true, saveForAllStrategy, selectedItemNumbers);
+        }
+      });
+    });
+
+
   }
 
   onDelete() {
@@ -119,15 +142,20 @@ export class FieldConfigListControlComponent implements OnInit {
       );
   }
 
-  private saveItemFieldConfig(saveForAll: boolean, saveForAllStrategy?: string) {
+  private saveItemFieldConfig(saveForAll: boolean, saveForAllStrategy?: string, selectedItemNumbers?: string[]) {
     let changedItemFields = this.itemFieldConfigHolder.getChangedItemFields();
     if (changedItemFields == null || changedItemFields.length === 0) {
       return;
     }
     this.progressBarService.show();
+
+    let itemNumbers = [ItemManager.getItemFieldValue(this.itemFieldConfigHolder.item, AppProperties.FIELD_D2COMM_ITEM_NUMBER)]; 
+    if (selectedItemNumbers && selectedItemNumbers.length > 0) {
+      itemNumbers = itemNumbers.concat(selectedItemNumbers);
+    }
     let saveItemFieldConfigDto = new SaveItemFieldConfigDto(
       Item.copyWithoutFieldConfigs(this.itemFieldConfigHolder.item),
-      [ItemManager.getItemFieldValue(this.itemFieldConfigHolder.item, AppProperties.FIELD_D2COMM_ITEM_NUMBER)],
+      itemNumbers,
       changedItemFields,
       saveForAll,
       saveForAllStrategy

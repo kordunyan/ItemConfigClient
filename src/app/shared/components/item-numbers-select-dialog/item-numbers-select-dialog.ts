@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { InsertItemNumberDialog } from '../insert-item-number-dialog/insert-item-number-dialog';
+import { ItemHttpService } from '../../service/http/item-http.service';
 
 @Component({
   selector: 'app-item-numbers-select-dialog',
@@ -15,9 +16,17 @@ export class ItemNumbersSelectDialog implements OnInit {
   constructor(
     public dialog: MatDialog,
     public dialogRef: MatDialogRef<ItemNumbersSelectDialog>,
+    private itemService: ItemHttpService,
       @Inject(MAT_DIALOG_DATA) public data: any
   ) { 
-    this.itemNumbers = this.data.itemNumbers;
+    this.itemService.getAllItemValues().subscribe((numbers: string[]) => {
+      this.itemNumbers = numbers;
+      this.createItemNumbersMap();
+    });
+    
+  }
+
+  createItemNumbersMap() {
     this.itemNumbers.forEach(itemNumber => {
       this.itemNumbersMap[itemNumber] = itemNumber;
     });
@@ -34,8 +43,8 @@ export class ItemNumbersSelectDialog implements OnInit {
     this.selectedItemNumbers = [];
   }
 
-  testClick(){
-    console.log(this.selectedItemNumbers);
+  onOkClick() {
+    this.dialogRef.close(this.selectedItemNumbers);
   }
 
   openInsertItem() {
