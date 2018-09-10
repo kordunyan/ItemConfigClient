@@ -43,6 +43,9 @@ export class FieldConfigListComponent implements OnInit {
         this.itemFieldConfigHolder = new ItemFieldConfigHolder(result[0], result[1]);
         this.progressBarService.hide();
         this.isLoaded = true;
+      },
+      (error) => {
+        this.isLoaded = false;
       }
     );
   }
