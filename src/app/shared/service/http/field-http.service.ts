@@ -7,6 +7,7 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { Observable } from "rxjs";
 import { NewFieldsDTO } from "../../dto/new-fields.dto";
 import { FieldForAllItemsDto } from "../../dto/field-for-all-items.dto";
+import { ItemFieldCrudOperationsDto } from "../../dto/item-field-crud-operations.dto";
 
 @Injectable({
     providedIn: 'root',
@@ -59,6 +60,13 @@ export class FieldHttpService extends AbstractHttpService {
             .pipe(
                 catchError(this.handleTrowableError('Failed to delete field for all items', field))
             );
+    }
+
+    newSaveFields(dto: ItemFieldCrudOperationsDto) {
+        return this.http.post(this.getRelatedUrl('/saveall'), dto, this.getHttpOptions())
+            .pipe(
+                catchError(this.handleTrowableError('Failed to save all fields for all items', dto))    
+            );    
     }
 
 }

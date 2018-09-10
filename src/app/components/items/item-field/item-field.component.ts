@@ -4,6 +4,7 @@ import { FieldConfigHttpService } from '../../../shared/service/http/field-confi
 import { FieldHttpService } from '../../../shared/service/http/field-http.service';
 import { ProgressBarService } from '../../../shared/service/progress-bar.service';
 import { MessageService } from '../../../shared/service/message.service';
+import { ItemFieldCrudOperationsDto } from '../../../shared/dto/item-field-crud-operations.dto';
 
 @Component({
   selector: 'app-item-field',
@@ -12,9 +13,10 @@ import { MessageService } from '../../../shared/service/message.service';
 })
 export class ItemFieldComponent implements OnInit {
 
-  @Input("field") field: Field;
-  @Output("onAllUpdated") onAllUpdated: EventEmitter<any> = new EventEmitter();
-  @Output("onFieldDeleted") onFieldDeleted = new EventEmitter<Field>();
+  @Input('field') field: Field;
+  @Input('itemNumber') itemNumber: string;
+  @Output('onAllUpdated') onAllUpdated: EventEmitter<any> = new EventEmitter();
+  @Output('onFieldDeleted') onFieldDeleted = new EventEmitter<Field>();
 
   isEdit: boolean = false;
   oldValue: string;
@@ -54,16 +56,30 @@ export class ItemFieldComponent implements OnInit {
   }
 
   onSaveAllForItem() {
-    this.progressBarService.show();
-    this.fieldHttpService.updateAllForItem(this.field)
-      .subscribe(
-        (result) => {
-          this.progressBarService.hide();
-          this.messageService.success(`${result} fields were successfully updated`);
-          this.onAllUpdated.emit(null);
-        },
-        (error) => this.progressBarService.hide() 
-      );
+
+    let dto = new ItemFieldCrudOperationsDto([this.itemNumber], [this.field]);
+    this.saveField(dto);
+    // this.progressBarService.show();
+    // this.fieldHttpService.updateAllForItem(this.field)
+    //   .subscribe(
+    //     (result) => {
+    //       this.progressBarService.hide();
+    //       this.messageService.success(`${result} fields were successfully updated`);
+    //       this.onAllUpdated.emit(null);
+    //     },
+    //     (error) => this.progressBarService.hide() 
+    //   );
+  }
+
+  saveField(dto: ItemFieldCrudOperationsDto) {
+    this.fieldHttpService.newSaveFields(dto).subscribe(
+      (result) => {
+        console.log(result);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 
   onChangeValue() {

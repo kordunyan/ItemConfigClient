@@ -9,6 +9,7 @@ import { ProgressBarService } from '../../../shared/service/progress-bar.service
 import { ItemHttpService } from '../../../shared/service/http/item-http.service';
 import { Router } from '@angular/router';
 import {AppProperties} from '../../../shared/domain/app-properties';
+import { ItemManager } from '../../../shared/utils/item.manager';
 
 @Component({
   selector: 'app-item-detail',
@@ -25,6 +26,7 @@ export class ItemDetailComponent implements OnInit {
 
   multipleFieldsOrder = AppProperties.MULTIPLE_FIELDS_SORT_ORDER;
   itemFieldsHolder: ItemFieldsHolder;
+  itemNumber: string;
 
   constructor (
     private fieldService: FieldService,
@@ -35,6 +37,7 @@ export class ItemDetailComponent implements OnInit {
 
   ngOnInit() {
     this.itemFieldsHolder = new ItemFieldsHolder(this.item, this.fieldConfigs);
+    this.itemNumber = ItemManager.getItemFieldValue(this.item, AppProperties.FIELD_D2COMM_ITEM_NUMBER);
   }
 
   onShow() {
