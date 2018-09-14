@@ -61,6 +61,10 @@ export class ItemNumbersSelectDialog {
    });
   }
 
+  onSelectAll() {
+    this.selectedItemNumbers = this.itemNumbers;
+  }
+
   private updateSelectedItems(newItemNumbers: string[]) {
     let updatedItemNumbers = this.selectedItemNumbers.slice();
     newItemNumbers.forEach(newItemNumber => {

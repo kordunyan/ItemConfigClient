@@ -1,7 +1,13 @@
 <h1 mat-dialog-title>
   Select Item Number
-  <button class="btn btn-info btn-sm float-right"
-          (click)="openInsertItem()"><i class="fa fa-exchange" aria-hidden="true"></i></button>
+  <div class="float-right">
+    <button class="btn btn-info btn-sm mr-1"
+          (click)="onSelectAll()">Select All</button>
+    <button class="btn btn-info btn-sm"
+            (click)="openInsertItem()"><i class="fa fa-exchange" aria-hidden="true"></i></button>
+
+  </div>
+
 </h1>
 <div mat-dialog-content>
 
