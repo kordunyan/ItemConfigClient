@@ -1,15 +1,15 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Item } from '../../../shared/domain/item';
-import { ItemFieldsHolder } from '../../../shared/utils/item-field-holder';
-import { FieldConfig } from '../../../shared/domain/field-config';
-import { Field } from '../../../shared/domain/field';
-import { FieldHttpService } from '../../../shared/service/http/field-http.service';
-import { FieldService } from '../../../shared/service/field.service';
-import { ProgressBarService } from '../../../shared/service/progress-bar.service';
-import { ItemHttpService } from '../../../shared/service/http/item-http.service';
-import { Router } from '@angular/router';
+import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
+import {Item} from '../../../shared/domain/item';
+import {ItemFieldsHolder} from '../../../shared/utils/item-field-holder';
+import {FieldConfig} from '../../../shared/domain/field-config';
+import {Field} from '../../../shared/domain/field';
+import {FieldHttpService} from '../../../shared/service/http/field-http.service';
+import {FieldService} from '../../../shared/service/field.service';
+import {ProgressBarService} from '../../../shared/service/progress-bar.service';
+import {ItemHttpService} from '../../../shared/service/http/item-http.service';
+import {Router} from '@angular/router';
 import {AppProperties} from '../../../shared/domain/app-properties';
-import { ItemManager } from '../../../shared/utils/item.manager';
+import {ItemManager} from '../../../shared/utils/item.manager';
 
 @Component({
   selector: 'app-item-detail',
@@ -17,23 +17,23 @@ import { ItemManager } from '../../../shared/utils/item.manager';
   styleUrls: ['./item-detail.component.css']
 })
 export class ItemDetailComponent implements OnInit {
-  @Input('show') show: {isShow: boolean};
+  @Input('show') show: { isShow: boolean };
   @Input('item') item: Item;
   @Input('fieldConfigs') fieldConfigs;
-  @Output("onChangeForAllItems") onChangeForAll = new EventEmitter<any>();
-  @Output("onSavedNewFieldsForAll") onSaveNewFieldForAll = new EventEmitter<Field[]>();
-  @Output("onDeletedItem") onDeletedItem = new EventEmitter<Item>();
+  @Output('onReloadData') onReloadData = new EventEmitter<Item>();
+  @Output('onDeletedItem') onDeletedItem = new EventEmitter<Item>();
 
   multipleFieldsOrder = AppProperties.MULTIPLE_FIELDS_SORT_ORDER;
   itemFieldsHolder: ItemFieldsHolder;
   itemNumber: string;
 
-  constructor (
+  constructor(
     private fieldService: FieldService,
     private progressBarService: ProgressBarService,
     private itemHttpService: ItemHttpService,
     private router: Router
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     this.itemFieldsHolder = new ItemFieldsHolder(this.item, this.fieldConfigs);
@@ -48,29 +48,8 @@ export class ItemDetailComponent implements OnInit {
     this.itemFieldsHolder.createNewItemFields(fieldConfigNames);
   }
 
-  onSaveNewFieldsForAll(fields: Field[]) {
-    this.onSaveNewFieldForAll.emit(fields);  
-  }
-
-  onSavedForAllItems() {
-    this.onChangeForAll.emit(null);
-  }
-
-  allUpdated() {
-    this.onChangeForAll.emit(null);  
-  }
-
-  onSaveNewFields(newFields: Field[]) {
-    this.progressBarService.show();
-    this.fieldService.saveFieldsForItem(newFields, this.item).subscribe(
-      (result) => {
-        this.progressBarService.hide();
-        this.onChangeForAll.emit(null);
-      },
-      (error) => {
-        this.progressBarService.hide();
-      }
-    );
+  reloadData() {
+    this.onReloadData.emit();
   }
 
   onDelete() {
@@ -88,7 +67,7 @@ export class ItemDetailComponent implements OnInit {
     this.itemFieldsHolder.deleteField(field);
   }
 
-  onCopyCLick() {
+  onCopyClick() {
     this.router.navigate(['/items/new', {id: this.item.id}]);
   }
 

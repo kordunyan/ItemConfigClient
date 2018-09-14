@@ -1,7 +1,7 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { FieldConfig } from '../../../shared/domain/field-config';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { ChooseFieldDialog } from '../choose-field/choose-field.component';
+import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
+import {FieldConfig} from '../../../shared/domain/field-config';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import {ChooseFieldDialog} from '../choose-field/choose-field.component';
 
 @Component({
   selector: 'app-excluded-fields',
@@ -15,23 +15,22 @@ export class ExcludedFieldsComponent implements OnInit {
 
   constructor(
     public dialog: MatDialog,
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
   }
 
   openChooseFieldDialog() {
-    let dialogRef = this.dialog.open(ChooseFieldDialog, {
+    this.dialog.open(ChooseFieldDialog, {
       data: {
         fieldConfigs: this.fieldConfigs
       },
       width: '450px',
-   });
-
-   dialogRef.beforeClose().subscribe(result => {
+    }).beforeClose().subscribe(result => {
       if (result) {
-        this.onChooseFields.emit(result);  
+        this.onChooseFields.emit(result);
       }
-   });
- }
+    });
+  }
 }

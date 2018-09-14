@@ -3,7 +3,7 @@ export class FieldConfig {
         public name: string,
         public type: string,
         public owner: string,
-        public isPrintable: boolean,
+        public printable: boolean,
         public multiple: boolean
     ) {
 
