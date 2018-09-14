@@ -18,8 +18,8 @@ export class ItemFieldConfigHttpService extends AbstractHttpService {
 
   constructor(http: HttpClient, messageService: MessageService) {
     super(http, messageService, ItemFieldConfigHttpService.BASE_PATH);
-  }
 
+}
   public save(saveItemFieldConfigDto: SaveItemFieldConfigDto): Observable<any> {
     return this.http.post(this.getRelatedUrl('/save'), saveItemFieldConfigDto, this.getHttpOptions())
       .pipe(

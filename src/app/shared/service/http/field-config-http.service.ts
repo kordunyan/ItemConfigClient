@@ -5,6 +5,7 @@ import {FieldConfig} from '../../domain/field-config';
 import {Observable, of} from 'rxjs';
 import {catchError, map, tap} from 'rxjs/operators';
 import {MessageService} from '../message.service';
+import {SaveItemFieldConfigDto} from '../../dto/save-item-field-config.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -35,6 +36,20 @@ export class FieldConfigHttpService extends AbstractHttpService {
     return this.http.get<FieldConfig[]>(this.getRelatedUrl('/all'))
       .pipe(
         catchError(this.handleError(`Failed to get all field configs`, []))
+      );
+  }
+
+  public save(fieldConfigs: FieldConfig[]): Observable<any> {
+    return this.http.post(this.getRelatedUrl('/save-all'), fieldConfigs, this.getHttpOptions())
+      .pipe(
+        catchError(this.handleTrowableError(`Failed save to field configs`, fieldConfigs))
+      );
+  }
+
+  public delete(fieldConfig: FieldConfig): Observable<any> {
+    return this.http.post(this.getRelatedUrl('/delete'), fieldConfig, this.getHttpOptions())
+      .pipe(
+        catchError(this.handleTrowableError(`Failed to delete field config`, fieldConfig))
       );
   }
 }

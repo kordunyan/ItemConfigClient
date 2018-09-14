@@ -1,0 +1,31 @@
+<td scope="align-middle">{{ fieldConfig.name }}</td>
+ <!-- <td>
+    <input type="text"
+           class="form-control"
+
+           [(ngModel)]="fieldConfig.name"/>
+  </td>-->
+  <td>
+    <input type="text"
+           class="form-control"
+           [(ngModel)]="fieldConfig.type"/>
+  </td>
+  <td>
+    <input type="text"
+           class="form-control"
+           [(ngModel)]="fieldConfig.owner"/>
+  </td>
+  <td class="text-center align-middle">
+    <input type="checkbox"
+           [(ngModel)]="fieldConfig.printable">
+  </td>
+  <td class="text-center align-middle">
+    <input type="checkbox"
+           [(ngModel)]="fieldConfig.multiple">
+  </td>
+<div class="delete-wrapper">
+  <app-delete (onOkChoosen)="onDeleteFieldConfig()"
+              [all]="false"
+  ></app-delete>
+</div>
+
