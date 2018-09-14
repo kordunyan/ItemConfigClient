@@ -1,7 +1,8 @@
 import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import {DeleteDialog} from '../delete-dialog/delete-dialog.component';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
-import { ItemNumbersSelectDialog } from '../item-numbers-select-dialog/item-numbers-select-dialog';
+import {ItemNumbersSelectDialog} from '../item-numbers-select-dialog/item-numbers-select-dialog';
+import {DialogService} from '../../service/dialog.service';
 
 @Component({
   selector: 'app-delete',
@@ -21,7 +22,8 @@ export class DeleteComponent implements OnInit {
   @Output('onByChoosen') onByChoosen = new EventEmitter<string[]>();
 
   constructor(
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    public dialogService: DialogService
   ) {
   }
 
@@ -37,34 +39,18 @@ export class DeleteComponent implements OnInit {
   }
 
   onBtnClick() {
-    let dialogRef = this.dialog.open(DeleteDialog, {
-      data: {
-        all: this.all,
-        withByItemNumbers: this.withByItemNumbers
-      },
-      width: '300px',
-    });
-
-    dialogRef.beforeClose().subscribe(result => {
+    this.dialogService.openDeleteDialog(this.all, this.withByItemNumbers).subscribe(result => {
       if (result === DeleteDialog.OK_STATUS) {
         this.onOkChoosen.emit();
       } else if (result === DeleteDialog.ALL_STATUS) {
         this.onAllChoosen.emit();
       } else if (result === DeleteDialog.BY_STATUS) {
-        this.selectItemNumbers();      
+        this.selectItemNumbers();
       }
     });
   }
 
   selectItemNumbers() {
-    let dialogRef = this.dialog.open(ItemNumbersSelectDialog, {
-      width: '500px',
-    });
-
-    dialogRef.beforeClose().subscribe(result => {
-      if (result && result.length > 0) {
-        this.onByChoosen.emit(result);
-      }
-    });
+    this.dialogService.openItemNumberSelectDialog().subscribe(result => this.onByChoosen.emit(result));
   }
 }

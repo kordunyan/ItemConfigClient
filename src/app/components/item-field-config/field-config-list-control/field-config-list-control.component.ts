@@ -15,7 +15,8 @@ import {ItemWithItemFieldConfigDto} from '../../../shared/dto/item-with-item-fie
 import {ItemCrudOperationsDto} from '../../../shared/dto/item-crud-operations.dto';
 import {ItemFieldConfig} from '../../../shared/domain/item-field-config';
 import {MultipleEditDialogComponent} from '../multiple-edit-dialog/multiple-edit-dialog.component';
-import { ItemNumbersSelectDialog } from '../../../shared/components/item-numbers-select-dialog/item-numbers-select-dialog';
+import {ItemNumbersSelectDialog} from '../../../shared/components/item-numbers-select-dialog/item-numbers-select-dialog';
+import {DialogService} from '../../../shared/service/dialog.service';
 
 
 @Component({
@@ -39,6 +40,7 @@ export class FieldConfigListControlComponent implements OnInit {
     private progressBarService: ProgressBarService,
     public dialog: MatDialog,
     private messageService: MessageService,
+    private dialogService: DialogService
   ) {
   }
 
@@ -63,15 +65,10 @@ export class FieldConfigListControlComponent implements OnInit {
   }
 
   onSaveAllForItem() {
-    let dialogRef = this.dialog.open(SaveForAllDialogComponent, {
-      width: '300px'
-    });
-
-    dialogRef.beforeClose().subscribe(saveForAllStrategy => {
-      if (saveForAllStrategy) {
+    this.dialogService.openSaveForAllStrategyDialog()
+      .subscribe(saveForAllStrategy => {
         this.saveItemFieldConfig(true, saveForAllStrategy);
-      }
-    });
+      });
   }
 
   onSaveClick() {
@@ -79,23 +76,10 @@ export class FieldConfigListControlComponent implements OnInit {
   }
 
   saveByItemNumbers() {
-    let selectItemNumberDialogRef = this.dialog.open(ItemNumbersSelectDialog, {
-      width: '500px'
-    });
-
-    selectItemNumberDialogRef.beforeClose().subscribe((selectedItemNumbers) => {
-      if (!selectedItemNumbers || !selectedItemNumbers.length) {
-        return;
-      }
-      let saveStrategyDialogRef = this.dialog.open(SaveForAllDialogComponent, {
-        width: '300px'
+    this.dialogService.openItemNumbersAndSaveStrategyDialog()
+      .subscribe((result) => {
+        this.saveItemFieldConfig(true, result.saveForAllStrategy, result.itemNumbers);
       });
-      saveStrategyDialogRef.beforeClose().subscribe((saveForAllStrategy) => {
-        if (saveForAllStrategy) {
-          this.saveItemFieldConfig(true, saveForAllStrategy, selectedItemNumbers);
-        }
-      });
-    });
   }
 
   onDelete() {

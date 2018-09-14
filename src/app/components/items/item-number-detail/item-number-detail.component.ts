@@ -13,8 +13,6 @@ import {FieldService} from '../../../shared/service/field.service';
 import {ItemManager} from '../../../shared/utils/item.manager';
 
 
-
-
 @Component({
   selector: 'app-item-number-detail',
   templateUrl: './item-number-detail.component.html',
@@ -26,7 +24,7 @@ export class ItemNumberDetailComponent implements OnInit {
   shownItems: { isShow: boolean }[] = [];
   fieldConfigs = {};
   itemNumber: string;
-  isAllShow: boolean = false;
+  isAllShow: false;
 
   constructor(
     private route: ActivatedRoute,
@@ -78,22 +76,7 @@ export class ItemNumberDetailComponent implements OnInit {
     }
   }
 
-  onSavedNewFieldsForAll(fields: Field[]) {
-    this.progresBarService.show();
-    this.fieldService.saveFieldsForAllItems(fields, this.items).subscribe(
-      (result) => {
-        this.loadData();
-      },
-      (error) => this.progresBarService.hide()
-    );
-  }
-
   onDeletedItem(item: Item) {
     this.items.splice(this.items.findIndex(i => i.id === item.id), 1);
   }
-
-  onChangeForAllItems() {
-    this.loadData();
-  }
-
 }

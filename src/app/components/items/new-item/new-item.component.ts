@@ -1,23 +1,22 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import {Component, OnInit, Inject} from '@angular/core';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 
-import { FieldConfig } from '../../../shared/domain/field-config';
-import { Field } from '../../../shared/domain/field';
-import { Item } from '../../../shared/domain/item';
-import { FieldConfigHttpService } from '../../../shared/service/http/field-config-http.service';
-import { ItemHttpService } from '../../../shared/service/http/item-http.service';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { MultipleField } from '../../../shared/domain/multiple-field';
-import { MessageService } from '../../../shared/service/message.service';
-import { AppProperties } from '../../../shared/domain/app-properties';
-import { ProgressBarService } from '../../../shared/service/progress-bar.service';
-import { FieldService } from '../../../shared/service/field.service';
-import { first, switchMap } from 'rxjs/operators';
-import { forkJoin } from 'rxjs';
-import { ItemManager } from '../../../shared/utils/item.manager';
-import { Observable, of} from 'rxjs';
-import { CopyItemDto } from '../../../shared/dto/copy-iten.dto';
-
+import {FieldConfig} from '../../../shared/domain/field-config';
+import {Field} from '../../../shared/domain/field';
+import {Item} from '../../../shared/domain/item';
+import {FieldConfigHttpService} from '../../../shared/service/http/field-config-http.service';
+import {ItemHttpService} from '../../../shared/service/http/item-http.service';
+import {Router, ActivatedRoute, ParamMap} from '@angular/router';
+import {MultipleField} from '../../../shared/domain/multiple-field';
+import {MessageService} from '../../../shared/service/message.service';
+import {AppProperties} from '../../../shared/domain/app-properties';
+import {ProgressBarService} from '../../../shared/service/progress-bar.service';
+import {FieldService} from '../../../shared/service/field.service';
+import {first, switchMap} from 'rxjs/operators';
+import {forkJoin} from 'rxjs';
+import {ItemManager} from '../../../shared/utils/item.manager';
+import {Observable, of} from 'rxjs';
+import {CopyItemDto} from '../../../shared/dto/copy-iten.dto';
 
 
 @Component({
@@ -104,18 +103,18 @@ export class NewItemComponent implements OnInit {
     this.progressBarService.show();
     this.isSaveProcess = true;
     if (this.isCopyProcess()) {
-      this.copyNewItem();  
+      this.copyNewItem();
     } else {
       this.saveNewItem();
     }
   }
 
   copyNewItem() {
-    let copyItemDto= new CopyItemDto(this.createItems(), this.copyItem.id);
+    let copyItemDto = new CopyItemDto(this.createItems(), this.copyItem.id);
     this.itemHttpService.copyAll(copyItemDto).subscribe(() => {
       this.isSaveProcess = false;
       this.progressBarService.hide();
-      this.messageService.success("Items has already copyed");
+      this.messageService.success('Items has already copyed');
       this.router.navigate(['/items']);
     }, () => {
       this.isSaveProcess = false;
@@ -128,7 +127,7 @@ export class NewItemComponent implements OnInit {
     this.itemHttpService.saveAll(this.createItems()).subscribe(() => {
       this.isSaveProcess = false;
       this.progressBarService.hide();
-      this.messageService.success("Items has already added");
+      this.messageService.success('Items has already added');
       this.router.navigate(['/items']);
     }, () => {
       this.isSaveProcess = false;
