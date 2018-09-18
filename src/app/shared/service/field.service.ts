@@ -18,19 +18,6 @@ export class FieldService {
 
   }
 
-  public saveFieldsForAllItems(fields: Field[], items: Item[]): Observable<any> {
-    let fieldsForAllItems: FieldForAllItemsDto[] = [];
-    fields.forEach(field => {
-      let fieldSets = items
-        .filter(item => item.fields.findIndex(f => f.fieldConfigName === field.fieldConfigName) === -1)
-        .map(item => item.fieldSet);
-      if (fieldSets && fieldSets.length > 0) {
-        fieldsForAllItems.push(new FieldForAllItemsDto(field, fieldSets));
-      }
-    });
-    return this.fieldHttpService.saveNewFieldsForAllItems(fieldsForAllItems);
-  }
-
   public saveFieldsForItem(fields: Field[], item: Item): Observable<any> {
     fields.forEach(field => field.fieldSet = item.fieldSet);
     return this.fieldHttpService.saveAll(fields);

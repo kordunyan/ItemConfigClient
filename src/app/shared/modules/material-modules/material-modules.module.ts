@@ -11,6 +11,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import {MatInputModule} from '@angular/material/input';
 import {MatListModule} from '@angular/material/list';
+import {MatTableModule} from '@angular/material/table';
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import {MatListModule} from '@angular/material/list';
     MatRadioModule,
     MatAutocompleteModule,
     MatInputModule,
-    MatListModule
+    MatListModule,
+    MatTableModule
   ],
   exports: [
     MatCheckboxModule,
@@ -40,7 +42,8 @@ import {MatListModule} from '@angular/material/list';
     MatRadioModule,
     MatAutocompleteModule,
     MatInputModule,
-    MatListModule
+    MatListModule,
+    MatTableModule
   ],
   declarations: []
 })

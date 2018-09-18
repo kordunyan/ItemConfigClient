@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatCheckboxChange } from '@angular/material';
 import { InsertItemNumberDialog } from '../insert-item-number-dialog/insert-item-number-dialog';
 import {ItemHttpService} from '../../service/http/item-http.service';
 
@@ -12,6 +12,7 @@ export class ItemNumbersSelectDialog {
   private itemNumbersMap = {};
   private itemNumbers: string[] = [];
   private selectedItemNumbers: string[] = [];
+  public allItemNumbersSelected = false;
 
   constructor(
     public dialog: MatDialog,
@@ -23,6 +24,15 @@ export class ItemNumbersSelectDialog {
       this.itemNumbers = numbers;
       this.createItemNumbersMap();
     });
+  }
+
+  selectDeselectAll(change: MatCheckboxChange) {
+    this.allItemNumbersSelected = change.checked;
+    this.selectedItemNumbers = this.allItemNumbersSelected ? this.itemNumbers : [];
+  }
+
+  onChangeSelection() {
+    this.allItemNumbersSelected = this.selectedItemNumbers.length === this.itemNumbers.length;
   }
 
   createItemNumbersMap() {
