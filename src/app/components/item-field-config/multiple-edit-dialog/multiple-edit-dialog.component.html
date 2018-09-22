@@ -103,9 +103,8 @@
       </form>
 
       <div class="table-wrapper" *ngIf="matchedItemFieldConfigsCopy.length !== 0">
-        <app-item-field-configs-table
-          [itemFieldConfigs]="matchedItemFieldConfigsCopy"
-          [withSelection]="false"></app-item-field-configs-table>
+          <app-field-confog-table [withSelection]="false"
+                                  [itemFieldConfigs]="matchedItemFieldConfigsCopy"></app-field-confog-table>
       </div>
     </div>
 

@@ -1,0 +1,96 @@
+<div class="table-container mat-elevation-z8">
+  <table mat-table [dataSource]="itemFieldConfigs" class="configs-table">
+
+    <ng-container matColumnDef="fieldConfigName">
+      <th mat-header-cell *matHeaderCellDef>Field Config Name</th>
+      <td mat-cell *matCellDef="let element"> {{element.fieldConfigName}} </td>
+    </ng-container>
+    <ng-container matColumnDef="active">
+        <th mat-header-cell *matHeaderCellDef class="text-center">Is Active</th>
+        <td mat-cell *matCellDef="let element" class="text-center">
+           <mat-slide-toggle [(ngModel)]="element.active"></mat-slide-toggle>
+        </td>
+    </ng-container>
+    <ng-container matColumnDef="required">
+        <th mat-header-cell *matHeaderCellDef class="text-center">Is Required</th>
+        <td mat-cell *matCellDef="let element" class="text-center">
+            <input type="checkbox"
+                  [disabled]="!element.active"
+                  [(ngModel)]="element.required">
+        </td>
+    </ng-container>
+    <ng-container matColumnDef="editable">
+        <th mat-header-cell *matHeaderCellDef class="text-center">Is Editable</th>
+        <td mat-cell *matCellDef="let element" class="text-center">
+            <input type="checkbox"
+                  [disabled]="!element.active"
+                  [(ngModel)]="element.editable">
+        </td>
+    </ng-container>
+    <ng-container matColumnDef="dataSourceName">
+        <th mat-header-cell *matHeaderCellDef>Source Name</th>
+        <td mat-cell *matCellDef="let element" class="pr-2">
+            <input type="text"
+                  class="form-control"
+                  [attr.disabled]="!element.active ? '' : null"
+                  [(ngModel)]="element.dataSourceName"/>
+        </td>
+    </ng-container>
+    <ng-container matColumnDef="predefinedValue">
+        <th mat-header-cell *matHeaderCellDef>Value</th>
+        <td mat-cell *matCellDef="let element" class="pr-2">
+            <input type="text"
+                  class="form-control"
+                  [attr.disabled]="!element.active ? '' : null"
+                  [(ngModel)]="element.predefinedValue" />
+        </td>
+    </ng-container>
+    <ng-container matColumnDef="filterRegex">
+        <th mat-header-cell *matHeaderCellDef>Filter Regex</th>
+        <td mat-cell *matCellDef="let element">
+            <input type="text"
+                  class="form-control"
+                  [attr.disabled]="!element.active ? '' : null"
+                  [(ngModel)]="element.filterRegex" />
+        </td>
+    </ng-container>
+    <ng-container matColumnDef="storeLastUserInput">
+        <th mat-header-cell *matHeaderCellDef class="text-center">Store</th>
+        <td mat-cell *matCellDef="let element" class="text-center">
+            <input type="checkbox"
+                  [disabled]="!element.active"
+                  [(ngModel)]="element.storeLastUserInput">
+        </td>
+    </ng-container>
+    <ng-container matColumnDef="canAddLater">
+        <th mat-header-cell *matHeaderCellDef class="text-center">Add Later</th>
+        <td mat-cell *matCellDef="let element" class="text-center">
+            <input type="checkbox"
+                  [disabled]="!element.active"
+                  [(ngModel)]="element.canAddLater">
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="checked">
+        <th mat-header-cell *matHeaderCellDef class="text-center">
+            <mat-checkbox [(ngModel)]="allItemsSelected"
+                          (change)="selectDeselectAll($event)"></mat-checkbox>
+        </th>
+        <td mat-cell *matCellDef="let element" class="text-center">
+            <input type="checkbox"
+                  (change)="onChangeSelection()"
+                  [(ngModel)]="element.checked">
+        </td>
+    </ng-container>
+  
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+    <tr mat-row
+        class="table-row" 
+        [ngClass]="{
+          'no-acitve': !row.active && row.id,
+          'new-no-active': !row.active && !row.id,
+          'new-item': !row.id && row.active}"
+        *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</div>  
+

@@ -57,7 +57,7 @@ export class ItemFieldConfigHolder extends AbstractItemFieldConfigHolder {
       this.item.itemFieldConfigs = [];
     }
     fieldConfigNames.forEach(fieldConfigName => {
-      this.item.itemFieldConfigs.push(ItemFieldConfig.default(fieldConfigName));
+      this.item.itemFieldConfigs = this.item.itemFieldConfigs.concat(ItemFieldConfig.default(fieldConfigName));
       this.removeNoActiveField(fieldConfigName);
     });
     this.sortItemFieldConfigs(this.item.itemFieldConfigs);

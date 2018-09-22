@@ -51,8 +51,10 @@ export class MultipleEditDialogComponent {
       return regex.test(itemFieldConfig.fieldConfigName)
         && itemFieldConfig.fieldConfigName !== this.selectedItemFieldConfig.fieldConfigName;
     });
+
     this.matchedFieldConfigsMap = ItemFieldConfigHolder.createItemFieldConfigMap(matchedFieldConfigs);
     ItemFieldConfigHolder.copyItemFieldConfigs(matchedFieldConfigs, this.matchedItemFieldConfigsCopy);
+    this.matchedItemFieldConfigsCopy = this.matchedItemFieldConfigsCopy.slice();
   }
 
   onFieldConfigSelected(event: MatAutocompleteSelectedEvent) {

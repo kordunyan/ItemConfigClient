@@ -170,7 +170,7 @@ export class FieldConfigListControlComponent implements OnInit {
 
   openMultipleEditDialog() {
     let dialogRef = this.dialog.open(MultipleEditDialogComponent, {
-      width: '1200px',
+      width: '1300px',
       data: {
         itemFieldConfigs: this.itemFieldConfigHolder.item.itemFieldConfigs
       }
