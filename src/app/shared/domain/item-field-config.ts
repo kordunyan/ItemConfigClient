@@ -22,7 +22,8 @@ export class ItemFieldConfig {
     public canAddLater: boolean,
     public storeLastUserInput: boolean,
     public id?: number,
-    public checked?: boolean
+    public checked?: boolean,
+    public isTextField?: boolean
   ) {
 
   }
@@ -38,7 +39,9 @@ export class ItemFieldConfig {
       itemFieldConfig.filterRegex,
       itemFieldConfig.canAddLater,
       itemFieldConfig.storeLastUserInput,
-      itemFieldConfig.id
+      itemFieldConfig.id,
+      false,
+      itemFieldConfig.isTextField
     );
   }
 
@@ -53,7 +56,7 @@ export class ItemFieldConfig {
     dest.storeLastUserInput = src.storeLastUserInput;
   }
 
-  public static default(fieldConfigName: string): ItemFieldConfig {
+  public static default(fieldConfigName: string, isTextField?: boolean): ItemFieldConfig {
     return new ItemFieldConfig(
       fieldConfigName,
       ItemFieldConfig.DEFAULT_ACTIVE,
@@ -63,7 +66,10 @@ export class ItemFieldConfig {
       ItemFieldConfig.DEFAULT_PREDEFINED_VALUE,
       ItemFieldConfig.DEFAULT_FILTER_REGEX,
       ItemFieldConfig.DEFAULT_CAN_ADD_LATER,
-      ItemFieldConfig.DEFAULT_STORE_LAST_USER_INPUT
+      ItemFieldConfig.DEFAULT_STORE_LAST_USER_INPUT,
+      null,
+      false,
+      isTextField
     );
   }
 

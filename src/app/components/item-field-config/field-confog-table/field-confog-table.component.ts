@@ -13,6 +13,7 @@ export class FieldConfogTableComponent implements OnInit{
 
   @Input('itemFieldConfigs') itemFieldConfigs: ItemFieldConfig[];
   @Input('withSelection') withSelection = true;
+  @Input('fieldConfigsMap') fieldConfigsMap = {};
 
   allItemsSelected = false;
 
@@ -39,5 +40,10 @@ export class FieldConfogTableComponent implements OnInit{
 
   getSelectedItemFieldConfigs(): ItemFieldConfig[] {
     return this.itemFieldConfigs.filter(itemFieldConfig => itemFieldConfig.checked === true);
+  }
+
+  isActiveRegex(fieldConfigName): {} {
+    console.log(this.fieldConfigsMap[fieldConfigName].type);
+    return {active: true};
   }
 }

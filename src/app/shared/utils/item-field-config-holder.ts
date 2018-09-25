@@ -4,6 +4,7 @@ import {ItemFieldConfig} from '../domain/item-field-config';
 import {ItemManager} from './item.manager';
 import {AbstractItemFieldConfigHolder} from './abstract-item-field-holder';
 import {ItemFieldConfigManager} from './item-field-config-manager';
+import { FieldType } from '../domain/field-type';
 
 export class ItemFieldConfigHolder extends AbstractItemFieldConfigHolder {
   itemFieldConfigsCopy: ItemFieldConfig[] = [];
@@ -18,10 +19,17 @@ export class ItemFieldConfigHolder extends AbstractItemFieldConfigHolder {
   }
 
   initItemFieldConfig() {
+    this.setIsTextField();
     ItemFieldConfigHolder.copyItemFieldConfigs(this.item.itemFieldConfigs, this.itemFieldConfigsCopy);
     this.itemFieldConfigsCopyMap = ItemFieldConfigHolder.createItemFieldConfigCopyMap(this.item.itemFieldConfigs);
     this.sortItemFieldConfigs(this.item.itemFieldConfigs);
     this.createNoActiveFieldConfigs();
+  }
+
+  setIsTextField() {
+    this.item.itemFieldConfigs.forEach((itemFieldConfig: ItemFieldConfig) => {
+      itemFieldConfig.isTextField = this.fieldConfigMap[itemFieldConfig.fieldConfigName].type === FieldType.TEXT_FIELD;
+    });
   }
 
   setItem(item: Item) {
@@ -69,6 +77,7 @@ export class ItemFieldConfigHolder extends AbstractItemFieldConfigHolder {
 
   resetItemFieldConfigs() {
     ItemFieldConfigHolder.copyItemFieldConfigs(this.itemFieldConfigsCopy, this.item.itemFieldConfigs);
+    this.item.itemFieldConfigs = this.item.itemFieldConfigs.slice();
     this.createNoActiveFieldConfigs();
     this.sortItemFieldConfigs(this.item.itemFieldConfigs);
   }

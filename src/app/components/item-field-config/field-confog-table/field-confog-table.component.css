@@ -27,3 +27,7 @@ table {
 .no-acitve {
     background: #F3F3F3;
 }
+
+.regex-wrap {
+    width: 150px;
+}

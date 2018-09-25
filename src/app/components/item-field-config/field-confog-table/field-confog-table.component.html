@@ -32,7 +32,7 @@
         <td mat-cell *matCellDef="let element" class="pr-2">
             <input type="text"
                   class="form-control"
-                  [attr.disabled]="!element.active ? '' : null"
+                  [attr.disabled]="element.active ?  null : ''"
                   [(ngModel)]="element.dataSourceName"/>
         </td>
     </ng-container>
@@ -41,17 +41,29 @@
         <td mat-cell *matCellDef="let element" class="pr-2">
             <input type="text"
                   class="form-control"
-                  [attr.disabled]="!element.active ? '' : null"
+                  [attr.disabled]="element.active ?  null : ''"
                   [(ngModel)]="element.predefinedValue" />
         </td>
     </ng-container>
     <ng-container matColumnDef="filterRegex">
         <th mat-header-cell *matHeaderCellDef>Filter Regex</th>
         <td mat-cell *matCellDef="let element">
-            <input type="text"
-                  class="form-control"
-                  [attr.disabled]="!element.active ? '' : null"
-                  [(ngModel)]="element.filterRegex" />
+            <div class="regex-wrap">
+                <div class="input-group">
+                    <input type="text"
+                            [(ngModel)]="element.filterRegex"
+                            [attr.disabled]="element.active && !element.isTextField ? null : ''" 
+                            class="form-control">
+                    <div class="input-group-append">
+                        <button class="btn btn-info"
+                                *ngIf="!element.isTextField"
+                                [attr.disabled]="element.active ? null : ''"  
+                                type="button">
+                            <i class="fa fa-cogs" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
         </td>
     </ng-container>
     <ng-container matColumnDef="storeLastUserInput">

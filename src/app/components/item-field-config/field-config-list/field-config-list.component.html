@@ -6,5 +6,6 @@
 <div *ngIf="isLoaded" class="table-wrapper">
   <app-field-confog-table
     [withSelection]="true"
+    [fieldConfigsMap]="itemFieldConfigHolder.fieldConfigMap"
     [itemFieldConfigs]="itemFieldConfigHolder.item.itemFieldConfigs"></app-field-confog-table>
 </div>
