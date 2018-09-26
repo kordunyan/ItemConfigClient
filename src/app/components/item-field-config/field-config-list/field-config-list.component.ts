@@ -36,11 +36,12 @@ export class FieldConfigListComponent implements OnInit {
         first(),
         switchMap((params: ParamMap) => this.itemHttpService.getById(params.get(AppProperties.REQUEST_PARAM_ITEM_ID)))
       ),
-      this.fieldConfigHttpService.getAll()
+      this.fieldConfigHttpService.getAll(),
+      this.fieldConfigHttpService.getInstructionsFields()
     ).subscribe(
       (result) => {
-        // result[0] = Item, result[1] = fieldConfigs
-        this.itemFieldConfigHolder = new ItemFieldConfigHolder(result[0], result[1]);
+        // result[0] = Item, result[1] = fieldConfigs, result[2] = instruction fields
+        this.itemFieldConfigHolder = new ItemFieldConfigHolder(result[0], result[1], result[2]);
         this.progressBarService.hide();
         this.isLoaded = true;
       }

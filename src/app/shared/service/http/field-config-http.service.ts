@@ -31,6 +31,13 @@ export class FieldConfigHttpService extends AbstractHttpService {
       );
   }
 
+  getInstructionsFields() {
+    return this.http.get<any>(this.getRelatedUrl('/instructions/fields'))
+      .pipe(
+        catchError(this.handleError('Failed to load instructions fields', {}))
+      );
+  }
+
   getAll(): Observable<FieldConfig[]> {
     return this.http.get<FieldConfig[]>(this.getRelatedUrl('/all'))
       .pipe(

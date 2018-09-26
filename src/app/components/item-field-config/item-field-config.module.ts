@@ -11,6 +11,7 @@ import { SaveForAllDialogComponent } from './save-for-all-dialog/save-for-all-di
 import { MultipleEditDialogComponent } from './multiple-edit-dialog/multiple-edit-dialog.component';
 import { ItemFieldConfigsTableComponent } from './item-field-configs-table/item-field-configs-table.component';
 import { FieldConfogTableComponent } from './field-confog-table/field-confog-table.component';
+import { FilterRegexDialogComponent } from './filter-regex-dialog/filter-regex-dialog.component';
 
 @NgModule({
   imports: [
@@ -27,11 +28,13 @@ import { FieldConfogTableComponent } from './field-confog-table/field-confog-tab
     SaveForAllDialogComponent,
     MultipleEditDialogComponent,
     ItemFieldConfigsTableComponent,
-    FieldConfogTableComponent
+    FieldConfogTableComponent,
+    FilterRegexDialogComponent
   ],
   entryComponents: [
     SaveForAllDialogComponent,
-    MultipleEditDialogComponent
+    MultipleEditDialogComponent,
+    FilterRegexDialogComponent
   ],
   exports: [
     ItemFieldConfigRoutingModule

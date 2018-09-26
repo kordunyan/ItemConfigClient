@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ItemFieldConfig } from '../../../shared/domain/item-field-config';
 import { MatCheckboxChange } from '@angular/material';
+import { DialogService } from '../../../shared/service/dialog.service';
 
 @Component({
   selector: 'app-field-confog-table',
@@ -13,11 +14,14 @@ export class FieldConfogTableComponent implements OnInit{
 
   @Input('itemFieldConfigs') itemFieldConfigs: ItemFieldConfig[];
   @Input('withSelection') withSelection = true;
-  @Input('fieldConfigsMap') fieldConfigsMap = {};
+  @Input('instructionsFields') instructionsFields = {};
+
 
   allItemsSelected = false;
 
-  constructor() { }
+  constructor(
+    private dialogService: DialogService
+  ) { }
 
   ngOnInit() {
     if(this.withSelection) {
@@ -42,8 +46,14 @@ export class FieldConfogTableComponent implements OnInit{
     return this.itemFieldConfigs.filter(itemFieldConfig => itemFieldConfig.checked === true);
   }
 
-  isActiveRegex(fieldConfigName): {} {
-    console.log(this.fieldConfigsMap[fieldConfigName].type);
-    return {active: true};
+  onEditFilterRegex(itemFieldConfig: ItemFieldConfig) {
+    this.dialogService.openFilterRegexDialog(itemFieldConfig, this.getInstructionFields(itemFieldConfig))
+      .subscribe((result) => {
+      console.log(result);
+    });
+  }
+
+  getInstructionFields(itemFieldConfig: ItemFieldConfig) {
+    return this.instructionsFields[itemFieldConfig.fieldConfigName];
   }
 }

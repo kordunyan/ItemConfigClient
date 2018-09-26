@@ -104,6 +104,7 @@
 
       <div class="table-wrapper" *ngIf="matchedItemFieldConfigsCopy.length !== 0">
           <app-field-confog-table [withSelection]="false"
+                                  [instructionsFields]="instructionsFields"
                                   [itemFieldConfigs]="matchedItemFieldConfigsCopy"></app-field-confog-table>
       </div>
     </div>

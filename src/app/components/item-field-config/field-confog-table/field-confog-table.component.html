@@ -57,6 +57,7 @@
                     <div class="input-group-append">
                         <button class="btn btn-info"
                                 *ngIf="!element.isTextField"
+                                (click)="onEditFilterRegex(element)"
                                 [attr.disabled]="element.active ? null : ''"  
                                 type="button">
                             <i class="fa fa-cogs" aria-hidden="true"></i>

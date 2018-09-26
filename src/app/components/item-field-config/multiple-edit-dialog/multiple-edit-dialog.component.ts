@@ -15,6 +15,7 @@ export class MultipleEditDialogComponent {
   fieldConfigNameInput = new FormControl();
   itemFieldConfigs: ItemFieldConfig[];
   filteredItemFieldConfigs: Observable<ItemFieldConfig[]>;
+  instructionsFields = {};
 
   selectedItemFieldConfig: ItemFieldConfig;
   selectedItemFieldConfigCopy: ItemFieldConfig;
@@ -28,6 +29,7 @@ export class MultipleEditDialogComponent {
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.itemFieldConfigs = data.itemFieldConfigs;
+    this.instructionsFields = data.instructionsFields;
 
     this.filteredItemFieldConfigs = this.fieldConfigNameInput.valueChanges.pipe(
       debounceTime(200),

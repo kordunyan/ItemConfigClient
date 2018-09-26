@@ -172,7 +172,8 @@ export class FieldConfigListControlComponent implements OnInit {
     let dialogRef = this.dialog.open(MultipleEditDialogComponent, {
       width: '1300px',
       data: {
-        itemFieldConfigs: this.itemFieldConfigHolder.item.itemFieldConfigs
+        itemFieldConfigs: this.itemFieldConfigHolder.item.itemFieldConfigs,
+        instructionsFields: this.itemFieldConfigHolder.instructionsFields
       }
     });
   }

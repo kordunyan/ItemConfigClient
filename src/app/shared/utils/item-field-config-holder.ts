@@ -12,7 +12,8 @@ export class ItemFieldConfigHolder extends AbstractItemFieldConfigHolder {
 
   constructor(
     public item: Item,
-    public fieldConfigs: FieldConfig[]
+    public fieldConfigs: FieldConfig[],
+    public instructionsFields: {}
   ) {
     super(item, fieldConfigs);
     this.initItemFieldConfig();

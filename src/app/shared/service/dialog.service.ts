@@ -5,6 +5,8 @@ import {Observable} from 'rxjs';
 import {ItemNumbersSelectDialog} from '../components/item-numbers-select-dialog/item-numbers-select-dialog';
 import {filter, flatMap, map} from 'rxjs/operators';
 import {DeleteDialog} from '../components/delete-dialog/delete-dialog.component';
+import { FilterRegexDialogComponent } from '../../components/item-field-config/filter-regex-dialog/filter-regex-dialog.component';
+import { ItemFieldConfig } from '../domain/item-field-config';
 
 @Injectable({
   providedIn: 'root'
@@ -24,6 +26,16 @@ export class DialogService {
       .pipe(
         filter(saveForAllStrategy => saveForAllStrategy !== undefined)
       );
+  }
+
+  openFilterRegexDialog(itemFieldConfig: ItemFieldConfig, instructionFields: string[]): Observable<any> {
+    return this.dialog.open(FilterRegexDialogComponent, {
+      width: '600px',
+      data: {
+        itemFieldConfig: itemFieldConfig,
+        instructionFields: instructionFields
+      }
+    }).beforeClose();
   }
 
   openItemNumberSelectDialog(): Observable<string[]> {
