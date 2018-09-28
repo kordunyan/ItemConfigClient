@@ -2,6 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatCheckboxChange } from '@angular/material';
 import { InsertItemNumberDialog } from '../insert-item-number-dialog/insert-item-number-dialog';
 import {ItemHttpService} from '../../service/http/item-http.service';
+import {DialogService} from '../../service/dialog.service';
 
 @Component({
   selector: 'app-item-numbers-select-dialog',

@@ -15,6 +15,8 @@ import { ExportComponent } from './export/export.component';
 import { ItemNumbersSelectDialog } from './item-numbers-select-dialog/item-numbers-select-dialog';
 import { InsertItemNumberDialog } from './insert-item-number-dialog/insert-item-number-dialog';
 import {ScrollTopComponent} from './scroll-top/scroll-top.component';
+import { SelectValuesDialogComponent } from './select-values-dialog/select-values-dialog.component';
+import { SelectValuesButtonComponent } from './select-values-button/select-values-button.component';
 
 @NgModule({
   imports: [
@@ -35,13 +37,16 @@ import {ScrollTopComponent} from './scroll-top/scroll-top.component';
     ExportComponent,
     ItemNumbersSelectDialog,
     InsertItemNumberDialog,
-    ScrollTopComponent
+    ScrollTopComponent,
+    SelectValuesDialogComponent,
+    SelectValuesButtonComponent
   ],
   entryComponents: [
     DeleteDialog,
     ChooseFieldDialog,
     ItemNumbersSelectDialog,
-    InsertItemNumberDialog
+    InsertItemNumberDialog,
+    SelectValuesDialogComponent
   ],
   exports: [
     NotFoundComponent,
@@ -57,7 +62,9 @@ import {ScrollTopComponent} from './scroll-top/scroll-top.component';
     ExcludedFieldsComponent,
     ExportComponent,
     ItemNumbersSelectDialog,
-    ScrollTopComponent
+    ScrollTopComponent,
+    SelectValuesDialogComponent,
+    SelectValuesButtonComponent
   ]
 })
 export class MainComponentsModule { }

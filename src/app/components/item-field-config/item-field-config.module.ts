@@ -34,6 +34,7 @@ import { FilterRegexDialogComponent } from './filter-regex-dialog/filter-regex-d
   entryComponents: [
     SaveForAllDialogComponent,
     MultipleEditDialogComponent,
+    FilterRegexDialogComponent,
     FilterRegexDialogComponent
   ],
   exports: [
