@@ -4,6 +4,7 @@ import {ItemFieldConfig} from '../../../shared/domain/item-field-config';
 import {SearchByRegexField} from '../../../shared/domain/search-by-regex-field';
 import {DialogService} from '../../../shared/service/dialog.service';
 import {ItemHttpService} from '../../../shared/service/http/item-http.service';
+import { OwnedSearchByRegexField } from '../../../shared/domain/owned-search-by-regex-field';
 
 
 @Component({
@@ -19,6 +20,7 @@ export class FilterRegexDialogComponent {
   instructionFields: string[];
   isJsonMode = false;
   searchByRegexFields: SearchByRegexField[] = [];
+  ownedSearchByRegexFields: OwnedSearchByRegexField[] = [];
   textRegex: string;
 
   constructor(
@@ -27,45 +29,57 @@ export class FilterRegexDialogComponent {
   ) {
     this.itemFieldConfig = data.itemFieldConfig;
     this.instructionFields = data.instructionFields.slice();
-    console.log(this.instructionFields);
     this.initMode();
     if (this.isJsonMode) {
       this.initJsonMode();
     }
-    if (this.instructionFields.length === 1) {
+    this.addDefaultSearchByRegexField();
+    
+  }
+
+  addDefaultSearchByRegexField() {
+    if (this.instructionFields.length === 1 && this.getValidOwnedSearchByRegexFields().length === 0) {
       this.addNewSearchByRegexFields(this.instructionFields);
     }
+  }
+
+  getValidOwnedSearchByRegexFields() {
+    return this.ownedSearchByRegexFields.filter(field => !field.invalidOwner);
   }
 
   initJsonMode() {
     this.deleteSelectedInstructionFields(this.searchByRegexFields.map(field => field.fieldName));
   }
 
-  validateOwner() {
-    this.searchByRegexFields.forEach(searchByRegexField => {
-      searchByRegexField.invalidOwner = this.instructionFields.indexOf(searchByRegexField.fieldName) < 0;
+  buildOwnedSearchByRegexFields() {
+    this.ownedSearchByRegexFields = this.searchByRegexFields.map(searchByRegexField => {
+      return new OwnedSearchByRegexField(
+        searchByRegexField.fieldName,
+        searchByRegexField.regex,
+        this.instructionFields.indexOf(searchByRegexField.fieldName) < 0  
+      );
     });
   }
 
-  onDelete(deletedSearchByRegexField: SearchByRegexField) {
-    const index = this.searchByRegexFields.findIndex(searchByRegexField => {
+  onDelete(deletedSearchByRegexField: OwnedSearchByRegexField) {
+    const index = this.ownedSearchByRegexFields.findIndex(searchByRegexField => {
       return searchByRegexField.fieldName === deletedSearchByRegexField.fieldName;
     });
     if (index > -1) {
       if (!deletedSearchByRegexField.invalidOwner) {
         this.instructionFields.push(deletedSearchByRegexField.fieldName);
       }
-      this.searchByRegexFields.splice(index, 1);
+      this.ownedSearchByRegexFields.splice(index, 1);
     }
   }
 
   applyRegex() {
     if (this.isJsonMode) {
-
-      console.log(this.buildJsonFilterRegex());
+      this.itemFieldConfig.filterRegex = this.buildJsonFilterRegex();
     } else {
       this.itemFieldConfig.filterRegex = this.textRegex;
     }
+    this.dialogRef.close();
   }
 
   buildJsonFilterRegex(): string {
@@ -80,9 +94,9 @@ export class FilterRegexDialogComponent {
   }
 
   getNoEmptySearchByRegexFields() {
-    return this.searchByRegexFields.filter(searchByRegexField => {
+    return this.ownedSearchByRegexFields.filter(searchByRegexField => {
       return searchByRegexField.regex && searchByRegexField.regex.length > 0;
-    });
+    }).map(searchByRegexField => SearchByRegexField.copy(searchByRegexField));
   }
 
   initMode() {
@@ -96,12 +110,12 @@ export class FilterRegexDialogComponent {
       if (object.searchByRegexFields) {
         this.searchByRegexFields = object.searchByRegexFields;
         if (this.searchByRegexFields.length > 0) {
-          this.validateOwner();
+          this.buildOwnedSearchByRegexFields();
         }
+        this.setIsJsonMode(true);
       } else {
         this.setIsJsonMode(false);
       }
-      this.setIsJsonMode(true);
     } catch (e) {
       this.setIsJsonMode(false);
     }
@@ -109,7 +123,7 @@ export class FilterRegexDialogComponent {
 
   addNewSearchByRegexFields(fields: string[]) {
     this.createNewSearchByRegexFields(fields).forEach(searchByRegexField => {
-      this.searchByRegexFields.push(searchByRegexField);
+      this.ownedSearchByRegexFields.push(searchByRegexField);
     });
     this.deleteSelectedInstructionFields(fields);
   }
@@ -124,7 +138,7 @@ export class FilterRegexDialogComponent {
   }
 
   createNewSearchByRegexFields(fields: string[]) {
-    return fields.map(field => new SearchByRegexField(field));
+    return fields.map(field => new OwnedSearchByRegexField(field));
   }
 
   onCancel() {

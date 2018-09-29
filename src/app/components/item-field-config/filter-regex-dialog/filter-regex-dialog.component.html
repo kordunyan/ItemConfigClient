@@ -21,7 +21,7 @@
     <div class="table-wrapper mb-2">
       <table class="table mt-3 table-borderless">
         <tbody>
-        <tr *ngFor="let searchByRegexField of searchByRegexFields" [ngClass]="{'is-invalid' : searchByRegexField.invalidOwner}">
+        <tr *ngFor="let searchByRegexField of ownedSearchByRegexFields" [ngClass]="{'is-invalid' : searchByRegexField.invalidOwner}">
           <td class="align-middle">{{ searchByRegexField.fieldName }}</td>
           <td>
             <input type="text"
@@ -29,7 +29,7 @@
                    name="regex{{searchByRegexField.fieldName}}"
                    [(ngModel)]="searchByRegexField.regex"/>
           </td>
-          <td class="align-middle">
+          <td class="align-middle text-right">
             <button type="button"
                     (click)="onDelete(searchByRegexField)"
                     class="btn btn-danger btn-sm">
@@ -56,6 +56,6 @@
             (click)="onCancel()">Cancel</button>
     <button class="btn btn-primary"
             (click)="applyRegex()"
-            cdkFocusInitial>Ok</button>
+            cdkFocusInitial>Build</button>
   </div>
 </div>

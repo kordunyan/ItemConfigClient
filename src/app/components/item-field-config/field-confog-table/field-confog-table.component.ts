@@ -48,9 +48,7 @@ export class FieldConfogTableComponent implements OnInit{
 
   onEditFilterRegex(itemFieldConfig: ItemFieldConfig) {
     this.dialogService.openFilterRegexDialog(itemFieldConfig, this.getInstructionFields(itemFieldConfig))
-      .subscribe((result) => {
-      console.log(result);
-    });
+      .subscribe();
   }
 
   getInstructionFields(itemFieldConfig: ItemFieldConfig) {
