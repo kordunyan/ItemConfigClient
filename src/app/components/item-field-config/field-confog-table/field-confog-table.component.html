@@ -49,21 +49,8 @@
         <th mat-header-cell *matHeaderCellDef>Filter Regex</th>
         <td mat-cell *matCellDef="let element">
             <div class="regex-wrap">
-                <div class="input-group">
-                    <input type="text"
-                            [(ngModel)]="element.filterRegex"
-                            [attr.disabled]="element.active && !element.isTextField ? null : ''" 
-                            class="form-control">
-                    <div class="input-group-append">
-                        <button class="btn btn-info"
-                                *ngIf="!element.isTextField"
-                                (click)="onEditFilterRegex(element)"
-                                [attr.disabled]="element.active ? null : ''"  
-                                type="button">
-                            <i class="fa fa-cogs" aria-hidden="true"></i>
-                        </button>
-                    </div>
-                </div>
+                <app-filter-regex   [instructionsFields]="instructionsFields" 
+                                    [itemFieldConfig]="element"></app-filter-regex>
             </div>
         </td>
     </ng-container>

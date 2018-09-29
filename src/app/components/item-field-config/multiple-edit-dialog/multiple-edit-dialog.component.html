@@ -61,11 +61,9 @@
                      [(ngModel)]="selectedItemFieldConfigCopy.predefinedValue" />
             </td>
             <td>
-              <input type="text"
-                     class="form-control"
-                     (change)="onChangeFieldValue('filterRegex')"
-                     [attr.disabled]="!selectedItemFieldConfigCopy.active ? '' : null"
-                     [(ngModel)]="selectedItemFieldConfigCopy.filterRegex" />
+              <app-filter-regex   [instructionsFields]="instructionsFields" 
+                                  (regexChanged)="onChangeFilterRegex()"
+                                  [itemFieldConfig]="selectedItemFieldConfigCopy"></app-filter-regex>
             </td>
             <td class="text-center align-middle">
               <input type="checkbox"

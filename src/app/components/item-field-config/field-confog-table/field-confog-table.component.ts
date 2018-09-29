@@ -19,9 +19,7 @@ export class FieldConfogTableComponent implements OnInit{
 
   allItemsSelected = false;
 
-  constructor(
-    private dialogService: DialogService
-  ) { }
+  constructor() { }
 
   ngOnInit() {
     if(this.withSelection) {
@@ -44,14 +42,5 @@ export class FieldConfogTableComponent implements OnInit{
 
   getSelectedItemFieldConfigs(): ItemFieldConfig[] {
     return this.itemFieldConfigs.filter(itemFieldConfig => itemFieldConfig.checked === true);
-  }
-
-  onEditFilterRegex(itemFieldConfig: ItemFieldConfig) {
-    this.dialogService.openFilterRegexDialog(itemFieldConfig, this.getInstructionFields(itemFieldConfig))
-      .subscribe();
-  }
-
-  getInstructionFields(itemFieldConfig: ItemFieldConfig) {
-    return this.instructionsFields[itemFieldConfig.fieldConfigName];
   }
 }

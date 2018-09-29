@@ -47,6 +47,13 @@ export class MultipleEditDialogComponent {
     this.matchedItemFieldConfigsCopy.forEach(fieldConfig => fieldConfig[fieldName] = this.selectedItemFieldConfigCopy[fieldName]);
   }
 
+  onChangeFilterRegex() {
+    this.matchedItemFieldConfigsCopy.filter(fieldConfig => !fieldConfig.isTextField)
+      .forEach(fieldConfig => {
+        fieldConfig.filterRegex = this.selectedItemFieldConfigCopy.filterRegex;
+      });
+  }
+
   searchFieldConfigsByregex() {
     const regex = new RegExp(this.fieldConfigNameRegex, "i");
     const matchedFieldConfigs = this.itemFieldConfigs.filter(itemFieldConfig => {
@@ -67,7 +74,10 @@ export class MultipleEditDialogComponent {
 
   onApplyConfigs() {
     this.matchedItemFieldConfigsCopy.forEach(itemFieldConfigCopy => {
-      ItemFieldConfig.copyValues(this.selectedItemFieldConfigCopy, itemFieldConfigCopy);
+      ItemFieldConfig.copyValuesWithoutegex(this.selectedItemFieldConfigCopy, itemFieldConfigCopy);
+      if (!itemFieldConfigCopy.isTextField && !this.selectedItemFieldConfigCopy.isTextField) {
+        itemFieldConfigCopy.filterRegex = this.selectedItemFieldConfigCopy.filterRegex;
+      }
     });
   }
 

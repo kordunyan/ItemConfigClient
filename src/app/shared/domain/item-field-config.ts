@@ -56,6 +56,16 @@ export class ItemFieldConfig {
     dest.storeLastUserInput = src.storeLastUserInput;
   }
 
+  public static copyValuesWithoutegex(src: ItemFieldConfig, dest: ItemFieldConfig) {
+    dest.active = src.active;
+    dest.required = src.required;
+    dest.editable = src.editable;
+    dest.dataSourceName = src.dataSourceName;
+    dest.predefinedValue = src.predefinedValue;
+    dest.canAddLater = src.canAddLater;
+    dest.storeLastUserInput = src.storeLastUserInput;
+  }
+
   public static default(fieldConfigName: string, isTextField?: boolean): ItemFieldConfig {
     return new ItemFieldConfig(
       fieldConfigName,

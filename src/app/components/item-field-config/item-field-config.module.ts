@@ -12,6 +12,7 @@ import { MultipleEditDialogComponent } from './multiple-edit-dialog/multiple-edi
 import { ItemFieldConfigsTableComponent } from './item-field-configs-table/item-field-configs-table.component';
 import { FieldConfogTableComponent } from './field-confog-table/field-confog-table.component';
 import { FilterRegexDialogComponent } from './filter-regex-dialog/filter-regex-dialog.component';
+import { FilterRegexComponent } from './filter-regex/filter-regex.component';
 
 @NgModule({
   imports: [
@@ -29,7 +30,8 @@ import { FilterRegexDialogComponent } from './filter-regex-dialog/filter-regex-d
     MultipleEditDialogComponent,
     ItemFieldConfigsTableComponent,
     FieldConfogTableComponent,
-    FilterRegexDialogComponent
+    FilterRegexDialogComponent,
+    FilterRegexComponent
   ],
   entryComponents: [
     SaveForAllDialogComponent,

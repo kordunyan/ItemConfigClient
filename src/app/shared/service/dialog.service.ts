@@ -19,7 +19,6 @@ export class DialogService {
   ) {
   }
 
-
   openSaveForAllStrategyDialog(): Observable<string> {
     return this.dialog.open(SaveForAllDialogComponent, {
       width: '300px'
@@ -36,7 +35,10 @@ export class DialogService {
         itemFieldConfig: itemFieldConfig,
         instructionFields: instructionFields
       }
-    }).beforeClose();
+    }).beforeClose()
+    .pipe(
+      filter(result => result)
+    );
   }
 
   openItemNumberSelectDialog(): Observable<string[]> {

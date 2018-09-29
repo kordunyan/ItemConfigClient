@@ -79,7 +79,7 @@ export class FilterRegexDialogComponent {
     } else {
       this.itemFieldConfig.filterRegex = this.textRegex;
     }
-    this.dialogRef.close();
+    this.dialogRef.close(true);
   }
 
   buildJsonFilterRegex(): string {
