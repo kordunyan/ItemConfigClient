@@ -7,38 +7,54 @@
           </div>
         </div>
         <div class="card-body">
-            <app-excluded-fields [fieldConfigs]="itemFieldConfigHolder.noActiveFieldConfigs"
-                               (onChoseFields)="onAddNewFields($event)"></app-excluded-fields>
-            <button class="btn btn-info ml-1"
-                    (click)="openMultipleEditDialog()">Multiple Edit</button>
-            <div class="float-right">
-                <button class="btn btn-primary ml-1"
-                    title="Reset"
-                    (click)="onResetClick()">
-                    <i class="fa fa-refresh" aria-hidden="true"></i>
-                </button>
-                <div class="btn-group" role="group" >
-                    <button class="btn btn-primary ml-1"
-                            (click)="onSaveClick()"
-                            title="Save">
-                        <i class="fa fa-save" aria-hidden="true"></i>
-                    </button>
-                    <button class="btn btn-info"
-                            (click)="onSaveAllForItem()"
-                            title="Save For All">
-                        <i class="fa fa-copy" aria-hidden="true"></i>
-                    </button>
-                    <button class="btn btn-primary"
-                            (click)="saveByItemNumbers()"
-                            title="Save By Item Numbers">
-                        <i class="fa fa-check-square" aria-hidden="true"></i>    
-                    </button>
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col text-left">
+                  <app-excluded-fields [fieldConfigs]="itemFieldConfigHolder.noActiveFieldConfigs"
+                                       (onChoseFields)="onAddNewFields($event)"></app-excluded-fields>
+                  <button class="btn btn-info ml-1"
+                          (click)="openMultipleEditDialog()">Multiple Edit</button>
                 </div>
-              <app-delete [btnType]="btnType"
-                          [withByItemNumbers]="true"
-                          (onOkChoosen)="onDelete()"
-                          (onByChoosen)="onDeleteForAll($event)"
-                          (onAllChoosen)="onDeleteForAll()"></app-delete>
+                <div class="col-6 text-center">
+                  <mat-radio-group  (change)="filterChanged()"
+                                    [(ngModel)]="filterType">
+                    <mat-radio-button class="mr-2" value="ALL">All</mat-radio-button>
+                    <mat-radio-button class="mr-2" value="ACTIVE">Active</mat-radio-button>
+                    <mat-radio-button value="NEW">New</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+                <div class="col">
+                  <div class="float-right">
+                    <button class="btn btn-primary ml-1"
+                            title="Reset"
+                            (click)="onResetClick()">
+                      <i class="fa fa-refresh" aria-hidden="true"></i>
+                    </button>
+                    <div class="btn-group" role="group" >
+                      <button class="btn btn-primary ml-1"
+                              (click)="onSaveClick()"
+                              title="Save">
+                        <i class="fa fa-save" aria-hidden="true"></i>
+                      </button>
+                      <button class="btn btn-info"
+                              (click)="onSaveAllForItem()"
+                              title="Save For All">
+                        <i class="fa fa-copy" aria-hidden="true"></i>
+                      </button>
+                      <button class="btn btn-primary"
+                              (click)="saveByItemNumbers()"
+                              title="Save By Item Numbers">
+                        <i class="fa fa-check-square" aria-hidden="true"></i>
+                      </button>
+                    </div>
+                    <app-delete [btnType]="btnType"
+                                [withByItemNumbers]="true"
+                                (onOkChoosen)="onDelete()"
+                                (onByChoosen)="onDeleteForAll($event)"
+                                (onAllChoosen)="onDeleteForAll()"></app-delete>
+                  </div>
+                </div>
+              </div>
             </div>
         </div>
     </div>

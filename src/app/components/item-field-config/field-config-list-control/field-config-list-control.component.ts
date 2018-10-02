@@ -17,6 +17,7 @@ import {ItemFieldConfig} from '../../../shared/domain/item-field-config';
 import {MultipleEditDialogComponent} from '../multiple-edit-dialog/multiple-edit-dialog.component';
 import {ItemNumbersSelectDialog} from '../../../shared/components/item-numbers-select-dialog/item-numbers-select-dialog';
 import {DialogService} from '../../../shared/service/dialog.service';
+import {ItemFieldConfigFilter} from '../../../shared/utils/item-field-config-filter';
 
 
 @Component({
@@ -30,6 +31,7 @@ export class FieldConfigListControlComponent implements OnInit {
   @Output('onReset') onReset = new EventEmitter();
   @Output('onItemFieldConfigChanged') onItemFieldConfigChanged = new EventEmitter();
 
+  filterType: string;
   itemNumber: string;
 
   public btnType = DeleteComponent.DELETE_BTN_TYPE_DANGER;
@@ -46,6 +48,11 @@ export class FieldConfigListControlComponent implements OnInit {
 
   ngOnInit() {
     this.itemNumber = this.getCurrentItemNumber();
+    this.filterType = this.itemFieldConfigHolder.itemFieldConfigFilter.filterType;
+  }
+
+  filterChanged() {
+    this.itemFieldConfigHolder.itemFieldConfigFilter.changeFilterType(this.filterType);
   }
 
   onResetClick() {

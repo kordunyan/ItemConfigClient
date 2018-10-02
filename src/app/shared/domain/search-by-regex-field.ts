@@ -9,7 +9,7 @@ export class SearchByRegexField {
   public static copy(searchByRegexField: SearchByRegexField): SearchByRegexField {
     return new SearchByRegexField(
       searchByRegexField.fieldName,
-      searchByRegexField.regex  
+      searchByRegexField.regex
     );
-  }  
+  }
 }

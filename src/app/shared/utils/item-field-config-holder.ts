@@ -4,11 +4,13 @@ import {ItemFieldConfig} from '../domain/item-field-config';
 import {ItemManager} from './item.manager';
 import {AbstractItemFieldConfigHolder} from './abstract-item-field-holder';
 import {ItemFieldConfigManager} from './item-field-config-manager';
-import { FieldType } from '../domain/field-type';
+import {FieldType} from '../domain/field-type';
+import {ItemFieldConfigFilter} from './item-field-config-filter';
 
 export class ItemFieldConfigHolder extends AbstractItemFieldConfigHolder {
   itemFieldConfigsCopy: ItemFieldConfig[] = [];
   itemFieldConfigsCopyMap = {};
+  itemFieldConfigFilter: ItemFieldConfigFilter;
 
   constructor(
     public item: Item,
@@ -17,6 +19,11 @@ export class ItemFieldConfigHolder extends AbstractItemFieldConfigHolder {
   ) {
     super(item, fieldConfigs);
     this.initItemFieldConfig();
+    this.itemFieldConfigFilter = new ItemFieldConfigFilter(this.item.itemFieldConfigs, ItemFieldConfigFilter.TYPE_ALL);
+  }
+
+  changeFilterItemFieldConfigs() {
+    this.itemFieldConfigFilter.itemFieldConfigsChange.next(this.item.itemFieldConfigs);
   }
 
   initItemFieldConfig() {
@@ -36,6 +43,7 @@ export class ItemFieldConfigHolder extends AbstractItemFieldConfigHolder {
   setItem(item: Item) {
     this.item = item;
     this.initItemFieldConfig();
+    this.changeFilterItemFieldConfigs();
   }
 
   public static createItemFieldConfigCopyMap(itemFieldConfigs: ItemFieldConfig[]) {
@@ -70,6 +78,7 @@ export class ItemFieldConfigHolder extends AbstractItemFieldConfigHolder {
       this.removeNoActiveField(fieldConfigName);
     });
     this.sortItemFieldConfigs(this.item.itemFieldConfigs);
+    this.changeFilterItemFieldConfigs();
   }
 
   sortItemFieldConfigs(itemFieldConfigs: ItemFieldConfig[]) {
@@ -81,6 +90,7 @@ export class ItemFieldConfigHolder extends AbstractItemFieldConfigHolder {
     this.item.itemFieldConfigs = this.item.itemFieldConfigs.slice();
     this.createNoActiveFieldConfigs();
     this.sortItemFieldConfigs(this.item.itemFieldConfigs);
+    this.changeFilterItemFieldConfigs();
   }
 
   public static copyItemFieldConfigs(src: ItemFieldConfig[], dest: ItemFieldConfig[]) {

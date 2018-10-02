@@ -1,5 +1,5 @@
 .table-wrapper {
-  height: 650px;
+  max-height: 650px;
   overflow: auto;
   margin: 30px 15px 0;
   border: 2px solid #dee2e6;
