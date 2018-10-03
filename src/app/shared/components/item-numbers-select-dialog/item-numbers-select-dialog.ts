@@ -10,9 +10,9 @@ import {DialogService} from '../../service/dialog.service';
   styleUrls: ['./item-numbers-select-dialog.css']
 })
 export class ItemNumbersSelectDialog {
-  private itemNumbersMap = {};
-  private itemNumbers: string[] = [];
-  private selectedItemNumbers: string[] = [];
+  public itemNumbersMap = {};
+  public itemNumbers: string[] = [];
+  public selectedItemNumbers: string[] = [];
   public allItemNumbersSelected = false;
 
   constructor(

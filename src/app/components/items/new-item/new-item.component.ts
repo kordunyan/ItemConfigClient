@@ -26,7 +26,6 @@ import {CopyItemDto} from '../../../shared/dto/copy-iten.dto';
 })
 export class NewItemComponent implements OnInit {
 
-
   fieldConfigs: FieldConfig[] = [];
   excludedFieldConfigs: FieldConfig[] = [];
   isLoaded = false;
@@ -77,8 +76,12 @@ export class NewItemComponent implements OnInit {
 
   public generateItemFields() {
     this.fieldConfigs.forEach((fieldConfig: FieldConfig) => {
-      if (this.hasCopyItemField(fieldConfig.name) && !fieldConfig.multiple) {
-        this.itemFields.push(Field.copyWithoutIdAndFieldSet(this.getCopyItemField(fieldConfig.name)));
+      if (this.hasCopyItemField(fieldConfig.name)) {
+        if (fieldConfig.multiple) {
+          this.itemMultipleFields.push(MultipleField.createFromField(this.getCopyItemField(fieldConfig.name)));
+        } else {
+          this.itemFields.push(Field.copyWithoutIdAndFieldSet(this.getCopyItemField(fieldConfig.name)));
+        }
       } else if (this.fieldService.isDefaultExcluded(fieldConfig)) {
         this.excludedFieldConfigs.push(fieldConfig);
       } else {

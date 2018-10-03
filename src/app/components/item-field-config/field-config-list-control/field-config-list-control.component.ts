@@ -121,7 +121,7 @@ export class FieldConfigListControlComponent implements OnInit {
     );
   }
 
-  onDeleteForAll(itemNumbers: string[]) {
+  onDeleteForAll(itemNumbers: string[] = []) {
     const itemFieldConfigs = this.itemFieldConfigHolder.getSelectedNoNewItemFieldConfigs();
     if (itemFieldConfigs.length === 0) {
       return;

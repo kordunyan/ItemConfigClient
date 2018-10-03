@@ -8,8 +8,8 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 })
 export class InsertItemNumberDialog implements OnInit {
 
-  private separator = ',';
-  private itemNumbersInput = '';
+  public separator = ',';
+  public itemNumbersInput = '';
 
   constructor(
     public dialogRef: MatDialogRef<InsertItemNumberDialog>,

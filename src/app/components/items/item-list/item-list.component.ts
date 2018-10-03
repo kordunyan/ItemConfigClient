@@ -10,7 +10,7 @@ import { ProgressBarService } from '../../../shared/service/progress-bar.service
 })
 export class ItemListComponent implements OnInit {
 
-  private items: string[];
+  public items: string[];
 
   constructor(
     private itemService: ItemHttpService,
