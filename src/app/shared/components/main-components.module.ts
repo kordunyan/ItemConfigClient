@@ -17,15 +17,20 @@ import { InsertItemNumberDialog } from './insert-item-number-dialog/insert-item-
 import {ScrollTopComponent} from './scroll-top/scroll-top.component';
 import { SelectValuesDialogComponent } from './select-values-dialog/select-values-dialog.component';
 import { SelectValuesButtonComponent } from './select-values-button/select-values-button.component';
+import { RboSelectComponent } from './rbo-select/rbo-select.component';
+import { HeaderComponent } from './header/header.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule, 
+    RouterModule,
     ReactiveFormsModule,
     MaterialModulesModule
   ],
   declarations: [
+    HeaderComponent,
     NotFoundComponent,
     ProgressComponent,
     RequiredFieldDirective,
@@ -39,7 +44,8 @@ import { SelectValuesButtonComponent } from './select-values-button/select-value
     InsertItemNumberDialog,
     ScrollTopComponent,
     SelectValuesDialogComponent,
-    SelectValuesButtonComponent
+    SelectValuesButtonComponent,
+    RboSelectComponent
   ],
   entryComponents: [
     DeleteDialog,
@@ -49,6 +55,7 @@ import { SelectValuesButtonComponent } from './select-values-button/select-value
     SelectValuesDialogComponent
   ],
   exports: [
+    HeaderComponent,
     NotFoundComponent,
     ProgressComponent,
     FormsModule,
@@ -64,7 +71,8 @@ import { SelectValuesButtonComponent } from './select-values-button/select-value
     ItemNumbersSelectDialog,
     ScrollTopComponent,
     SelectValuesDialogComponent,
-    SelectValuesButtonComponent
+    SelectValuesButtonComponent,
+    RboSelectComponent
   ]
 })
 export class MainComponentsModule { }

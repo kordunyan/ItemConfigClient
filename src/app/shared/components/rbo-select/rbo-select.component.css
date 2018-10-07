@@ -1,0 +1,9 @@
+.item-link {
+    display: block;
+    color: #000;
+}
+
+.item-link:hover {
+    text-decoration: none;
+    color: #000;
+}

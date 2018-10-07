@@ -8,6 +8,7 @@ import {Observable} from 'rxjs';
 import {NewFieldsDTO} from '../../dto/new-fields.dto';
 import {FieldForAllItemsDto} from '../../dto/field-for-all-items.dto';
 import {ItemFieldCrudOperationsDto} from '../../dto/item-field-crud-operations.dto';
+import { RboCodeService } from '../rbo-code.service';
 
 @Injectable({
   providedIn: 'root',
@@ -16,8 +17,8 @@ export class FieldHttpService extends AbstractHttpService {
 
   private static BASE_PATH = '/field';
 
-  constructor(http: HttpClient, messageService: MessageService) {
-    super(http, messageService, FieldHttpService.BASE_PATH);
+  constructor(http: HttpClient, messageService: MessageService, rboCodeService: RboCodeService) {
+    super(http, messageService, rboCodeService, FieldHttpService.BASE_PATH);
   }
 
   update(field: Field): Observable<any> {

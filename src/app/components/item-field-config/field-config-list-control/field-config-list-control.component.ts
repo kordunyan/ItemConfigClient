@@ -18,6 +18,7 @@ import {MultipleEditDialogComponent} from '../multiple-edit-dialog/multiple-edit
 import {ItemNumbersSelectDialog} from '../../../shared/components/item-numbers-select-dialog/item-numbers-select-dialog';
 import {DialogService} from '../../../shared/service/dialog.service';
 import {ItemFieldConfigFilter} from '../../../shared/utils/item-field-config-filter';
+import { RboCodeService } from '../../../shared/service/rbo-code.service';
 
 
 @Component({
@@ -42,7 +43,8 @@ export class FieldConfigListControlComponent implements OnInit {
     private progressBarService: ProgressBarService,
     public dialog: MatDialog,
     private messageService: MessageService,
-    private dialogService: DialogService
+    private dialogService: DialogService,
+    private rboCodeService: RboCodeService
   ) {
   }
 
@@ -60,7 +62,7 @@ export class FieldConfigListControlComponent implements OnInit {
   }
 
   onBackClick() {
-    this.router.navigate(['/items', this.itemNumber]);
+    this.router.navigate(['/items', this.itemNumber, this.rboCodeService.getRboObject()]);
   }
 
   onAddNewFields(fieldConfigNames: string[]) {

@@ -30,8 +30,7 @@ export class ItemNumberDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private itemHttpService: ItemHttpService,
     private fieldConfigHttpService: FieldConfigHttpService,
-    private progresBarService: ProgressBarService,
-    private fieldService: FieldService
+    private progresBarService: ProgressBarService
   ) {
   }
 

@@ -17,6 +17,7 @@ import {forkJoin} from 'rxjs';
 import {ItemManager} from '../../../shared/utils/item.manager';
 import {Observable, of} from 'rxjs';
 import {CopyItemDto} from '../../../shared/dto/copy-iten.dto';
+import { RboCodeService } from '../../../shared/service/rbo-code.service';
 
 
 @Component({
@@ -44,7 +45,8 @@ export class NewItemComponent implements OnInit {
     private route: ActivatedRoute,
     private messageService: MessageService,
     private progressBarService: ProgressBarService,
-    private fieldService: FieldService
+    private fieldService: FieldService,
+    public rboCodeService: RboCodeService
   ) {
   }
 
@@ -196,9 +198,9 @@ export class NewItemComponent implements OnInit {
   onBackClick() {
     if (this.copyItem) {
       let itemNumberField = this.getCopyItemField(AppProperties.FIELD_D2COMM_ITEM_NUMBER);
-      this.router.navigate(['/items', itemNumberField.value]);
+      this.router.navigate(['/items', itemNumberField.value, this.rboCodeService.getRboObject()]);
     } else {
-      this.router.navigate(['/items']);
+      this.router.navigate(['/items', this.rboCodeService.getRboObject()]);
     }
   }
 
