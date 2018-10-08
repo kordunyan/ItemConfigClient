@@ -3,11 +3,13 @@ import {FieldConfig} from '../domain/field-config';
 
 export abstract class AbstractItemFieldConfigHolder {
   public noActiveFieldConfigs: FieldConfig[] = [];
+  public fieldConfigMap = {};
 
   constructor(
     public item: Item,
     public fieldConfigs: FieldConfig[]
   ) {
+    this.fieldConfigs.forEach((fieldConfig: FieldConfig) => this.fieldConfigMap[fieldConfig.name] = fieldConfig);  
   }
 
   abstract createNoActiveFieldConfigs();

@@ -1,8 +1,9 @@
 <h1 mat-dialog-title>
   Select Item Number
   <div class="float-right">
-    <button class="btn btn-info btn-sm mr-1"
-          (click)="onSelectAll()">Select All</button>
+    <mat-checkbox class="mr-2"
+                    [(ngModel)]="allItemNumbersSelected"
+                    (change)="selectDeselectAll($event)"></mat-checkbox>
     <button class="btn btn-info btn-sm"
             (click)="openInsertItem()"><i class="fa fa-exchange" aria-hidden="true"></i></button>
 
@@ -11,7 +12,9 @@
 </h1>
 <div mat-dialog-content>
 
-  <mat-selection-list #itemNumbersSelection [(ngModel)]="selectedItemNumbers" >
+  <mat-selection-list #itemNumbersSelection
+                      (selectionChange)="onChangeSelection()" 
+                      [(ngModel)]="selectedItemNumbers" >
     <mat-list-option  *ngFor="let itemNumber of itemNumbers" [value]="itemNumber">
       {{itemNumber}}
     </mat-list-option>
@@ -22,7 +25,6 @@
 <div mat-dialog-actions>
     <div class="text-right w-100">
         <button class="btn btn-light mr-2" (click)="onNoClick()">Close</button>
-        <button class="btn btn-primary mr-2" (click)="onClear()">Clear</button>
         <button class="btn btn-primary" cdkFocusInitial (click)="okClick()">Ok</button>
     </div>
 </div>

@@ -8,6 +8,7 @@ import {ItemFieldConfig} from '../../domain/item-field-config';
 import {SaveItemFieldConfigDto} from '../../dto/save-item-field-config.dto';
 import {ItemWithItemFieldConfigDto} from '../../dto/item-with-item-field-config.dto';
 import { ItemCrudOperationsDto } from '../../dto/item-crud-operations.dto';
+import { RboCodeService } from '../rbo-code.service';
 
 @Injectable({
   providedIn: 'root',
@@ -16,10 +17,10 @@ export class ItemFieldConfigHttpService extends AbstractHttpService {
 
   private static BASE_PATH = '/item_field_config';
 
-  constructor(http: HttpClient, messageService: MessageService) {
-    super(http, messageService, ItemFieldConfigHttpService.BASE_PATH);
+  constructor(http: HttpClient, messageService: MessageService, rboCodeService: RboCodeService) {
+    super(http, messageService, rboCodeService, ItemFieldConfigHttpService.BASE_PATH);
+  }
 
-}
   public save(saveItemFieldConfigDto: SaveItemFieldConfigDto): Observable<any> {
     return this.http.post(this.getRelatedUrl('/save'), saveItemFieldConfigDto, this.getHttpOptions())
       .pipe(

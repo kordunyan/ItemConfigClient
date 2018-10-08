@@ -4,6 +4,8 @@ import { HttpClient, HttpHeaders  } from '@angular/common/http';
 import { MessageService } from '../message.service';
 import {catchError, map} from 'rxjs/operators';
 import {Observable} from 'rxjs';
+import { Header } from '../../domain/header';
+import { RboCodeService } from '../rbo-code.service';
 
 @Injectable({
     providedIn: 'root',
@@ -11,8 +13,8 @@ import {Observable} from 'rxjs';
 export class ExportHttpService extends AbstractHttpService {
     private static BASE_PATH = '/export';
 
-    constructor(http: HttpClient, messageService: MessageService) {
-        super(http, messageService, ExportHttpService.BASE_PATH);
+    constructor(http: HttpClient, messageService: MessageService, rboCodeService: RboCodeService) {
+        super(http, messageService, rboCodeService, ExportHttpService.BASE_PATH);
     }
 
     exportAll(): Observable<any> {
@@ -25,7 +27,7 @@ export class ExportHttpService extends AbstractHttpService {
             map(response => {
                 return {
                  fileData: response.body,
-                 fileName: response.headers.get('Filename')
+                 fileName: response.headers.get(Header.FILENAME)
                 };
             }),
             catchError(this.handleTrowableError(`Failed generate report for all items`))
@@ -42,7 +44,7 @@ export class ExportHttpService extends AbstractHttpService {
           map(response => {
             return {
               fileData: response.body,
-              fileName: response.headers.get('Filename')
+              fileName: response.headers.get(Header.FILENAME)
             };
           }),
           catchError(this.handleTrowableError(`Failed generate report for items`, itemNumbers))

@@ -1,0 +1,15 @@
+<div class="input-group">
+  <input type="text"
+          [(ngModel)]="itemFieldConfig.filterRegex"
+          [attr.disabled]="itemFieldConfig.active && !itemFieldConfig.isTextField ? null : ''" 
+          class="form-control">
+  <div class="input-group-append">
+      <button class="btn btn-info"
+              *ngIf="!itemFieldConfig.isTextField"
+              (click)="onEditFilterRegex(itemFieldConfig)"
+              [attr.disabled]="itemFieldConfig.active ? null : ''"  
+              type="button">
+          <i class="fa fa-cogs" aria-hidden="true"></i>
+      </button>
+  </div>
+</div>

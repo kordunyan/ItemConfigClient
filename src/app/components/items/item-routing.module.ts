@@ -4,12 +4,14 @@ import { ItemComponent } from './item/item.component';
 import { ItemListComponent } from './item-list/item-list.component';
 import { NewItemComponent } from './new-item/new-item.component';
 import { ItemNumberDetailComponent } from './item-number-detail/item-number-detail.component';
+import { RboParamGuard } from '../../shared/guard/rbo-param.guard';
 
 
 const itemRoutes: Routes = [
   {
     path: 'items',
     component: ItemComponent,
+    canActivateChild: [RboParamGuard],
     children: [
       {
         path: '',
