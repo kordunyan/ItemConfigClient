@@ -1,0 +1,33 @@
+table {
+    width: 100%;
+}
+
+.table-row:hover {
+    background: rgba(0,0,0,.075);
+}
+
+.configs-table th{
+    color: #212529;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.new-item {
+    background: rgb(255, 254, 205);
+}
+  
+.new-item:hover {
+    background: rgb(255, 240, 104);
+}
+  
+.new-no-active {
+    background: rgba(198, 169, 48, 0.18);
+}
+
+.no-acitve {
+    background: #F3F3F3;
+}
+
+.regex-wrap {
+    width: 150px;
+}

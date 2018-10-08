@@ -24,14 +24,13 @@ export class ItemNumberDetailComponent implements OnInit {
   shownItems: { isShow: boolean }[] = [];
   fieldConfigs = {};
   itemNumber: string;
-  isAllShow: false;
+  isAllShow = false;
 
   constructor(
     private route: ActivatedRoute,
     private itemHttpService: ItemHttpService,
     private fieldConfigHttpService: FieldConfigHttpService,
-    private progresBarService: ProgressBarService,
-    private fieldService: FieldService
+    private progresBarService: ProgressBarService
   ) {
   }
 

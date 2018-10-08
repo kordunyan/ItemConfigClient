@@ -1,0 +1,15 @@
+<div class="container">
+  <div class="card mt-4">
+    <div class="card-header">
+      <span class="mt-1">RBOs</span>
+    </div>
+    <div class="card-body">  
+      <ul class="list-group list-group-flush">
+        <li *ngFor="let rbo of rbos"
+            class="list-group-item list-group-item-action">
+            <a class="item-link" [routerLink]="['/items', {rbo: rbo.code}]">{{ rbo.name }}</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

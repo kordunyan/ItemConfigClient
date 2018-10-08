@@ -10,6 +10,9 @@ import { FieldConfigListControlComponent } from './field-config-list-control/fie
 import { SaveForAllDialogComponent } from './save-for-all-dialog/save-for-all-dialog.component';
 import { MultipleEditDialogComponent } from './multiple-edit-dialog/multiple-edit-dialog.component';
 import { ItemFieldConfigsTableComponent } from './item-field-configs-table/item-field-configs-table.component';
+import { FieldConfogTableComponent } from './field-confog-table/field-confog-table.component';
+import { FilterRegexDialogComponent } from './filter-regex-dialog/filter-regex-dialog.component';
+import { FilterRegexComponent } from './filter-regex/filter-regex.component';
 
 @NgModule({
   imports: [
@@ -25,11 +28,16 @@ import { ItemFieldConfigsTableComponent } from './item-field-configs-table/item-
     FieldConfigListControlComponent,
     SaveForAllDialogComponent,
     MultipleEditDialogComponent,
-    ItemFieldConfigsTableComponent
+    ItemFieldConfigsTableComponent,
+    FieldConfogTableComponent,
+    FilterRegexDialogComponent,
+    FilterRegexComponent
   ],
   entryComponents: [
     SaveForAllDialogComponent,
-    MultipleEditDialogComponent
+    MultipleEditDialogComponent,
+    FilterRegexDialogComponent,
+    FilterRegexDialogComponent
   ],
   exports: [
     ItemFieldConfigRoutingModule

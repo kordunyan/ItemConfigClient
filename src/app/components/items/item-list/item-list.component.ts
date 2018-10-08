@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ItemHttpService } from '../../../shared/service/http/item-http.service';
 import { Observable } from 'rxjs';
 import { ProgressBarService } from '../../../shared/service/progress-bar.service';
+import { ActivatedRoute } from '@angular/router';
+import { RboCodeService } from '../../../shared/service/rbo-code.service';
 
 @Component({
   selector: 'app-item-list',
@@ -10,11 +12,12 @@ import { ProgressBarService } from '../../../shared/service/progress-bar.service
 })
 export class ItemListComponent implements OnInit {
 
-  private items: string[];
+  public items: string[];
 
   constructor(
     private itemService: ItemHttpService,
-    private progressBarService: ProgressBarService
+    private progressBarService: ProgressBarService,
+    public rboCodeService: RboCodeService
   ) { }
 
   ngOnInit() {

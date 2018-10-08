@@ -6,7 +6,7 @@
       <i class="fa {{ isAllShow ? 'fa-angle-down' : 'fa-angle-right' }}" aria-hidden="true"></i>
     </button>
   </div>
-  <div class="card-body" *ngIf="!isLoading">
+  <div class="card-body">
     <app-item-detail *ngFor="let item of items; let i = index" 
                     [fieldConfigs]="fieldConfigs"  
                     [show]="shownItems[i]"

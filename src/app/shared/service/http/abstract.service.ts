@@ -2,17 +2,27 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from '@angular/core';
 import { Observable, of} from 'rxjs';
 import { MessageService } from "../message.service";
+import { Header } from "../../domain/header";
+import { RboCodeService } from "../rbo-code.service";
 
 @Injectable()
 export abstract class AbstractHttpService {
     private static API_URL = 'http://localhost:8080/api';
-    private static HEADERS = new HttpHeaders({'Content-Type': 'application/json; charset=utf-8'});
+    private HEADERS = new HttpHeaders({'Content-Type': 'application/json; charset=utf-8'});
 
     constructor(
         protected http: HttpClient,
         protected messageService: MessageService,
+        private rboCodeService: RboCodeService,
         protected basePath: string
     ) {
+        this.rboCodeService.changeCode.subscribe(newCode => {
+            this.setHeader(Header.X_TENANT_ID, newCode);
+        });
+    }
+
+    public  setHeader(name: string, value: string | string[]) {
+        this.HEADERS = this.HEADERS.set(name, value);
     }
 
     public getUrl(uri?: string) {
@@ -25,12 +35,12 @@ export abstract class AbstractHttpService {
     }
 
     public getHeaders() {
-        return AbstractHttpService.HEADERS;
+        return this.HEADERS;
     }
 
     public getHttpOptions() {
         return {
-            headers: AbstractHttpService.HEADERS
+            headers: this.HEADERS
         };
     }
 

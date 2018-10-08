@@ -7,9 +7,10 @@ import {FieldHttpService} from '../../../shared/service/http/field-http.service'
 import {FieldService} from '../../../shared/service/field.service';
 import {ProgressBarService} from '../../../shared/service/progress-bar.service';
 import {ItemHttpService} from '../../../shared/service/http/item-http.service';
-import {Router} from '@angular/router';
+import {Router, ActivatedRoute} from '@angular/router';
 import {AppProperties} from '../../../shared/domain/app-properties';
 import {ItemManager} from '../../../shared/utils/item.manager';
+import { RboCodeService } from '../../../shared/service/rbo-code.service';
 
 @Component({
   selector: 'app-item-detail',
@@ -31,7 +32,8 @@ export class ItemDetailComponent implements OnInit {
     private fieldService: FieldService,
     private progressBarService: ProgressBarService,
     private itemHttpService: ItemHttpService,
-    private router: Router
+    private router: Router,
+    private rboCodeService: RboCodeService
   ) {
   }
 
@@ -68,11 +70,11 @@ export class ItemDetailComponent implements OnInit {
   }
 
   onCopyClick() {
-    this.router.navigate(['/items/new', {id: this.item.id}]);
+    this.router.navigate(['/items/new', {id: this.item.id, rbo: this.rboCodeService.getCurrentCode()}]);
   }
 
   onGoItemFieldConfig() {
-    this.router.navigate(['/item-field-config', this.item.id]);
+    this.router.navigate(['/item-field-config', this.item.id, this.rboCodeService.getRboObject()]);
   }
 
 }

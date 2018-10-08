@@ -15,6 +15,7 @@ export class MultipleEditDialogComponent {
   fieldConfigNameInput = new FormControl();
   itemFieldConfigs: ItemFieldConfig[];
   filteredItemFieldConfigs: Observable<ItemFieldConfig[]>;
+  instructionsFields = {};
 
   selectedItemFieldConfig: ItemFieldConfig;
   selectedItemFieldConfigCopy: ItemFieldConfig;
@@ -28,6 +29,7 @@ export class MultipleEditDialogComponent {
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.itemFieldConfigs = data.itemFieldConfigs;
+    this.instructionsFields = data.instructionsFields;
 
     this.filteredItemFieldConfigs = this.fieldConfigNameInput.valueChanges.pipe(
       debounceTime(200),
@@ -45,14 +47,23 @@ export class MultipleEditDialogComponent {
     this.matchedItemFieldConfigsCopy.forEach(fieldConfig => fieldConfig[fieldName] = this.selectedItemFieldConfigCopy[fieldName]);
   }
 
+  onChangeFilterRegex() {
+    this.matchedItemFieldConfigsCopy.filter(fieldConfig => !fieldConfig.isTextField)
+      .forEach(fieldConfig => {
+        fieldConfig.filterRegex = this.selectedItemFieldConfigCopy.filterRegex;
+      });
+  }
+
   searchFieldConfigsByregex() {
     const regex = new RegExp(this.fieldConfigNameRegex, "i");
     const matchedFieldConfigs = this.itemFieldConfigs.filter(itemFieldConfig => {
       return regex.test(itemFieldConfig.fieldConfigName)
         && itemFieldConfig.fieldConfigName !== this.selectedItemFieldConfig.fieldConfigName;
     });
+
     this.matchedFieldConfigsMap = ItemFieldConfigHolder.createItemFieldConfigMap(matchedFieldConfigs);
     ItemFieldConfigHolder.copyItemFieldConfigs(matchedFieldConfigs, this.matchedItemFieldConfigsCopy);
+    this.matchedItemFieldConfigsCopy = this.matchedItemFieldConfigsCopy.slice();
   }
 
   onFieldConfigSelected(event: MatAutocompleteSelectedEvent) {
@@ -63,7 +74,10 @@ export class MultipleEditDialogComponent {
 
   onApplyConfigs() {
     this.matchedItemFieldConfigsCopy.forEach(itemFieldConfigCopy => {
-      ItemFieldConfig.copyValues(this.selectedItemFieldConfigCopy, itemFieldConfigCopy);
+      ItemFieldConfig.copyValuesWithoutegex(this.selectedItemFieldConfigCopy, itemFieldConfigCopy);
+      if (!itemFieldConfigCopy.isTextField && !this.selectedItemFieldConfigCopy.isTextField) {
+        itemFieldConfigCopy.filterRegex = this.selectedItemFieldConfigCopy.filterRegex;
+      }
     });
   }
 

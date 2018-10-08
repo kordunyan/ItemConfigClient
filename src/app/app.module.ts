@@ -10,14 +10,12 @@ import { MaterialModulesModule } from './shared/modules/material-modules/materia
 import { AppRoutingModule } from './/app-routing.module';
 import { ItemModule } from './components/items/item.module';
 import { MainComponentsModule } from './shared/components/main-components.module';
-import { HeaderComponent } from './shared/components/header/header.component';
 import { ItemFieldConfigModule } from './components/item-field-config/item-field-config.module';
 
 
 @NgModule({
   declarations: [
-    AppComponent,
-    HeaderComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
@@ -30,7 +28,6 @@ import { ItemFieldConfigModule } from './components/item-field-config/item-field
     ItemFieldConfigModule,
     AppRoutingModule,
   ],
-  providers: [],
   bootstrap: [AppComponent],
   exports: []
 })

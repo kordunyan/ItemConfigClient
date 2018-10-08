@@ -7,6 +7,7 @@ import {MessageService} from '../message.service';
 import {Item} from '../../domain/item';
 import {CopyItemDto} from '../../dto/copy-iten.dto';
 import {UpdateLocationDto} from '../../dto/update-location.dto';
+import { RboCodeService } from '../rbo-code.service';
 
 @Injectable({
   providedIn: 'root',
@@ -15,8 +16,8 @@ export class ItemHttpService extends AbstractHttpService {
 
   private static BASE_PATH = '/item';
 
-  constructor(http: HttpClient, messageService: MessageService) {
-    super(http, messageService, ItemHttpService.BASE_PATH);
+  constructor(http: HttpClient, messageService: MessageService, rboCodeService: RboCodeService) {
+    super(http, messageService, rboCodeService, ItemHttpService.BASE_PATH);
   }
 
   public save(item: Item): Observable<any> {
@@ -41,14 +42,14 @@ export class ItemHttpService extends AbstractHttpService {
   }
 
   public getAllItemValues(): Observable<string[]> {
-    return this.http.get<string[]>(this.getRelatedUrl('/numbers'))
+    return this.http.get<string[]>(this.getRelatedUrl('/numbers'), this.getHttpOptions())
       .pipe(
         catchError(this.handleError('Failed to retrieve all items value', []))
       );
   }
 
   public getItemsByNumber(itemNumber: string): Observable<Item[]> {
-    return this.http.get<Item[]>(this.getRelatedUrl(`/number/${itemNumber}`))
+    return this.http.get<Item[]>(this.getRelatedUrl(`/number/${itemNumber}`), this.getHttpOptions())
       .pipe(
         catchError(this.handleError(`Failed to get items by number: ${itemNumber}`, []))
       );
@@ -76,7 +77,7 @@ export class ItemHttpService extends AbstractHttpService {
   }
 
   public deleteByItemNumber(itemNumber: string) {
-    return this.http.delete(this.getRelatedUrl(`/number/${itemNumber}`))
+    return this.http.delete(this.getRelatedUrl(`/number/${itemNumber}`), this.getHttpOptions())
       .pipe(
         catchError(this.handleTrowableError(`Failed delete item: ${itemNumber}`, itemNumber))
       );
@@ -86,9 +87,10 @@ export class ItemHttpService extends AbstractHttpService {
     if (id === null) {
       return of(null);
     }
-    return this.http.get(this.getRelatedUrl(`/id/${id}`)).pipe(
-      catchError(this.handleError(`Failed to get item by id: ${id}`, null))
-    );
+    return this.http.get(this.getRelatedUrl(`/id/${id}`), this.getHttpOptions())
+      .pipe(
+        catchError(this.handleError(`Failed to get item by id: ${id}`, null))
+      );
   }
 
 }

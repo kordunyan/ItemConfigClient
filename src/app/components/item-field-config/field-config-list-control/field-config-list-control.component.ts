@@ -17,6 +17,8 @@ import {ItemFieldConfig} from '../../../shared/domain/item-field-config';
 import {MultipleEditDialogComponent} from '../multiple-edit-dialog/multiple-edit-dialog.component';
 import {ItemNumbersSelectDialog} from '../../../shared/components/item-numbers-select-dialog/item-numbers-select-dialog';
 import {DialogService} from '../../../shared/service/dialog.service';
+import {ItemFieldConfigFilter} from '../../../shared/utils/item-field-config-filter';
+import { RboCodeService } from '../../../shared/service/rbo-code.service';
 
 
 @Component({
@@ -30,6 +32,7 @@ export class FieldConfigListControlComponent implements OnInit {
   @Output('onReset') onReset = new EventEmitter();
   @Output('onItemFieldConfigChanged') onItemFieldConfigChanged = new EventEmitter();
 
+  filterType: string;
   itemNumber: string;
 
   public btnType = DeleteComponent.DELETE_BTN_TYPE_DANGER;
@@ -40,12 +43,18 @@ export class FieldConfigListControlComponent implements OnInit {
     private progressBarService: ProgressBarService,
     public dialog: MatDialog,
     private messageService: MessageService,
-    private dialogService: DialogService
+    private dialogService: DialogService,
+    private rboCodeService: RboCodeService
   ) {
   }
 
   ngOnInit() {
     this.itemNumber = this.getCurrentItemNumber();
+    this.filterType = this.itemFieldConfigHolder.itemFieldConfigFilter.filterType;
+  }
+
+  filterChanged() {
+    this.itemFieldConfigHolder.itemFieldConfigFilter.changeFilterType(this.filterType);
   }
 
   onResetClick() {
@@ -53,7 +62,7 @@ export class FieldConfigListControlComponent implements OnInit {
   }
 
   onBackClick() {
-    this.router.navigate(['/items', this.itemNumber]);
+    this.router.navigate(['/items', this.itemNumber, this.rboCodeService.getRboObject()]);
   }
 
   onAddNewFields(fieldConfigNames: string[]) {
@@ -114,7 +123,7 @@ export class FieldConfigListControlComponent implements OnInit {
     );
   }
 
-  onDeleteForAll(itemNumbers: string[]) {
+  onDeleteForAll(itemNumbers: string[] = []) {
     const itemFieldConfigs = this.itemFieldConfigHolder.getSelectedNoNewItemFieldConfigs();
     if (itemFieldConfigs.length === 0) {
       return;
@@ -170,9 +179,10 @@ export class FieldConfigListControlComponent implements OnInit {
 
   openMultipleEditDialog() {
     let dialogRef = this.dialog.open(MultipleEditDialogComponent, {
-      width: '1200px',
+      width: '1300px',
       data: {
-        itemFieldConfigs: this.itemFieldConfigHolder.item.itemFieldConfigs
+        itemFieldConfigs: this.itemFieldConfigHolder.item.itemFieldConfigs,
+        instructionsFields: this.itemFieldConfigHolder.instructionsFields
       }
     });
   }

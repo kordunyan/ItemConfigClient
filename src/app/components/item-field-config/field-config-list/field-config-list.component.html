@@ -2,8 +2,10 @@
                                 (onItemFieldConfigChanged)="onItemFieldConfigChanged()"
                                *ngIf="isLoaded"
                                 [itemFieldConfigHolder]="itemFieldConfigHolder"></app-field-config-list-control>
-<div class="table-wrapper" *ngIf="isLoaded">
-    <app-item-field-configs-table
-      [itemFieldConfigs]="itemFieldConfigHolder.item.itemFieldConfigs"
-      [withSelection]="true"></app-item-field-configs-table>
+
+<div *ngIf="isLoaded" class="table-wrapper">
+  <app-field-confog-table
+    [withSelection]="true"
+    [instructionsFields]="itemFieldConfigHolder.instructionsFields"
+    [itemFieldConfigs]="itemFieldConfigHolder.itemFieldConfigFilter.filteredItemFieldConfigs"></app-field-confog-table>
 </div>
