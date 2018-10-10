@@ -9,11 +9,8 @@ import {FieldConfig} from '../../../shared/domain/field-config';
 })
 export class AddNewFieldConfigComponent implements OnInit {
 
-  @Input('fieldConfig') fieldConfig: FieldConfig;
-
   constructor(public dialogRef: MatDialogRef<AddNewFieldConfigComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any) {
-    //this.fieldConfig = data.fieldConfig;
   }
 
   ngOnInit() {

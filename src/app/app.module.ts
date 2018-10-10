@@ -17,8 +17,7 @@ import {FieldConfigsModule} from './components/field-configs/field-configs.modul
 
 @NgModule({
   declarations: [
-    AppComponent,
-    HeaderComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,

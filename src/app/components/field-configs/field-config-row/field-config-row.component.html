@@ -1,10 +1,4 @@
-<td scope="align-middle">{{ fieldConfig.name }}</td>
- <!-- <td>
-    <input type="text"
-           class="form-control"
-
-           [(ngModel)]="fieldConfig.name"/>
-  </td>-->
+<td class="align-middle">{{ fieldConfig.name }}</td>
   <td>
     <input type="text"
            class="form-control"
@@ -24,7 +18,7 @@
            [(ngModel)]="fieldConfig.multiple">
   </td>
 <div class="delete-wrapper">
-  <app-delete (onOkChoosen)="onDeleteFieldConfig()"
+  <app-delete (removedFieldConfig)="onDeleteFieldConfig()"
               [all]="false"
   ></app-delete>
 </div>

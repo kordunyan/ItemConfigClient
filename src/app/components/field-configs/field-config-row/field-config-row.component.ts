@@ -12,7 +12,7 @@ import {MessageService} from '../../../shared/service/message.service';
 export class FieldConfigRowComponent implements OnInit {
 
   @Input('fieldConfig') fieldConfig: FieldConfig;
-  @Output('onOkChoosen') onOkChoosen = new EventEmitter();
+  @Output('onOkChoosen') removedFieldConfig = new EventEmitter();
 
   constructor(private fieldConfigHttpService: FieldConfigHttpService, private messageService: MessageService) { }
 
@@ -23,7 +23,7 @@ export class FieldConfigRowComponent implements OnInit {
     this.fieldConfigHttpService.delete(this.fieldConfig).subscribe(
       (result) => {
         this.messageService.success('Field config was deleted');
-        this.onOkChoosen.emit(this.fieldConfig);
+        this.removedFieldConfig.emit(this.fieldConfig);
       },
       (error) => {
         console.error(error);

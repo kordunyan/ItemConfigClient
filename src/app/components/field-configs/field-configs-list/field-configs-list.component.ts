@@ -21,7 +21,7 @@ export class FieldConfigsListComponent implements OnInit {
   fieldConfigsCopyMap = {};
 
   constructor(private fieldConfigHttpService: FieldConfigHttpService, private messageService: MessageService,
-              private progressBarService: ProgressBarService, public dialog: MatDialog) {
+              private progressBarService: ProgressBarService, private dialog: MatDialog) {
   }
 
   ngOnInit() {
@@ -38,16 +38,15 @@ export class FieldConfigsListComponent implements OnInit {
   onSaveClick() {
     this.progressBarService.show();
     const fieldConfigs = this.getChangedItemFields();
-    console.log(fieldConfigs);
     this.fieldConfigHttpService.save(fieldConfigs).subscribe(
       (result) => {
         this.messageService.success('Field configs were saved');
-        console.log('success');
         this.progressBarService.hide();
       },
       (error) => {
         console.error(error);
         this.messageService.error('Failed to save updates');
+        this.progressBarService.hide();
       }
     );
     this.createFieldConfigsCopy();
