@@ -10,7 +10,6 @@ import {MaterialModulesModule} from './shared/modules/material-modules/material-
 import {AppRoutingModule} from './/app-routing.module';
 import {ItemModule} from './components/items/item.module';
 import {MainComponentsModule} from './shared/components/main-components.module';
-import {HeaderComponent} from './shared/components/header/header.component';
 import {ItemFieldConfigModule} from './components/item-field-config/item-field-config.module';
 import {FieldConfigsModule} from './components/field-configs/field-configs.module';
 

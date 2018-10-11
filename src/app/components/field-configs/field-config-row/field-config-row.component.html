@@ -18,8 +18,7 @@
            [(ngModel)]="fieldConfig.multiple">
   </td>
 <div class="delete-wrapper">
-  <app-delete (removedFieldConfig)="onDeleteFieldConfig()"
-              [all]="false"
-  ></app-delete>
+
+  <app-delete [all]="false" (onOkChoosen)="onDeleteFieldConfig()"></app-delete>
 </div>
 
