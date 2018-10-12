@@ -17,6 +17,11 @@
         <a class="nav-link" [routerLink]="['/items/new', rboCodeService.getRboObject()]">New Item</a>
       </li>
     </ul>
-    <app-export class="ml-md-auto"></app-export>
+    <mat-form-field class="ml-auto mr-3">
+      <mat-select (selectionChange)="onChangeRbo()" [(value)]="rboCode">
+        <mat-option [value]="rbo.code" *ngFor="let rbo of rbos$ | async">{{ rbo.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <app-export></app-export>
   </div>
 </nav>

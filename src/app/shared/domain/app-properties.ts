@@ -5,7 +5,7 @@ export class AppProperties {
 
   public static readonly REQUIRED_FIELDS = [
     AppProperties.FIELD_D2COMM_ITEM_NUMBER,
-    'CARE_CONFIG_ROTARY_FORMAT_GROUP'
+    'CARE_CONFIG_FORMAT_GROUP_NAME'
   ];
 
   public static readonly DEFAULT_EXLUDED_FIELDS = [
