@@ -1,5 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { RboCodeService } from '../../service/rbo-code.service';
+import {Component, OnInit} from '@angular/core';
+import {RboCodeService} from '../../service/rbo-code.service';
+import {RboHttpService} from '../../service/http/rbo-http.service';
+import {Observable} from 'rxjs';
+import {RboDto} from '../../dto/rbo.dto';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -8,11 +12,23 @@ import { RboCodeService } from '../../service/rbo-code.service';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor(
-    public rboCodeService: RboCodeService
-  ) { }
+  rboCode: string;
+  rbos$: Observable<RboDto[]>;
 
-  ngOnInit() { 
+  constructor(
+    private rboCodeService: RboCodeService,
+    private rboHttpService: RboHttpService,
+    private router: Router
+  ) {
+  }
+
+  ngOnInit() {
+    this.rboCode = this.rboCodeService.getCurrentCode();
+    this.rbos$ = this.rboHttpService.getAllRbos();
+  }
+
+  onChangeRbo() {
+    this.router.navigate(['/items', {rbo: this.rboCode}]);
   }
 
 }

@@ -5,13 +5,13 @@
   </div>
   <div class="card-body">
     <ul class="list-group list-group-flush">
-      <li *ngFor="let item of items" 
+      <li *ngFor="let item of items"
           class="list-group-item list-group-item-action">
-          <a class="item-link" [routerLink]="['/items', item, rboCodeService.getRboObject()]">{{ item }}</a>
-          <div class="delete-wrapper">
-            <app-delete [all]="false" (onOkChoosen)="onDeleteItemNumber(item)"></app-delete>
-          </div>
-        </li>
+        <a class="item-link" [routerLink]="['/items', item, rboCodeService.getRboObject()]">{{ item }}</a>
+        <div class="delete-wrapper">
+          <app-delete [all]="false" (onOkChoosen)="onDeleteItemNumber(item)"></app-delete>
+        </div>
+      </li>
     </ul>
   </div>
 </div>
