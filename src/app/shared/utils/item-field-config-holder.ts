@@ -36,8 +36,12 @@ export class ItemFieldConfigHolder extends AbstractItemFieldConfigHolder {
 
   setIsTextField() {
     this.item.itemFieldConfigs.forEach((itemFieldConfig: ItemFieldConfig) => {
-      itemFieldConfig.isTextField = this.fieldConfigMap[itemFieldConfig.fieldConfigName].type === FieldType.TEXT_FIELD;
+      itemFieldConfig.isTextField = this.isTextField(itemFieldConfig.fieldConfigName);
     });
+  }
+
+  isTextField(fieldConfigName): boolean {
+    return this.fieldConfigMap[fieldConfigName].type === FieldType.TEXT_FIELD;
   }
 
   setItem(item: Item) {
@@ -73,10 +77,11 @@ export class ItemFieldConfigHolder extends AbstractItemFieldConfigHolder {
     if (!this.item.itemFieldConfigs) {
       this.item.itemFieldConfigs = [];
     }
-    fieldConfigNames.forEach(fieldConfigName => {
-      this.item.itemFieldConfigs = this.item.itemFieldConfigs.concat(ItemFieldConfig.default(fieldConfigName));
+    let newItemFields = fieldConfigNames.map(fieldConfigName => {
       this.removeNoActiveField(fieldConfigName);
+      return ItemFieldConfig.default(fieldConfigName, this.isTextField(fieldConfigName));
     });
+    this.item.itemFieldConfigs = this.item.itemFieldConfigs.concat(newItemFields);
     this.sortItemFieldConfigs(this.item.itemFieldConfigs);
     this.changeFilterItemFieldConfigs();
   }

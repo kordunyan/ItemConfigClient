@@ -120,20 +120,31 @@ export class NewItemComponent implements OnInit {
       this.isSaveProcess = false;
       this.progressBarService.hide();
       this.messageService.success('Items has already copyed');
-      this.router.navigate(['/items']);
+      this.gotToNewItem();
     }, () => {
       this.isSaveProcess = false;
       this.progressBarService.hide();
     });
   }
 
+  getNewItemField(fieldConfigName) {
+    return this.itemFields.find(f => f.fieldConfigName === fieldConfigName);
+  }
+
+  gotToNewItem() {
+    this.router.navigate([
+      '/items', 
+      this.getNewItemField(AppProperties.FIELD_D2COMM_ITEM_NUMBER).value,
+      this.rboCodeService.getRboObject()
+    ])
+  }
 
   saveNewItem() {
     this.itemHttpService.saveAll(this.createItems()).subscribe(() => {
       this.isSaveProcess = false;
       this.progressBarService.hide();
       this.messageService.success('Items has already added');
-      this.router.navigate(['/items']);
+      this.gotToNewItem();
     }, () => {
       this.isSaveProcess = false;
       this.progressBarService.hide();
