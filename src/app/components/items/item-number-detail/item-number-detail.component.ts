@@ -32,7 +32,8 @@ export class ItemNumberDetailComponent implements OnInit {
     private itemHttpService: ItemHttpService,
     private fieldConfigHttpService: FieldConfigHttpService,
     private progresBarService: ProgressBarService,
-    public rboCodeService: RboCodeService
+    public rboCodeService: RboCodeService,
+    private fieldService: FieldService
   ) {
   }
 
@@ -71,7 +72,7 @@ export class ItemNumberDetailComponent implements OnInit {
   }
 
   private sortItems() {
-    ItemManager.sortItemsByMultipleFields(this.items, this.fieldConfigs);
+    ItemManager.sortItemsByMultipleFields(this.items, this.fieldService.getMultipleFieldNames());
   }
 
   onToggle() {

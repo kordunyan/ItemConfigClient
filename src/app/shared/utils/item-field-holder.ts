@@ -9,12 +9,12 @@ export class ItemFieldsHolder {
   public noActiveFieldConfigs: FieldConfig[] = [];
   public newItemFields: Field[] = [];
 
-  constructor(public item: Item, public fieldConfigs: {}) {
+  constructor(public item: Item, public fieldConfigs: {}, public multipleFieldNames: string[]) {
     for (let fieldConfigName in fieldConfigs) {
       let fieldConfig = fieldConfigs[fieldConfigName];
       let field = this.findItemField(fieldConfig);
       if (field) {
-        this.addItemField(field, fieldConfig);
+        this.addItemField(field);
       } else {
         this.noActiveFieldConfigs.push(fieldConfig);
       }
@@ -58,12 +58,16 @@ export class ItemFieldsHolder {
     return this.multipleItemFields.find(field => field.fieldConfigName === fieldConfigName);
   }
 
-  public addItemField(field: Field, fieldConfig: FieldConfig) {
-    if (fieldConfig.multiple) {
+  public addItemField(field: Field) {
+    if (this.isMultiple(field.fieldConfigName)) {
       this.multipleItemFields.push(field);
     } else {
       this.itemFields.push(field);
     }
+  }
+
+  public isMultiple(fieldConfigName: string): boolean {
+    return this.multipleFieldNames.findIndex(fieldName => fieldName === fieldConfigName) > -1;
   }
 
   public findItemField(fieldConfig: FieldConfig): Field {
