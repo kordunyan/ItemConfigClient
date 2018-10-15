@@ -34,7 +34,7 @@ export class FieldConfigListComponent implements OnInit {
     forkJoin(
       this.route.paramMap.pipe(
         first(),
-        switchMap((params: ParamMap) => this.itemHttpService.getById(params.get(AppProperties.REQUEST_PARAM_ITEM_ID)))
+        switchMap((params: ParamMap) => this.itemHttpService.getByIdNoMandatory(params.get(AppProperties.REQUEST_PARAM_ITEM_ID)))
       ),
       this.fieldConfigHttpService.getAll(),
       this.fieldConfigHttpService.getInstructionsFields()
@@ -61,7 +61,7 @@ export class FieldConfigListComponent implements OnInit {
   reloadItem() {
     this.progressBarService.show();
     this.route.paramMap.pipe(
-      switchMap((params: ParamMap) => this.itemHttpService.getById(params.get(AppProperties.REQUEST_PARAM_ITEM_ID)))
+      switchMap((params: ParamMap) => this.itemHttpService.getByIdNoMandatory(params.get(AppProperties.REQUEST_PARAM_ITEM_ID)))
     )
       .subscribe(
         (item: Item) => {

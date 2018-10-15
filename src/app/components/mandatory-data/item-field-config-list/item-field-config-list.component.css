@@ -1,0 +1,8 @@
+.max-height-scrollbar {
+    max-height: 780px;
+    overflow: auto;
+}
+
+.max-height-scrollbar>a {
+    cursor: pointer;
+}

@@ -8,7 +8,7 @@ import {RboCodeService} from '../rbo-code.service';
 @Injectable()
 export abstract class AbstractHttpService {
   private static API_URL = 'http://localhost:8080/api';
-  private HEADERS = new HttpHeaders({'Content-Type': 'application/json; charset=utf-8'});
+  protected HEADERS = new HttpHeaders({'Content-Type': 'application/json; charset=utf-8'});
 
   constructor(
     protected http: HttpClient,
@@ -17,7 +17,9 @@ export abstract class AbstractHttpService {
     protected basePath: string
   ) {
     this.rboCodeService.changeCode.subscribe(newCode => {
-      this.setHeader(Header.X_TENANT_ID, newCode);
+      if (newCode) {
+        this.setHeader(Header.X_TENANT_ID, newCode);
+      }
     });
   }
 

@@ -1,0 +1,15 @@
+<div class="card">
+  <div class="card-header">
+      <span class="d-inline-block">Mandatory Translations</span>
+      <div class="button-wrapper float-right">
+          <app-controll *ngIf="itemFieldConfig.id"
+                        [valuesToSelect]="languagesToSelect"
+                        (reset)="reset()"
+                        (add)="addTranslation()"></app-controll>
+      </div>
+  </div>
+  <div class="card-body max-height-scrollbar">
+    <app-translation *ngFor="let mandatoryTranslation of itemFieldConfig.mandatoryTranslations"
+                    [mandatoryTranslation]="mandatoryTranslation"></app-translation>
+  </div>
+</div>

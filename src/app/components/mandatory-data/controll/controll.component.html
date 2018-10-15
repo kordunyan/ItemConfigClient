@@ -1,0 +1,15 @@
+<button class="btn btn-primary btn-sm ml-1"
+        title="Reset"
+        (click)="onReset()">
+  <i class="fa fa-refresh" aria-hidden="true"></i>
+</button>
+<button class="btn btn-primary btn-sm ml-1"><i class="fa fa-save" aria-hidden="true"></i></button>
+<button class="btn btn-info btn-sm ml-1"><i class="fa fa-copy" aria-hidden="true"></i></button>
+<button class="btn btn-primary btn-sm ml-1"><i class="fa fa-check-square" aria-hidden="true"></i></button>
+<app-delete [btnType]="'danger'" [small]="true" [withByItemNumbers]="true"></app-delete>
+<button class="btn btn-primary btn-sm ml-1"
+        (click)="onAdd()"
+        *ngIf="valuesToSelect && valuesToSelect.length > 0"
+        title="Add">
+  <i class="fa fa-plus"  aria-hidden="true"></i>
+</button>

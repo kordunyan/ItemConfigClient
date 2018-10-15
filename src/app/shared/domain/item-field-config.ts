@@ -1,4 +1,5 @@
 import {FieldConfig} from './field-config';
+import { MandatoryTranslation } from './mandatory-translation';
 
 export class ItemFieldConfig {
 
@@ -23,7 +24,8 @@ export class ItemFieldConfig {
     public storeLastUserInput: boolean,
     public id?: number,
     public checked?: boolean,
-    public isTextField?: boolean
+    public isTextField?: boolean,
+    public mandatoryTranslations?: MandatoryTranslation[]
   ) {
 
   }

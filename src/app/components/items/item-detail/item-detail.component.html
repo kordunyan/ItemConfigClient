@@ -14,8 +14,15 @@
           <i class="fa {{ show.isShow ? 'fa-angle-down' : 'fa-angle-right' }}" aria-hidden="true"></i>
         </button>
         <div class="delete-wrapper">
-          <button class="edit-btn" (click)="onGoItemFieldConfig()"><i class="fa fa-sliders" aria-hidden="true"></i> </button>
-          <button class="edit-btn" (click)="onCopyClick()"><i class="fa fa-copy" aria-hidden="true"></i> </button>
+          <button class="edit-btn" 
+                  title="Mandatory Data"
+                  (click)="goToMandatoryData()"><i class="fa fa-lock" aria-hidden="true"></i></button>
+          <button class="edit-btn"
+                  title="Item Field Config" 
+                  (click)="onGoItemFieldConfig()"><i class="fa fa-sliders" aria-hidden="true"></i></button>
+          <button class="edit-btn"
+                  title="Copy" 
+                  (click)="onCopyClick()"><i class="fa fa-copy" aria-hidden="true"></i></button>
           <app-delete [all]="false" (onOkChoosen)="onDelete()"></app-delete>
         </div>
       </h6>

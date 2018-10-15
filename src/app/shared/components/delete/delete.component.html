@@ -5,6 +5,7 @@
   <i class="fa fa-remove" aria-hidden="true"></i>    
 </button>
 <button class="btn btn-danger ml-1"
+        [ngClass]="{'btn-sm': small}"
         *ngIf="btnType === getDangerBtnType()"
         (click)="onBtnClick()"
         title="Delete">

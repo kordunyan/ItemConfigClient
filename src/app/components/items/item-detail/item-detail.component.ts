@@ -20,11 +20,12 @@ import { RboCodeService } from '../../../shared/service/rbo-code.service';
 export class ItemDetailComponent implements OnInit {
   @Input('show') show: { isShow: boolean };
   @Input('item') item: Item;
+  @Input('multipleFieldsOrder') multipleFieldsOrder: string[] = [];
   @Input('fieldConfigs') fieldConfigs;
   @Output('onReloadData') onReloadData = new EventEmitter<Item>();
   @Output('onDeletedItem') onDeletedItem = new EventEmitter<Item>();
 
-  multipleFieldsOrder: string[] = [];
+  
   itemFieldsHolder: ItemFieldsHolder;
   itemNumber: string;
 
@@ -35,11 +36,10 @@ export class ItemDetailComponent implements OnInit {
     private router: Router,
     private rboCodeService: RboCodeService
   ) {
-    this.multipleFieldsOrder = this.fieldService.getMultipleFieldNames();
   }
 
   ngOnInit() {
-    this.itemFieldsHolder = new ItemFieldsHolder(this.item, this.fieldConfigs, this.fieldService.getMultipleFieldNames());
+    this.itemFieldsHolder = new ItemFieldsHolder(this.item, this.fieldConfigs, this.multipleFieldsOrder);
     this.itemNumber = ItemManager.getItemFieldValue(this.item, AppProperties.FIELD_D2COMM_ITEM_NUMBER);
   }
 
@@ -76,6 +76,10 @@ export class ItemDetailComponent implements OnInit {
 
   onGoItemFieldConfig() {
     this.router.navigate(['/item-field-config', this.item.id, this.rboCodeService.getRboObject()]);
+  }
+
+  goToMandatoryData() {
+    this.router.navigate(['/mandatory-data', this.item.id, this.rboCodeService.getRboObject()]);  
   }
 
 }

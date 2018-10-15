@@ -1,0 +1,15 @@
+<div class="card mb-1"
+      [ngClass]="{
+        'bg-secondary': mandatoryTranslation.selected,
+        'bg-warning': !mandatoryTranslation.id && !mandatoryTranslation.selected 
+      }">
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item"
+        [ngClass]="{
+            'list-group-item-secondary': mandatoryTranslation.selected && mandatoryTranslation.id,
+            'list-group-item-warning': !mandatoryTranslation.id && !mandatoryTranslation.selected,
+            'bg-new-selected': !mandatoryTranslation.id && mandatoryTranslation.selected
+          }" 
+        (click)="selected()">{{ mandatoryTranslation.language.name }}</li>
+  </ul>
+</div>

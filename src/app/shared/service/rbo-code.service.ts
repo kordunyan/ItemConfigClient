@@ -19,7 +19,7 @@ export class RboCodeService {
         }
     }
 
-    public getCurrentCode() {
+    public getCurrentCode(): string {
         return this.currentCode;
     }
 

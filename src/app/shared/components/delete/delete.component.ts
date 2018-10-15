@@ -17,6 +17,7 @@ export class DeleteComponent implements OnInit {
   @Input('all') all = true;
   @Input('withByItemNumbers') withByItemNumbers = false;
   @Input('btnType') btnType = 'default';
+  @Input('small') small = false;
   @Output('onAllChoosen') onAllChoosen = new EventEmitter();
   @Output('onOkChoosen') onOkChoosen = new EventEmitter();
   @Output('onByChoosen') onByChoosen = new EventEmitter<string[]>();

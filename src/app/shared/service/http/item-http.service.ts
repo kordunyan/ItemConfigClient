@@ -93,4 +93,14 @@ export class ItemHttpService extends AbstractHttpService {
       );
   }
 
+  public getByIdNoMandatory(id: string) {
+    if (id === null) {
+      return of(null);
+    }
+    return this.http.get(this.getRelatedUrl(`/nomandatory/id/${id}`), this.getHttpOptions())
+      .pipe(
+        catchError(this.handleError(`Failed to get item by id: ${id}`, null))
+      );    
+  }
+
 }

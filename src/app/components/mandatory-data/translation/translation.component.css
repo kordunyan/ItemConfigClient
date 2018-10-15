@@ -1,0 +1,7 @@
+.list-group-item {
+    cursor: pointer;
+}
+
+.bg-new-selected {
+    background: rgba(236, 187, 113, 0.678);
+}

@@ -11,6 +11,7 @@ import { AppRoutingModule } from './/app-routing.module';
 import { ItemModule } from './components/items/item.module';
 import { MainComponentsModule } from './shared/components/main-components.module';
 import { ItemFieldConfigModule } from './components/item-field-config/item-field-config.module';
+import { MandatoryDataModule } from './components/mandatory-data/mandatory-data.module';
 
 
 @NgModule({
@@ -26,6 +27,7 @@ import { ItemFieldConfigModule } from './components/item-field-config/item-field
     BrowserAnimationsModule,
     ItemModule,
     ItemFieldConfigModule,
+    MandatoryDataModule,
     AppRoutingModule,
   ],
   bootstrap: [AppComponent],

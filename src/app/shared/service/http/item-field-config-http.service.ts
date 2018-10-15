@@ -41,4 +41,11 @@ export class ItemFieldConfigHttpService extends AbstractHttpService {
         catchError(this.handleTrowableError(`Failed delete item fields configs for all items`, crudOperationsDto))
       );
   }
+
+  public getInstructionsByItemId(itemId: string): Observable<ItemFieldConfig[]> {
+    return this.http.get<ItemFieldConfig[]>(this.getRelatedUrl(`/instructions/${itemId}`), this.getHttpOptions())
+      .pipe(
+        catchError(this.handleError(`Failed delete item fields configs for all items`, []))  
+      );
+  }
 }

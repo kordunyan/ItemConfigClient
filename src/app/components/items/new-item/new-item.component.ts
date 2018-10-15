@@ -36,6 +36,7 @@ export class NewItemComponent implements OnInit {
   isIpps: boolean = true;
   isSb: boolean = true;
   copyItem: Item;
+  multipleFieldsMap = {};
 
   constructor(
     private fieldConfigService: FieldConfigHttpService,
@@ -58,17 +59,29 @@ export class NewItemComponent implements OnInit {
         first(),
         switchMap((params: ParamMap) => this.itemHttpService.getById(params.get('id')))
       ),
-      this.fieldConfigService.getByOwner(AppProperties.OWNER_ITEM)
+      this.fieldConfigService.getByOwner(AppProperties.OWNER_ITEM),
+      this.fieldService.getMultipleFieldNames()
     ).subscribe((result) => {
-      // result[0] = copyItem, result[1] = fieldConfigs
+      // result[0] = copyItem, result[1] = fieldConfigs, result[2] = multiple fields
       this.copyItem = result[0];
       this.fieldConfigs = result[1];
-      
+      this.createMultipleFieldsMap(result[2]);
       this.setIppsAndSb();
       this.generateItemFields();
       this.isLoaded = true;
       this.progressBarService.hide();
     });
+  }
+
+  createMultipleFieldsMap(multipleFields: string[]) {
+    this.multipleFieldsMap = {};
+    multipleFields.forEach(fieldName => {
+      this.multipleFieldsMap[fieldName] = true;
+    });  
+  }
+
+  isMultiple(fieldConfigName: string) {
+    return this.multipleFieldsMap[fieldConfigName] === true;
   }
 
   setIppsAndSb() {
@@ -81,7 +94,7 @@ export class NewItemComponent implements OnInit {
   public generateItemFields() {
     this.fieldConfigs.forEach((fieldConfig: FieldConfig) => {
       if (this.hasCopyItemField(fieldConfig.name)) {
-        if (this.fieldService.isMultiple(fieldConfig.name)) {
+        if (this.isMultiple(fieldConfig.name)) {
           this.itemMultipleFields.push(MultipleField.createFromField(this.getCopyItemField(fieldConfig.name)));
         } else {
           this.itemFields.push(Field.copyWithoutIdAndFieldSet(this.getCopyItemField(fieldConfig.name)));
@@ -201,7 +214,7 @@ export class NewItemComponent implements OnInit {
   }
 
   addItemField(fieldConfig: FieldConfig) {
-    if (this.fieldService.isMultiple(fieldConfig.name)) {
+    if (this.isMultiple(fieldConfig.name)) {
       this.itemMultipleFields.push(new MultipleField(fieldConfig.name, []));
     } else {
       this.itemFields.push(new Field(fieldConfig.name, ''));

@@ -187,4 +187,8 @@ export class FieldConfigListControlComponent implements OnInit {
     });
   }
 
+  goToMandatoryFields() {
+    this.router.navigate(['/mandatory-data', this.itemFieldConfigHolder.item.id, this.rboCodeService.getRboObject()]); 
+  }
+
 }

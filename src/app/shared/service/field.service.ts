@@ -5,48 +5,47 @@ import {FieldConfig} from '../domain/field-config';
 import {AppProperties} from '../domain/app-properties';
 import {FieldHttpService} from './http/field-http.service';
 import {Item} from '../domain/item';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {NewFieldsDTO} from '../dto/new-fields.dto';
 import {FieldForAllItemsDto} from '../dto/field-for-all-items.dto';
 import { RboHttpService } from './http/rbo-http.service';
 import { RboCodeService } from './rbo-code.service';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FieldService {
 
-  private multipleFieldNamesMap = {};
   private multipleFieldNames: string[] = [];
+  private currentRboCode: string;
 
   constructor(
       private fieldHttpService: FieldHttpService,
       public rboHttpService: RboHttpService,
       public rboCodeService: RboCodeService
     ) {
-      this.rboCodeService.changeCode.subscribe(result => {
-        this.reloadMultipleFields();
-      });
   }
 
-  private reloadMultipleFields() {
-    this.rboHttpService.getMultipleFields().subscribe(result => {
-      if (result && result.length > 0) {
-        result.forEach(fieldName => this.multipleFieldNamesMap[fieldName] = true);
-        this.multipleFieldNames = result;
-      } else {
-        this.multipleFieldNamesMap = {};
-        this.multipleFieldNames = [];
-      }
-    });
+  private changedRboCode(): boolean {
+      return this.currentRboCode !== this.rboCodeService.getCurrentCode();
   }
 
-  public isMultiple(fieldName): boolean {
-    return this.multipleFieldNamesMap[fieldName] === true;
-  }
-
-  public getMultipleFieldNames(): string[] {
-    return this.multipleFieldNames;
+  public getMultipleFieldNames(): Observable<string[]> {
+    if (this.changedRboCode()) {
+      this.currentRboCode = this.rboCodeService.getCurrentCode();
+      return this.rboHttpService.getMultipleFields()
+      .pipe(
+        tap(result => {
+          if (result && result.length > 0) {
+            this.multipleFieldNames = result;
+          } else {
+            this.multipleFieldNames = [];
+          }
+        })
+      );
+    }
+    return of(this.multipleFieldNames);
   }
 
   public saveFieldsForItem(fields: Field[], item: Item): Observable<any> {

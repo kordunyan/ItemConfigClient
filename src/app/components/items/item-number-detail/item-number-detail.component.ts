@@ -26,6 +26,7 @@ export class ItemNumberDetailComponent implements OnInit {
   fieldConfigs = {};
   itemNumber: string;
   isAllShow = false;
+  multipleFields: string[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -57,12 +58,15 @@ export class ItemNumberDetailComponent implements OnInit {
         switchMap((params: ParamMap) => {
           this.itemNumber = params.get('itemNumber');
           return this.itemHttpService.getItemsByNumber(this.itemNumber);
-        })
+        }),
       ),
-      this.fieldConfigHttpService.getByOwnerMap(AppProperties.OWNER_ITEM)
+      this.fieldConfigHttpService.getByOwnerMap(AppProperties.OWNER_ITEM),
+      this.fieldService.getMultipleFieldNames()
     ).subscribe((result: any) => {
+      //result[0] = items, result[1] = fieldConfigs, result[2] = multiple fields
       this.items = result[0];
       this.fieldConfigs = result[1];
+      this.multipleFields = result[2];
       this.sortItems();
       if (onLoadCallback) {
         onLoadCallback(result);
@@ -72,7 +76,7 @@ export class ItemNumberDetailComponent implements OnInit {
   }
 
   private sortItems() {
-    ItemManager.sortItemsByMultipleFields(this.items, this.fieldService.getMultipleFieldNames());
+    ItemManager.sortItemsByMultipleFields(this.items, this.multipleFields);
   }
 
   onToggle() {

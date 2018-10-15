@@ -4,7 +4,7 @@ import {HttpClient} from '@angular/common/http';
 import {MessageService} from '../message.service';
 import { Observable } from 'rxjs';
 import { RboDto } from '../../dto/rbo.dto';
-import {catchError} from 'rxjs/operators';
+import {catchError, tap} from 'rxjs/operators';
 import { RboCodeService } from '../rbo-code.service';
 
 @Injectable({
