@@ -10,6 +10,7 @@ import { ControllComponent } from './controll/controll.component';
 import { MandatoryTranslationsComponent } from './mandatory-translations/mandatory-translations.component';
 import { MandatoryFieldsComponent } from './mandatory-fields/mandatory-fields.component';
 import { TranslationComponent } from './translation/translation.component';
+import { FieldConfigComponent } from './field-config/field-config.component';
 
 @NgModule({
   imports: [
@@ -18,7 +19,7 @@ import { TranslationComponent } from './translation/translation.component';
     MainComponentsModule,
     MaterialModulesModule
   ],
-  declarations: [MandatoryDataComponent, ItemFieldConfigListComponent, ControllComponent, MandatoryTranslationsComponent, MandatoryFieldsComponent, TranslationComponent],
+  declarations: [MandatoryDataComponent, ItemFieldConfigListComponent, ControllComponent, MandatoryTranslationsComponent, MandatoryFieldsComponent, TranslationComponent, FieldConfigComponent],
   exports: [
     MandatoryDataRoutingModule  
   ]
