@@ -30,7 +30,7 @@
   <tr app-field-config-row
       *ngFor="let fieldConfig of fieldConfigs"
       [fieldConfig]="fieldConfig"
-      (removedFieldConfig) ="updateFieldConfigs($event)"
+      (removedFieldConfig) ="removeFieldConfig($event)"
   ></tr>
   </tbody>
 </table>

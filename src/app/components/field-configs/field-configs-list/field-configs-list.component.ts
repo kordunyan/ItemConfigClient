@@ -31,7 +31,11 @@ export class FieldConfigsListComponent implements OnInit {
       this.createFieldConfigsCopy();
       this.fieldConfigsCopyMap = this.createfieldConfigCopyMap(this.fieldConfigs);
       this.progressBarService.hide();
-    });
+    },
+      (error) => {
+        console.error(error);
+        this.progressBarService.hide();
+      });
 
   }
 
@@ -40,6 +44,7 @@ export class FieldConfigsListComponent implements OnInit {
     const fieldConfigs = this.getChangedItemFields();
     this.fieldConfigHttpService.saveAll(fieldConfigs).subscribe(
       (result) => {
+        this.createFieldConfigsCopy();
         this.messageService.success('Field configs were saved');
         this.progressBarService.hide();
       },
@@ -49,7 +54,6 @@ export class FieldConfigsListComponent implements OnInit {
         this.progressBarService.hide();
       }
     );
-    this.createFieldConfigsCopy();
   }
 
   onResetClick() {
@@ -96,7 +100,7 @@ export class FieldConfigsListComponent implements OnInit {
     });
   }
 
-  updateFieldConfigs(fieldConfig: FieldConfig) {
+  removeFieldConfig(fieldConfig: FieldConfig) {
     let index = this.fieldConfigs.indexOf(fieldConfig);
     if (index >=0) {
       this.fieldConfigs.splice(index, 1);
