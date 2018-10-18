@@ -1,15 +1,19 @@
 export class FieldConfig {
-    constructor(
-        public name: string,
-        public type: string,
-        public owner: string,
-        public printable: boolean
-    ) {
 
   public static readonly DEFAULT_NAME = '';
   public static readonly DEFAULT_TYPE = '';
   public static readonly DEFAULT_OWNER = '';
   public static readonly DEFAULT_IS_PRINTABLE = false;
+
+
+  constructor(
+    public name: string,
+    public type: string,
+    public owner: string,
+    public printable: boolean
+  ) {
+
+  }
 
   public static copy(fieldConfig: FieldConfig) {
     return new FieldConfig(
@@ -36,7 +40,7 @@ export class FieldConfig {
     if (fieldA.printable !== fieldB.printable) {
       return false;
     }
-     return true;
+    return true;
   }
 
   public static default(): FieldConfig {

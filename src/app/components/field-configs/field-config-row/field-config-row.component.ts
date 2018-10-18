@@ -13,7 +13,7 @@ import {ProgressBarService} from '../../../shared/service/progress-bar.service';
 export class FieldConfigRowComponent implements OnInit {
 
   @Input('fieldConfig') fieldConfig: FieldConfig;
-  @Output('onOkChoosen') removedFieldConfig = new EventEmitter();
+  @Output('removedFieldConfig') removedFieldConfig = new EventEmitter();
 
   constructor(private fieldConfigHttpService: FieldConfigHttpService, private messageService: MessageService,
               private progressBarService: ProgressBarService) { }
