@@ -5,6 +5,8 @@
           <app-controll *ngIf="itemFieldConfig.id"
                         [valuesToSelect]="languagesToSelect"
                         (reset)="reset()"
+                        (save)="save()"
+                        (saveForItemNumber)="saveForItemNumber()"
                         (add)="addTranslation()"></app-controll>
       </div>
   </div>

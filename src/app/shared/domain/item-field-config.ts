@@ -81,7 +81,8 @@ export class ItemFieldConfig {
       ItemFieldConfig.DEFAULT_STORE_LAST_USER_INPUT,
       null,
       false,
-      isTextField
+      isTextField,
+      []
     );
   }
 
