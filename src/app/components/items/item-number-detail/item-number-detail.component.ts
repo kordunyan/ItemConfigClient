@@ -11,6 +11,7 @@ import {ProgressBarService} from '../../../shared/service/progress-bar.service';
 import {Field} from '../../../shared/domain/field';
 import {FieldService} from '../../../shared/service/field.service';
 import {ItemManager} from '../../../shared/utils/item.manager';
+import { RboCodeService } from '../../../shared/service/rbo-code.service';
 
 
 @Component({
@@ -30,14 +31,20 @@ export class ItemNumberDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private itemHttpService: ItemHttpService,
     private fieldConfigHttpService: FieldConfigHttpService,
-    private progresBarService: ProgressBarService
+    private progresBarService: ProgressBarService,
+    public rboCodeService: RboCodeService,
+    private fieldService: FieldService
   ) {
   }
 
   ngOnInit() {
     this.loadData(() => {
-      for (let i = 0; i < this.items.length; i++) {
-        this.shownItems.push({isShow: false});
+      if (this.items.length === 1) {
+        this.shownItems.push({isShow: true});
+      } else {
+        for (let i = 0; i < this.items.length; i++) {
+          this.shownItems.push({isShow: false});
+        }
       }
     });
   }
@@ -65,7 +72,7 @@ export class ItemNumberDetailComponent implements OnInit {
   }
 
   private sortItems() {
-    ItemManager.sortItemsByMultipleFields(this.items, this.fieldConfigs);
+    ItemManager.sortItemsByMultipleFields(this.items, this.fieldService.getMultipleFieldNames());
   }
 
   onToggle() {

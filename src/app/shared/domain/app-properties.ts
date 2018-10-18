@@ -5,7 +5,7 @@ export class AppProperties {
 
   public static readonly REQUIRED_FIELDS = [
     AppProperties.FIELD_D2COMM_ITEM_NUMBER,
-    'CARE_CONFIG_ROTARY_FORMAT_GROUP'
+    'CARE_CONFIG_FORMAT_GROUP_NAME'
   ];
 
   public static readonly DEFAULT_EXLUDED_FIELDS = [
@@ -18,6 +18,4 @@ export class AppProperties {
 
   public static readonly REQUEST_PARAM_ITEM_ID = 'itemId';
   public static readonly REQUEST_PARAM_RBO = 'rbo';
-
-  public static readonly MULTIPLE_FIELDS_SORT_ORDER = ['CLOTHING_TYPE', 'SEASON'];
 }

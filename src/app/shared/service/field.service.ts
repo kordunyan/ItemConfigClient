@@ -8,14 +8,45 @@ import {Item} from '../domain/item';
 import {Observable} from 'rxjs';
 import {NewFieldsDTO} from '../dto/new-fields.dto';
 import {FieldForAllItemsDto} from '../dto/field-for-all-items.dto';
+import { RboHttpService } from './http/rbo-http.service';
+import { RboCodeService } from './rbo-code.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FieldService {
 
-  constructor(private fieldHttpService: FieldHttpService) {
+  private multipleFieldNamesMap = {};
+  private multipleFieldNames: string[] = [];
 
+  constructor(
+      private fieldHttpService: FieldHttpService,
+      public rboHttpService: RboHttpService,
+      public rboCodeService: RboCodeService
+    ) {
+      this.rboCodeService.changeCode.subscribe(result => {
+        this.reloadMultipleFields();
+      });
+  }
+
+  private reloadMultipleFields() {
+    this.rboHttpService.getMultipleFields().subscribe(result => {
+      if (result && result.length > 0) {
+        result.forEach(fieldName => this.multipleFieldNamesMap[fieldName] = true);
+        this.multipleFieldNames = result;
+      } else {
+        this.multipleFieldNamesMap = {};
+        this.multipleFieldNames = [];
+      }
+    });
+  }
+
+  public isMultiple(fieldName): boolean {
+    return this.multipleFieldNamesMap[fieldName] === true;
+  }
+
+  public getMultipleFieldNames(): string[] {
+    return this.multipleFieldNames;
   }
 
   public saveFieldsForItem(fields: Field[], item: Item): Observable<any> {

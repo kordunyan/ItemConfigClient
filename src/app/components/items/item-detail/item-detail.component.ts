@@ -24,7 +24,7 @@ export class ItemDetailComponent implements OnInit {
   @Output('onReloadData') onReloadData = new EventEmitter<Item>();
   @Output('onDeletedItem') onDeletedItem = new EventEmitter<Item>();
 
-  multipleFieldsOrder = AppProperties.MULTIPLE_FIELDS_SORT_ORDER;
+  multipleFieldsOrder: string[] = [];
   itemFieldsHolder: ItemFieldsHolder;
   itemNumber: string;
 
@@ -35,10 +35,11 @@ export class ItemDetailComponent implements OnInit {
     private router: Router,
     private rboCodeService: RboCodeService
   ) {
+    this.multipleFieldsOrder = this.fieldService.getMultipleFieldNames();
   }
 
   ngOnInit() {
-    this.itemFieldsHolder = new ItemFieldsHolder(this.item, this.fieldConfigs);
+    this.itemFieldsHolder = new ItemFieldsHolder(this.item, this.fieldConfigs, this.fieldService.getMultipleFieldNames());
     this.itemNumber = ItemManager.getItemFieldValue(this.item, AppProperties.FIELD_D2COMM_ITEM_NUMBER);
   }
 
