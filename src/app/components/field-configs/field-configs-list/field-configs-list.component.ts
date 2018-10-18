@@ -38,7 +38,7 @@ export class FieldConfigsListComponent implements OnInit {
   onSaveClick() {
     this.progressBarService.show();
     const fieldConfigs = this.getChangedItemFields();
-    this.fieldConfigHttpService.save(fieldConfigs).subscribe(
+    this.fieldConfigHttpService.saveAll(fieldConfigs).subscribe(
       (result) => {
         this.messageService.success('Field configs were saved');
         this.progressBarService.hide();
@@ -88,9 +88,11 @@ export class FieldConfigsListComponent implements OnInit {
   }
 
   openAddNewDialog() {
-    console.log('new');
-    let dialogRef = this.dialog.open(AddNewFieldConfigComponent, {
+    this.dialog.open(AddNewFieldConfigComponent, {
       width: '1200px'
+    }).beforeClose().subscribe((fieldConfig: FieldConfig) => {
+      this.fieldConfigs.push(fieldConfig);
+      this.createFieldConfigsCopy();
     });
   }
 

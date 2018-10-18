@@ -1,31 +1,31 @@
 <h1 mat-dialog-title>Add new Field Config</h1>
 <div mat-dialog-content>
-  <table class="table table-hover">
+  <table class="table ">
     <thead>
     <tr>
       <th scope="col">Name</th>
       <th scope="col">Type</th>
       <th scope="col">Owner</th>
       <th scope="col">IsPrintable</th>
-      <th scope="col">Multiple</th>
     </tr>
     </thead>
     <tbody>
     <tr>
       <td scope="align-middle">
-        <input type="text" class="form-control"/>
+        <input type="text" class="form-control"
+               [(ngModel)]="newFieldConfig.name"/>
       </td>
       <td>
-        <input type="text" class="form-control"/>
+        <input type="text" class="form-control"
+               [(ngModel)]="newFieldConfig.type"/>
       </td>
       <td>
-        <input type="text" class="form-control"/>
+        <input type="text" class="form-control"
+               [(ngModel)]="newFieldConfig.owner"/>
       </td>
       <td class="text-center align-middle">
-        <input type="checkbox" >
-      </td>
-      <td class="text-center align-middle">
-        <input type="checkbox">
+        <input type="checkbox"
+               [(ngModel)]="newFieldConfig.printable">
       </td>
     </tr>
     </tbody>
@@ -35,10 +35,11 @@
 <div mat-dialog-actions>
   <div class="text-right w-100">
     <button class="btn btn-light mr-2"
-    >Cancel
+    (click) = "onCloseClick()">
+      Cancel
     </button>
-    <button class="btn btn-primary"
-            cdkFocusInitial>Ok
+    <button class="btn btn-primary" (click)="addNewFieldConfig()">
+      Ok
     </button>
   </div>
 </div>

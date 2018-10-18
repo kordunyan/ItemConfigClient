@@ -47,10 +47,20 @@ export class FieldConfigHttpService extends AbstractHttpService {
       );
   }
 
-  public save(fieldConfigs: FieldConfig[]): Observable<any> {
+  getByName(name: string): Observable<FieldConfig>  {
+    if (name === null) {
+      return of(null);
+    }
+    return this.http.get<FieldConfig>(this.getRelatedUrl(`/get-by-name/${name}`), this.getHttpOptions())
+      .pipe(
+        catchError(this.handleError(`Failed to get field config by name`, FieldConfig.default()))
+      );
+  }
+
+  public saveAll(fieldConfigs: FieldConfig[]): Observable<any> {
     return this.http.post(this.getRelatedUrl('/save-all'), fieldConfigs, this.getHttpOptions())
       .pipe(
-        catchError(this.handleTrowableError(`Failed save to field configs`, fieldConfigs))
+        catchError(this.handleTrowableError(`Failed to save field configs`, fieldConfigs))
       );
   }
 
@@ -58,6 +68,13 @@ export class FieldConfigHttpService extends AbstractHttpService {
     return this.http.post(this.getRelatedUrl('/delete'), fieldConfig, this.getHttpOptions())
       .pipe(
         catchError(this.handleTrowableError(`Failed to delete field config`, fieldConfig))
+      );
+  }
+
+  public save(fieldConfig: FieldConfig): Observable<any> {
+    return this.http.post(this.getRelatedUrl('/save'), fieldConfig, this.getHttpOptions())
+      .pipe(
+        catchError(this.handleTrowableError(`Failed to save field config`, fieldConfig))
       );
   }
 }

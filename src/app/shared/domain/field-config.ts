@@ -1,12 +1,17 @@
 import {ItemFieldConfig} from './item-field-config';
 
 export class FieldConfig {
+
+  public static readonly DEFAULT_NAME = '';
+  public static readonly DEFAULT_TYPE = '';
+  public static readonly DEFAULT_OWNER = '';
+  public static readonly DEFAULT_IS_PRINTABLE = false;
+
   constructor(
     public name: string,
     public type: string,
     public owner: string,
-    public printable: boolean,
-    public multiple: boolean
+    public printable: boolean
   ) {
 
   }
@@ -16,8 +21,7 @@ export class FieldConfig {
       fieldConfig.name,
       fieldConfig.type,
       fieldConfig.owner,
-      fieldConfig.printable,
-      fieldConfig.multiple
+      fieldConfig.printable
     );
   }
 
@@ -37,9 +41,16 @@ export class FieldConfig {
     if (fieldA.printable !== fieldB.printable) {
       return false;
     }
-    if (fieldA.multiple !== fieldB.multiple) {
-      return false;
-    }
      return true;
   }
+
+  public static default(): FieldConfig {
+    return new FieldConfig(
+      FieldConfig.DEFAULT_NAME,
+      FieldConfig.DEFAULT_TYPE,
+      FieldConfig.DEFAULT_OWNER,
+      FieldConfig.DEFAULT_IS_PRINTABLE
+    );
+  }
+
 }
