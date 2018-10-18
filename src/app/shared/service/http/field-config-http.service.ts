@@ -6,6 +6,7 @@ import {Observable, of} from 'rxjs';
 import {catchError, map, tap} from 'rxjs/operators';
 import {MessageService} from '../message.service';
 import { RboCodeService } from '../rbo-code.service';
+import {SaveItemFieldConfigDto} from '../../dto/save-item-field-config.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -43,6 +44,37 @@ export class FieldConfigHttpService extends AbstractHttpService {
     return this.http.get<FieldConfig[]>(this.getRelatedUrl('/all'), this.getHttpOptions())
       .pipe(
         catchError(this.handleError(`Failed to get all field configs`, []))
+      );
+  }
+
+  getByName(name: string): Observable<FieldConfig>  {
+    if (name === null) {
+      return of(null);
+    }
+    return this.http.get<FieldConfig>(this.getRelatedUrl(`/get-by-name/${name}`), this.getHttpOptions())
+      .pipe(
+        catchError(this.handleError(`Failed to get field config by name`, FieldConfig.default()))
+      );
+  }
+
+  public saveAll(fieldConfigs: FieldConfig[]): Observable<any> {
+    return this.http.post(this.getRelatedUrl('/save-all'), fieldConfigs, this.getHttpOptions())
+      .pipe(
+        catchError(this.handleTrowableError(`Failed to save field configs`, fieldConfigs))
+      );
+  }
+
+  public delete(fieldConfig: FieldConfig): Observable<any> {
+    return this.http.post(this.getRelatedUrl('/delete'), fieldConfig, this.getHttpOptions())
+      .pipe(
+        catchError(this.handleTrowableError(`Failed to delete field config`, fieldConfig))
+      );
+  }
+
+  public save(fieldConfig: FieldConfig): Observable<any> {
+    return this.http.post(this.getRelatedUrl('/save'), fieldConfig, this.getHttpOptions())
+      .pipe(
+        catchError(this.handleTrowableError(`Failed to save field config`, fieldConfig))
       );
   }
 }
