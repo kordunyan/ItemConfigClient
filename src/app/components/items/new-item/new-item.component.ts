@@ -63,7 +63,7 @@ export class NewItemComponent implements OnInit {
       // result[0] = copyItem, result[1] = fieldConfigs
       this.copyItem = result[0];
       this.fieldConfigs = result[1];
-      
+
       this.setIppsAndSb();
       this.generateItemFields();
       this.isLoaded = true;
