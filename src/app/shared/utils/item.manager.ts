@@ -31,21 +31,20 @@ export class ItemManager {
       : null;
   }
 
-  public static getItemMultipleFieldsMap(item: Item, fieldConfigs: any): any {
+  public static getItemMultipleFieldsMap(item: Item, multipleFields: string[]): any {
     let result = {};
-    item.fields.filter(field => fieldConfigs[field.fieldConfigName].multiple)
+    item.fields.filter(field => multipleFields.findIndex(fieldName => fieldName === field.fieldConfigName) > -1)
       .forEach(field => result[field.fieldConfigName] = field);
     return result;
   }
 
-  public static sortItemsByMultipleFields(items: Item[], fieldConfigs: any) {
-    let multipleFields = AppProperties.MULTIPLE_FIELDS_SORT_ORDER;
-    let itemMultipleFields = ItemManager.createItemMultipleFields(items, fieldConfigs);
+  public static sortItemsByMultipleFields(items: Item[], multipleFields: string[]) {
+    let itemsMultipleFields = ItemManager.createItemsMultipleFields(items, multipleFields);
     items.sort((itemA, itemB) => {
       for (let i = 0; i < multipleFields.length; i++) {
         let fieldName = multipleFields[i];
-        let itemAFieldValue = itemMultipleFields[itemA.id][fieldName].value;
-        let itemBFieldValue = itemMultipleFields[itemB.id][fieldName].value;
+        let itemAFieldValue = itemsMultipleFields[itemA.id][fieldName].value;
+        let itemBFieldValue = itemsMultipleFields[itemB.id][fieldName].value;
         if (itemAFieldValue === itemBFieldValue) {
           continue;
         }
@@ -61,9 +60,9 @@ export class ItemManager {
     });
   }
 
-  private static createItemMultipleFields(items: Item[], fieldConfigMap: any): any {
+  private static createItemsMultipleFields(items: Item[], multipleFields: string[]): any {
     let result = {};
-    items.forEach(item => result[item.id] = ItemManager.getItemMultipleFieldsMap(item, fieldConfigMap));
+    items.forEach(item => result[item.id] = ItemManager.getItemMultipleFieldsMap(item, multipleFields));
     return result;
   }
 }

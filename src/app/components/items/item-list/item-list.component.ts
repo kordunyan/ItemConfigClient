@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { ItemHttpService } from '../../../shared/service/http/item-http.service';
-import { Observable } from 'rxjs';
-import { ProgressBarService } from '../../../shared/service/progress-bar.service';
-import { ActivatedRoute } from '@angular/router';
-import { RboCodeService } from '../../../shared/service/rbo-code.service';
+import {Component, OnInit} from '@angular/core';
+import {ItemHttpService} from '../../../shared/service/http/item-http.service';
+import {Observable} from 'rxjs';
+import {ProgressBarService} from '../../../shared/service/progress-bar.service';
+import {ActivatedRoute} from '@angular/router';
+import {RboCodeService} from '../../../shared/service/rbo-code.service';
 
 @Component({
   selector: 'app-item-list',
@@ -18,9 +18,15 @@ export class ItemListComponent implements OnInit {
     private itemService: ItemHttpService,
     private progressBarService: ProgressBarService,
     public rboCodeService: RboCodeService
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
+    this.loadItemsValue();
+    this.rboCodeService.changeCode.subscribe(result => this.loadItemsValue());
+  }
+
+  private loadItemsValue() {
     this.progressBarService.show();
     this.itemService.getAllItemValues().subscribe((numbers: string[]) => {
       this.items = numbers;
@@ -34,7 +40,7 @@ export class ItemListComponent implements OnInit {
       (result) => {
         this.progressBarService.hide();
         this.items = this.items.filter(i => i !== itemNumber);
-      }, 
+      },
       (error) => this.progressBarService.hide()
     );
   }

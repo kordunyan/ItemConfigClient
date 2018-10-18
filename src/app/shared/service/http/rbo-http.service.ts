@@ -24,4 +24,11 @@ export class RboHttpService extends AbstractHttpService {
             );
     }
 
+    public getMultipleFields(): Observable<string[]> {
+        return this.http.get<string[]>(this.getRelatedUrl('/multiple-fields'), this.getHttpOptions())
+        .pipe(
+            catchError(this.handleError('Failed get multiple fields: ', []))    
+        );
+    }
+
 }

@@ -2,13 +2,9 @@
   <div class="card">
     <div class="card-header" id="headingTwo">
       <h6 class="mb-0">
-        <!--<div class="float-left mt-2" *ngFor="let field of itemFieldsHolder.multipleItemFields">-->
-          <!--<span class="mr-4"><b>{{ field.fieldConfigName }}: </b>{{ field.value }}</span> -->
-        <!--</div>-->
         <div class="float-left mt-2" *ngFor="let fieldName of multipleFieldsOrder">
           <span class="mr-4"><b>{{ fieldName }}: </b>{{ itemFieldsHolder.getMultipleFieldByName(fieldName).value }}</span>
         </div>
-
 
         <button class="btn btn-link collapsed float-right" 
                 type="button" 

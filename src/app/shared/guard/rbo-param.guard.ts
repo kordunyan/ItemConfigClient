@@ -16,7 +16,7 @@ export class RboParamGuard implements CanActivateChild {
     }
 
     canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-        if (route.paramMap.has(AppProperties.REQUEST_PARAM_RBO)) {
+      if (route.paramMap.has(AppProperties.REQUEST_PARAM_RBO)) {
             this.rboCodeService.changeCodeIfNotEquals(route.paramMap.get(AppProperties.REQUEST_PARAM_RBO));
             return true;
         }

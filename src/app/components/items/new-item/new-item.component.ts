@@ -1,5 +1,5 @@
 import {Component, OnInit, Inject} from '@angular/core';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import {MatDialog} from '@angular/material';
 
 import {FieldConfig} from '../../../shared/domain/field-config';
 import {Field} from '../../../shared/domain/field';
@@ -15,9 +15,9 @@ import {FieldService} from '../../../shared/service/field.service';
 import {first, switchMap} from 'rxjs/operators';
 import {forkJoin} from 'rxjs';
 import {ItemManager} from '../../../shared/utils/item.manager';
-import {Observable, of} from 'rxjs';
 import {CopyItemDto} from '../../../shared/dto/copy-iten.dto';
 import { RboCodeService } from '../../../shared/service/rbo-code.service';
+import { RboHttpService } from '../../../shared/service/http/rbo-http.service';
 
 
 @Component({
@@ -60,8 +60,10 @@ export class NewItemComponent implements OnInit {
       ),
       this.fieldConfigService.getByOwner(AppProperties.OWNER_ITEM)
     ).subscribe((result) => {
+      // result[0] = copyItem, result[1] = fieldConfigs
       this.copyItem = result[0];
       this.fieldConfigs = result[1];
+      
       this.setIppsAndSb();
       this.generateItemFields();
       this.isLoaded = true;
@@ -79,7 +81,7 @@ export class NewItemComponent implements OnInit {
   public generateItemFields() {
     this.fieldConfigs.forEach((fieldConfig: FieldConfig) => {
       if (this.hasCopyItemField(fieldConfig.name)) {
-        if (fieldConfig.multiple) {
+        if (this.fieldService.isMultiple(fieldConfig.name)) {
           this.itemMultipleFields.push(MultipleField.createFromField(this.getCopyItemField(fieldConfig.name)));
         } else {
           this.itemFields.push(Field.copyWithoutIdAndFieldSet(this.getCopyItemField(fieldConfig.name)));
@@ -120,20 +122,31 @@ export class NewItemComponent implements OnInit {
       this.isSaveProcess = false;
       this.progressBarService.hide();
       this.messageService.success('Items has already copyed');
-      this.router.navigate(['/items']);
+      this.gotToNewItem();
     }, () => {
       this.isSaveProcess = false;
       this.progressBarService.hide();
     });
   }
 
+  getNewItemField(fieldConfigName) {
+    return this.itemFields.find(f => f.fieldConfigName === fieldConfigName);
+  }
+
+  gotToNewItem() {
+    this.router.navigate([
+      '/items', 
+      this.getNewItemField(AppProperties.FIELD_D2COMM_ITEM_NUMBER).value,
+      this.rboCodeService.getRboObject()
+    ])
+  }
 
   saveNewItem() {
     this.itemHttpService.saveAll(this.createItems()).subscribe(() => {
       this.isSaveProcess = false;
       this.progressBarService.hide();
       this.messageService.success('Items has already added');
-      this.router.navigate(['/items']);
+      this.gotToNewItem();
     }, () => {
       this.isSaveProcess = false;
       this.progressBarService.hide();
@@ -188,7 +201,7 @@ export class NewItemComponent implements OnInit {
   }
 
   addItemField(fieldConfig: FieldConfig) {
-    if (fieldConfig.multiple) {
+    if (this.fieldService.isMultiple(fieldConfig.name)) {
       this.itemMultipleFields.push(new MultipleField(fieldConfig.name, []));
     } else {
       this.itemFields.push(new Field(fieldConfig.name, ''));
