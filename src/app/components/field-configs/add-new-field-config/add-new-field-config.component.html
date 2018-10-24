@@ -1,0 +1,50 @@
+<h1 mat-dialog-title>Add new Field Config</h1>
+<div mat-dialog-content>
+
+
+  <form #fieldConfigForm="ngForm">
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input type="text"
+             name="fieldConfigname"
+             required
+             [(ngModel)]="newFieldConfig.name"
+             class="form-control"
+             id="name">
+    </div>
+    <div class="form-group">
+      <label for="type">Type</label>
+      <input type="text"
+             name="type"
+             required
+             [(ngModel)]="newFieldConfig.type"
+             class="form-control"
+             id="type">
+    </div>
+    <div class="form-group">
+      <label for="owner">Owner</label>
+      <input type="text"
+             name="owner"
+             required
+             [(ngModel)]="newFieldConfig.owner"
+             class="form-control"
+             id="owner">
+    </div>
+    <div class="form-group">
+      <mat-checkbox [(ngModel)]="newFieldConfig.printable"
+                    [labelPosition]="'before'">Printable</mat-checkbox>
+    </div>
+  </form>
+
+</div>
+<div mat-dialog-actions>
+  <div class="text-right w-100">
+    <button class="btn btn-light mr-2"
+    (click) = "onCloseClick()">
+      Cancel
+    </button>
+    <button class="btn btn-primary" [disabled]="!fieldConfigForm.form.valid" (click)="addNewFieldConfig()">
+      Ok
+    </button>
+  </div>
+</div>

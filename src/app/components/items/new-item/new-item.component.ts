@@ -16,8 +16,8 @@ import {first, switchMap} from 'rxjs/operators';
 import {forkJoin} from 'rxjs';
 import {ItemManager} from '../../../shared/utils/item.manager';
 import {CopyItemDto} from '../../../shared/dto/copy-iten.dto';
-import { RboCodeService } from '../../../shared/service/rbo-code.service';
-import { RboHttpService } from '../../../shared/service/http/rbo-http.service';
+import {RboCodeService} from '../../../shared/service/rbo-code.service';
+import {RboHttpService} from '../../../shared/service/http/rbo-http.service';
 
 
 @Component({
@@ -77,7 +77,7 @@ export class NewItemComponent implements OnInit {
     this.multipleFieldsMap = {};
     multipleFields.forEach(fieldName => {
       this.multipleFieldsMap[fieldName] = true;
-    });  
+    });
   }
 
   isMultiple(fieldConfigName: string) {
@@ -148,10 +148,10 @@ export class NewItemComponent implements OnInit {
 
   gotToNewItem() {
     this.router.navigate([
-      '/items', 
+      '/items',
       this.getNewItemField(AppProperties.FIELD_D2COMM_ITEM_NUMBER).value,
       this.rboCodeService.getRboObject()
-    ])
+    ]);
   }
 
   saveNewItem() {
