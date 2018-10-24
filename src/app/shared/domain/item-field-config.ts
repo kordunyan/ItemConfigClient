@@ -1,5 +1,6 @@
 import {FieldConfig} from './field-config';
 import { MandatoryTranslation } from './mandatory-translation';
+import { MandatoryField } from './mandatory-field';
 
 export class ItemFieldConfig {
 
@@ -25,7 +26,8 @@ export class ItemFieldConfig {
     public id?: number,
     public checked?: boolean,
     public isTextField?: boolean,
-    public mandatoryTranslations?: MandatoryTranslation[]
+    public mandatoryTranslations?: MandatoryTranslation[],
+    public mandatoryFields?: MandatoryField[]
   ) {
 
   }

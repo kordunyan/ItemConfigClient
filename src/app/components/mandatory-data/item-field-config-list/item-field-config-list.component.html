@@ -19,7 +19,8 @@
                                             [languages]="languages"></app-mandatory-translations>
             </div>
             <div class="col-sm-6">
-                <app-mandatory-fields></app-mandatory-fields>   
+                <app-mandatory-fields   [itemFieldConfig]="selectedItemFieldConfig"
+                                        [instructionsFieldConfigs]="selectedInstructionFieldConfigs"></app-mandatory-fields>   
             </div>
         </div>
     </div>

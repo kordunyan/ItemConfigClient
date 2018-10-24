@@ -1,0 +1,17 @@
+<div class="card mb-1"
+      [ngClass]="{
+        'bg-secondary': mandatoryField.selected,
+        'bg-warning': !mandatoryField.id && !mandatoryField.selected 
+      }">
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item"
+        [ngClass]="{
+            'list-group-item-secondary': mandatoryField.selected && mandatoryField.id,
+            'list-group-item-warning': !mandatoryField.id && !mandatoryField.selected,
+            'bg-new-selected': !mandatoryField.id && mandatoryField.selected
+          }" 
+        (click)="selected()">{{ mandatoryField.fieldConfig.name }}</li>
+  </ul>
+</div>
+
+
