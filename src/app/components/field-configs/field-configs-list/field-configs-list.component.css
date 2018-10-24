@@ -1,0 +1,19 @@
+.table-container {
+  max-height: 730px;
+  overflow: auto;
+  border: 2px solid #dee2e6;
+}
+
+table {
+  width: 100%;
+}
+
+th{
+  color: #212529;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.table-row:hover {
+  background: rgba(0,0,0,.075);
+}

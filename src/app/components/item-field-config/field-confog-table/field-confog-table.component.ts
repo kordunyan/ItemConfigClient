@@ -1,15 +1,15 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { ItemFieldConfig } from '../../../shared/domain/item-field-config';
-import { MatCheckboxChange } from '@angular/material';
-import { DialogService } from '../../../shared/service/dialog.service';
+import {Component, Input, OnInit} from '@angular/core';
+import {ItemFieldConfig} from '../../../shared/domain/item-field-config';
+import {MatCheckboxChange} from '@angular/material';
+import {DialogService} from '../../../shared/service/dialog.service';
 
 @Component({
   selector: 'app-field-confog-table',
   templateUrl: './field-confog-table.component.html',
   styleUrls: ['./field-confog-table.component.css']
 })
-export class FieldConfogTableComponent implements OnInit{
-  displayedColumns: string[] = ['fieldConfigName', 'active', 'required', 'editable', 'dataSourceName', 'predefinedValue', 
+export class FieldConfogTableComponent implements OnInit {
+  displayedColumns: string[] = ['fieldConfigName', 'active', 'required', 'editable', 'dataSourceName', 'predefinedValue',
     'filterRegex', 'storeLastUserInput', 'canAddLater'];
 
   @Input('itemFieldConfigs') itemFieldConfigs: ItemFieldConfig[];
@@ -19,10 +19,11 @@ export class FieldConfogTableComponent implements OnInit{
 
   allItemsSelected = false;
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
-    if(this.withSelection) {
+    if (this.withSelection) {
       this.displayedColumns.push('checked');
     }
   }

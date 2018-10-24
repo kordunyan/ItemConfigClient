@@ -16,6 +16,8 @@ import {ProgressBarService} from '../../../shared/service/progress-bar.service';
 })
 export class FieldConfigsListComponent implements OnInit {
 
+  displayedColumns: string[] = ['name', 'type', 'owner', 'printable', 'delete'];
+
   private fieldConfigs: FieldConfig[];
   private fieldConfigsCopy: FieldConfig[];
   fieldConfigsCopyMap = {};
@@ -27,11 +29,11 @@ export class FieldConfigsListComponent implements OnInit {
   ngOnInit() {
     this.progressBarService.show();
     this.fieldConfigHttpService.getAll().subscribe(resultFieldConfigs => {
-      this.fieldConfigs = resultFieldConfigs;
-      this.createFieldConfigsCopy();
-      this.fieldConfigsCopyMap = this.createfieldConfigCopyMap(this.fieldConfigs);
-      this.progressBarService.hide();
-    },
+        this.fieldConfigs = resultFieldConfigs;
+        this.createFieldConfigsCopy();
+        this.fieldConfigsCopyMap = this.createfieldConfigCopyMap(this.fieldConfigs);
+        this.progressBarService.hide();
+      },
       (error) => {
         console.error(error);
         this.progressBarService.hide();
@@ -93,16 +95,18 @@ export class FieldConfigsListComponent implements OnInit {
 
   openAddNewDialog() {
     this.dialog.open(AddNewFieldConfigComponent, {
-      width: '1200px'
+      width: '600px'
     }).beforeClose().subscribe((fieldConfig: FieldConfig) => {
-      this.fieldConfigs.push(fieldConfig);
-      this.createFieldConfigsCopy();
+      if (fieldConfig) {
+        this.fieldConfigs.push(fieldConfig);
+        this.createFieldConfigsCopy();
+      }
     });
   }
 
   removeFieldConfig(fieldConfig: FieldConfig) {
     let index = this.fieldConfigs.indexOf(fieldConfig);
-    if (index >=0) {
+    if (index >= 0) {
       this.fieldConfigs.splice(index, 1);
     }
     this.createFieldConfigsCopy();
