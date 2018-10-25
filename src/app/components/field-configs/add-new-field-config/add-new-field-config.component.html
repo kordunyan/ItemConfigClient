@@ -1,16 +1,20 @@
 <h1 mat-dialog-title>Add new Field Config</h1>
 <div mat-dialog-content>
-
-
   <form #fieldConfigForm="ngForm">
     <div class="form-group">
       <label for="name">Name</label>
       <input type="text"
              name="fieldConfigname"
              required
+             appUniqueFieldConfigValidator
              [(ngModel)]="newFieldConfig.name"
+             [ngModelOptions]="{updateOn: 'blur'}"
+             #name="ngModel"
              class="form-control"
-             id="name">
+             [ngClass]="{'is-invalid' : name.touched && name.invalid}"
+             id="name" />
+        <div class="invalid-feedback"
+              *ngIf="name.errors?.uniqueFieldConfigName">Field config name olready exists</div>
     </div>
     <div class="form-group">
       <label for="type">Type</label>
@@ -18,6 +22,8 @@
              name="type"
              required
              [(ngModel)]="newFieldConfig.type"
+             #type="ngModel"
+             [ngClass]="{'is-invalid' : type.touched && type.invalid}"
              class="form-control"
              id="type">
     </div>
@@ -27,11 +33,14 @@
              name="owner"
              required
              [(ngModel)]="newFieldConfig.owner"
+             #owner="ngModel"
+             [ngClass]="{'is-invalid' : owner.touched && owner.invalid}"
              class="form-control"
              id="owner">
     </div>
     <div class="form-group">
       <mat-checkbox [(ngModel)]="newFieldConfig.printable"
+                    name="printable"
                     [labelPosition]="'before'">Printable</mat-checkbox>
     </div>
   </form>

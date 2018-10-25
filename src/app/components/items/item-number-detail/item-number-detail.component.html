@@ -1,10 +1,16 @@
 <div class="card mt-4">
   <div class="card-header">
     <span class="float-left mt-1"><b>Item:</b> {{ itemNumber }}</span>
-    <a class="btn float-right btn-primary" [routerLink]="['/items', rboCodeService.getRboObject()]" role="button">Back</a>
-    <button class="btn btn-primary float-right mr-2" (click)="onToggle()">
-      <i class="fa {{ isAllShow ? 'fa-angle-down' : 'fa-angle-right' }}" aria-hidden="true"></i>
-    </button>
+
+    <div class="float-right">
+        <button class="btn btn-info mr-2">
+            <i aria-hidden="true" class="fa fa-cloud-download"></i>
+        </button>
+        <button class="btn btn-primary mr-2" (click)="onToggle()">
+            <i class="fa {{ isAllShow ? 'fa-angle-down' : 'fa-angle-right' }}" aria-hidden="true"></i>
+        </button>
+        <a class="btn btn-primary" [routerLink]="['/items', rboCodeService.getRboObject()]" role="button">Back</a>
+    </div>
   </div>
   <div class="card-body">
     <app-item-detail *ngFor="let item of items; let i = index" 

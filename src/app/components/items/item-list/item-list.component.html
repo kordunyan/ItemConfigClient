@@ -1,11 +1,17 @@
 <div class="card mt-4">
   <div class="card-header">
-    <span class="float-left mt-1">Items</span>
-    <a class="btn float-right btn-primary" [routerLink]="['/items/new', rboCodeService.getRboObject()]" role="button">Add+</a>
+      <mat-form-field>
+          <input matInput
+                [formControl]="itemNumberInput" 
+                placeholder="Items">
+      </mat-form-field>
+    <a class="btn float-right btn-primary mt-3" 
+       [routerLink]="['/items/new', rboCodeService.getRboObject()]" 
+       role="button">Add+</a>
   </div>
   <div class="card-body">
     <ul class="list-group list-group-flush">
-      <li *ngFor="let item of items"
+      <li *ngFor="let item of filteredItems | async"
           class="list-group-item list-group-item-action">
         <a class="item-link" [routerLink]="['/items', item, rboCodeService.getRboObject()]">{{ item }}</a>
         <div class="delete-wrapper">

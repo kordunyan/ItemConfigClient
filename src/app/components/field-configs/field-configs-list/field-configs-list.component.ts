@@ -4,10 +4,11 @@ import {FieldConfig} from '../../../shared/domain/field-config';
 import {ItemFieldConfig} from '../../../shared/domain/item-field-config';
 import {ItemFieldConfigManager} from '../../../shared/utils/item-field-config-manager';
 import {MultipleEditDialogComponent} from '../../item-field-config/multiple-edit-dialog/multiple-edit-dialog.component';
-import {MatDialog} from '@angular/material';
+import {MatDialog, MatTableDataSource} from '@angular/material';
 import {AddNewFieldConfigComponent} from '../add-new-field-config/add-new-field-config.component';
 import {MessageService} from '../../../shared/service/message.service';
 import {ProgressBarService} from '../../../shared/service/progress-bar.service';
+import { ArrayUtils } from 'src/app/shared/utils/array-utils';
 
 @Component({
   selector: 'app-field-configs-list',
@@ -17,19 +18,23 @@ import {ProgressBarService} from '../../../shared/service/progress-bar.service';
 export class FieldConfigsListComponent implements OnInit {
 
   displayedColumns: string[] = ['name', 'type', 'owner', 'printable', 'delete'];
-
+  filterValue: string;
   private fieldConfigs: FieldConfig[];
   private fieldConfigsCopy: FieldConfig[];
   fieldConfigsCopyMap = {};
+  dataSource;
 
-  constructor(private fieldConfigHttpService: FieldConfigHttpService, private messageService: MessageService,
-              private progressBarService: ProgressBarService, private dialog: MatDialog) {
+  constructor(private fieldConfigHttpService: FieldConfigHttpService, 
+              private messageService: MessageService,
+              private progressBarService: ProgressBarService, 
+              private dialog: MatDialog) {
   }
 
   ngOnInit() {
     this.progressBarService.show();
     this.fieldConfigHttpService.getAll().subscribe(resultFieldConfigs => {
         this.fieldConfigs = resultFieldConfigs;
+        this.initDatasource();
         this.createFieldConfigsCopy();
         this.fieldConfigsCopyMap = this.createfieldConfigCopyMap(this.fieldConfigs);
         this.progressBarService.hide();
@@ -38,12 +43,26 @@ export class FieldConfigsListComponent implements OnInit {
         console.error(error);
         this.progressBarService.hide();
       });
-
   }
 
+  initDatasource() {
+    this.dataSource = new MatTableDataSource(this.fieldConfigs);
+    if (this.filterValue) {
+      this.filterFieldConfigs();  
+    }
+  }
+
+  filterFieldConfigs() {
+    this.dataSource.filter = this.filterValue.trim().toLocaleLowerCase(); 
+  }
+
+
   onSaveClick() {
-    this.progressBarService.show();
     const fieldConfigs = this.getChangedItemFields();
+    if (fieldConfigs.length <= 0) {
+      return;
+    }
+    this.progressBarService.show();
     this.fieldConfigHttpService.saveAll(fieldConfigs).subscribe(
       (result) => {
         this.createFieldConfigsCopy();
@@ -52,7 +71,6 @@ export class FieldConfigsListComponent implements OnInit {
       },
       (error) => {
         console.error(error);
-        this.messageService.error('Failed to save updates');
         this.progressBarService.hide();
       }
     );
@@ -99,16 +117,34 @@ export class FieldConfigsListComponent implements OnInit {
     }).beforeClose().subscribe((fieldConfig: FieldConfig) => {
       if (fieldConfig) {
         this.fieldConfigs.push(fieldConfig);
+        this.sortFieldConfigs();
+        this.initDatasource();
         this.createFieldConfigsCopy();
       }
     });
   }
 
+  onDeleteFieldConfig(fieldConfig: FieldConfig) {
+    this.progressBarService.show();
+    this.fieldConfigHttpService.delete(fieldConfig).subscribe(
+      (result) => {
+        this.messageService.success('Field config was deleted');
+        this.removeFieldConfig(fieldConfig);
+        this.progressBarService.hide();
+      },
+      (error) => {
+        this.progressBarService.hide();
+      }
+    );
+  }
+
+  sortFieldConfigs() {
+    ArrayUtils.sort(this.fieldConfigs, (field) => field.name.toLowerCase());
+  }
+
   removeFieldConfig(fieldConfig: FieldConfig) {
-    let index = this.fieldConfigs.indexOf(fieldConfig);
-    if (index >= 0) {
-      this.fieldConfigs.splice(index, 1);
-    }
-    this.createFieldConfigsCopy();
+    ArrayUtils.remove(this.fieldConfigs, fieldConfig);
+    ArrayUtils.remove(this.fieldConfigsCopy, fieldConfig);
+    this.initDatasource();
   }
 }

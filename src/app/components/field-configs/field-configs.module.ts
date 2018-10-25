@@ -5,10 +5,10 @@ import {FieldConfigsListComponent} from './field-configs-list/field-configs-list
 import {CommonModule} from '@angular/common';
 import {MaterialModulesModule} from '../../shared/modules/material-modules/material-modules.module';
 import {MainComponentsModule} from '../../shared/components/main-components.module';
-import {FieldConfigRowComponent} from './field-config-row/field-config-row.component';
 import {AddNewFieldConfigComponent} from './add-new-field-config/add-new-field-config.component';
 import {SaveForAllDialogComponent} from '../item-field-config/save-for-all-dialog/save-for-all-dialog.component';
 import {MultipleEditDialogComponent} from '../item-field-config/multiple-edit-dialog/multiple-edit-dialog.component';
+import { UniqueFieldConfigValidatorDirective } from './unique-field-config-validator.directive';
 
 
 @NgModule({
@@ -21,8 +21,8 @@ import {MultipleEditDialogComponent} from '../item-field-config/multiple-edit-di
     declarations: [
       FieldConfigComponent,
       FieldConfigsListComponent,
-      FieldConfigRowComponent,
-      AddNewFieldConfigComponent
+      AddNewFieldConfigComponent,
+      UniqueFieldConfigValidatorDirective
     ],
     entryComponents: [
       AddNewFieldConfigComponent

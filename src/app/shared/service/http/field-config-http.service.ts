@@ -54,13 +54,13 @@ export class FieldConfigHttpService extends AbstractHttpService {
       );
   }
 
-  getByName(name: string): Observable<FieldConfig>  {
+  getByName(name: string): Observable<{} | FieldConfig>  {
     if (name === null) {
       return of(null);
     }
     return this.http.get<FieldConfig>(this.getRelatedUrl(`/get-by-name/${name}`), this.getHttpOptions())
       .pipe(
-        catchError(this.handleError(`Failed to get field config by name`, FieldConfig.default()))
+        catchError(this.handleTrowableError(`Failed to get field config by name`, name))
       );
   }
 

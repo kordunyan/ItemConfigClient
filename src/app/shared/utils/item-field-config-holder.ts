@@ -6,6 +6,7 @@ import {AbstractItemFieldConfigHolder} from './abstract-item-field-holder';
 import {ItemFieldConfigManager} from './item-field-config-manager';
 import {FieldType} from '../domain/field-type';
 import {ItemFieldConfigFilter} from './item-field-config-filter';
+import { ArrayUtils } from './array-utils';
 
 export class ItemFieldConfigHolder extends AbstractItemFieldConfigHolder {
   itemFieldConfigsCopy: ItemFieldConfig[] = [];
@@ -41,7 +42,11 @@ export class ItemFieldConfigHolder extends AbstractItemFieldConfigHolder {
   }
 
   isTextField(fieldConfigName): boolean {
-    return this.fieldConfigMap[fieldConfigName].type === FieldType.TEXT_FIELD;
+    const fieldConfig = this.fieldConfigMap[fieldConfigName];
+    if (fieldConfig) {
+      return this.fieldConfigMap[fieldConfigName].type === FieldType.TEXT_FIELD;  
+    }
+    return false;
   }
 
   setItem(item: Item) {
@@ -87,7 +92,7 @@ export class ItemFieldConfigHolder extends AbstractItemFieldConfigHolder {
   }
 
   sortItemFieldConfigs(itemFieldConfigs: ItemFieldConfig[]) {
-    this.sortFields(itemFieldConfigs, (itemFieldConfig: ItemFieldConfig) => itemFieldConfig.fieldConfigName.toLowerCase());
+    ArrayUtils.sort(itemFieldConfigs, (itemFieldConfig: ItemFieldConfig) => itemFieldConfig.fieldConfigName.toLowerCase());
   }
 
   resetItemFieldConfigs() {

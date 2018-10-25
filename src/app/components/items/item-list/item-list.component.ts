@@ -4,6 +4,8 @@ import {Observable} from 'rxjs';
 import {ProgressBarService} from '../../../shared/service/progress-bar.service';
 import {ActivatedRoute} from '@angular/router';
 import {RboCodeService} from '../../../shared/service/rbo-code.service';
+import { FormControl } from '@angular/forms';
+import { startWith, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-item-list',
@@ -11,8 +13,9 @@ import {RboCodeService} from '../../../shared/service/rbo-code.service';
   styleUrls: ['./item-list.component.css']
 })
 export class ItemListComponent implements OnInit {
-
+  itemNumberInput = new FormControl();
   public items: string[];
+  public filteredItems: Observable<string[]>;
 
   constructor(
     private itemService: ItemHttpService,
@@ -30,8 +33,23 @@ export class ItemListComponent implements OnInit {
     this.progressBarService.show();
     this.itemService.getAllItemValues().subscribe((numbers: string[]) => {
       this.items = numbers;
+      this.initFilter();
       this.progressBarService.hide();
     });
+  }
+
+  initFilter() {
+    this.filteredItems = this.itemNumberInput.valueChanges.pipe(
+      startWith<string>(''),
+      map((itemNumber: string) => {
+        return itemNumber ? this._filter(itemNumber) : this.items.slice()
+      })
+    );
+  }
+
+  private _filter(itemNumber: string): string[] {
+    const inLowerCase = itemNumber.trim().toLowerCase();
+    return this.items.filter(item => item.toLocaleLowerCase().indexOf(inLowerCase) >= 0);
   }
 
   onDeleteItemNumber(itemNumber: string) {
