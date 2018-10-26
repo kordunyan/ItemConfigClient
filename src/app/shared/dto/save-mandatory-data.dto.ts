@@ -5,7 +5,7 @@ export class SaveMandatoryDataDto {
   constructor(
     public itemFieldConfig: ItemFieldConfig,
     public saveForAll: boolean,
-    public newMandatoryTrnaslations?: MandatoryTranslation[],
+    public newMandatoryTranslations?: MandatoryTranslation[],
     public saveForAllStrategy?: string
   ) {
   }

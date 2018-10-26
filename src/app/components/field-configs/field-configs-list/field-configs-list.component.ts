@@ -8,7 +8,7 @@ import {MatDialog, MatTableDataSource} from '@angular/material';
 import {AddNewFieldConfigComponent} from '../add-new-field-config/add-new-field-config.component';
 import {MessageService} from '../../../shared/service/message.service';
 import {ProgressBarService} from '../../../shared/service/progress-bar.service';
-import { ArrayUtils } from 'src/app/shared/utils/array-utils';
+import {ArrayUtils} from 'src/app/shared/utils/array-utils';
 
 @Component({
   selector: 'app-field-configs-list',
@@ -24,9 +24,9 @@ export class FieldConfigsListComponent implements OnInit {
   fieldConfigsCopyMap = {};
   dataSource;
 
-  constructor(private fieldConfigHttpService: FieldConfigHttpService, 
+  constructor(private fieldConfigHttpService: FieldConfigHttpService,
               private messageService: MessageService,
-              private progressBarService: ProgressBarService, 
+              private progressBarService: ProgressBarService,
               private dialog: MatDialog) {
   }
 
@@ -47,13 +47,16 @@ export class FieldConfigsListComponent implements OnInit {
 
   initDatasource() {
     this.dataSource = new MatTableDataSource(this.fieldConfigs);
+    this.dataSource.filterPredicate = (data, filter) => {
+      return data.name.toLowerCase().indexOf(filter) >= 0;
+    };
     if (this.filterValue) {
-      this.filterFieldConfigs();  
+      this.filterFieldConfigs();
     }
   }
 
   filterFieldConfigs() {
-    this.dataSource.filter = this.filterValue.trim().toLocaleLowerCase(); 
+    this.dataSource.filter = this.filterValue.trim().toLocaleLowerCase();
   }
 
 

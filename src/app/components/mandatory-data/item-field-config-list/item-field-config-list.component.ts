@@ -38,21 +38,20 @@ export class ItemFieldConfigListComponent implements OnInit {
 
   ngOnInit() {
     this.progressBarService.show();
+    const itemId = this.route.snapshot.paramMap.get(AppProperties.REQUEST_PARAM_ITEM_ID);
     forkJoin(
-      this.route.paramMap.pipe(
-        first(),
-        switchMap((params: ParamMap) => {
-          return this.itemFieldConfigHttpService.getInstructionsByItemId(params.get(AppProperties.REQUEST_PARAM_ITEM_ID));
-        })),
+      this.itemFieldConfigHttpService.getInstructionsByItemId(itemId),
       this.fieldConfigHttpService.getInstructionsFields(),
       this.fieldConfigHttpService.getInstructionsFieldConfigsMap(),
-      this.languageHttpService.getAll()
+      this.languageHttpService.getAll(),
+      this.itemHttpService.getByIdWithoutItemFieldConfig(itemId)
     ).subscribe((result) => {
       // result[0] = item field configs, result[1] = instructions fields, result[2] = instructions field configs map, result[3] = languages
       this.itemFieldConfigs = result[0];
       this.instructionsFields = result[1];
       this.instructionsFieldCofigsMap = result[2];
       this.languages = result[3];
+      console.log(result[4]);
       this.progressBarService.hide();
     }, (error) => this.progressBarService.hide());
   }

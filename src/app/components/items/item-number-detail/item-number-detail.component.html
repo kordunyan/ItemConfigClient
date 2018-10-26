@@ -3,9 +3,7 @@
     <span class="float-left mt-1"><b>Item:</b> {{ itemNumber }}</span>
 
     <div class="float-right">
-        <button class="btn btn-info mr-2">
-            <i aria-hidden="true" class="fa fa-cloud-download"></i>
-        </button>
+        <app-export-item-number [itemNumber]="itemNumber" class="mr-2"></app-export-item-number>
         <button class="btn btn-primary mr-2" (click)="onToggle()">
             <i class="fa {{ isAllShow ? 'fa-angle-down' : 'fa-angle-right' }}" aria-hidden="true"></i>
         </button>

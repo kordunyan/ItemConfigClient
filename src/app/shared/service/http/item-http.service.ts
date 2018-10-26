@@ -7,7 +7,7 @@ import {MessageService} from '../message.service';
 import {Item} from '../../domain/item';
 import {CopyItemDto} from '../../dto/copy-iten.dto';
 import {UpdateLocationDto} from '../../dto/update-location.dto';
-import { RboCodeService } from '../rbo-code.service';
+import {RboCodeService} from '../rbo-code.service';
 
 @Injectable({
   providedIn: 'root',
@@ -93,6 +93,13 @@ export class ItemHttpService extends AbstractHttpService {
       );
   }
 
+  public getByIdWithoutItemFieldConfig(id: string): Observable<Item> {
+    return this.http.get<Item>(this.getRelatedUrl(`/without-field-configs/id/${id}`), this.getHttpOptions())
+      .pipe(
+        catchError(this.handleError(`Failed to get item by id: ${id}`, null))
+      );
+  }
+
   public getByIdNoMandatory(id: string) {
     if (id === null) {
       return of(null);
@@ -100,7 +107,7 @@ export class ItemHttpService extends AbstractHttpService {
     return this.http.get(this.getRelatedUrl(`/nomandatory/id/${id}`), this.getHttpOptions())
       .pipe(
         catchError(this.handleError(`Failed to get item by id: ${id}`, null))
-      );    
+      );
   }
 
 }
