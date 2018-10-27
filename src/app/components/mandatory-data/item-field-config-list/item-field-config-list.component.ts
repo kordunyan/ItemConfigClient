@@ -11,6 +11,8 @@ import {Language} from 'src/app/shared/domain/language';
 import {ProgressBarService} from 'src/app/shared/service/progress-bar.service';
 import {ItemHttpService} from '../../../shared/service/http/item-http.service';
 import {FieldConfig} from 'src/app/shared/domain/field-config';
+import { InstructionTypeInputConfigHttpService } from 'src/app/shared/service/http/instruction-type-input-config-http.service';
+import { Item } from 'src/app/shared/domain/item';
 
 @Component({
   selector: 'app-item-field-config-list',
@@ -23,8 +25,9 @@ export class ItemFieldConfigListComponent implements OnInit {
   instructionsFields = {};
   instructionsFieldCofigsMap = {};
   languages: Language[] = [];
-  selectedItemFieldConfig: ItemFieldConfig = ItemFieldConfig.default('');
+  selectedItemFieldConfig: ItemFieldConfig = ItemFieldConfig.default(FieldConfig.default());
   selectedInstructionFieldConfigs: FieldConfig[] = [];
+  item: Item;
 
   constructor(
     private itemFieldConfigHttpService: ItemFieldConfigHttpService,
@@ -32,7 +35,8 @@ export class ItemFieldConfigListComponent implements OnInit {
     private languageHttpService: LanguageHttpService,
     private route: ActivatedRoute,
     private progressBarService: ProgressBarService,
-    private itemHttpService: ItemHttpService
+    private itemHttpService: ItemHttpService,
+    private instructionConfigHttpService: InstructionTypeInputConfigHttpService
   ) {
   }
 
@@ -43,15 +47,16 @@ export class ItemFieldConfigListComponent implements OnInit {
       this.itemFieldConfigHttpService.getInstructionsByItemId(itemId),
       this.fieldConfigHttpService.getInstructionsFields(),
       this.fieldConfigHttpService.getInstructionsFieldConfigsMap(),
-      this.languageHttpService.getAll(),
-      this.itemHttpService.getByIdWithoutItemFieldConfig(itemId)
+      this.itemHttpService.getByIdWithoutItemFieldConfig(itemId),
+      this.instructionConfigHttpService.getInstructionsLanguages()
     ).subscribe((result) => {
-      // result[0] = item field configs, result[1] = instructions fields, result[2] = instructions field configs map, result[3] = languages
+      // result[0] = item field configs, result[1] = instructions fields, result[2] = instructions field configs map, result[3] = item
+      console.log(result);
       this.itemFieldConfigs = result[0];
       this.instructionsFields = result[1];
       this.instructionsFieldCofigsMap = result[2];
-      this.languages = result[3];
-      console.log(result[4]);
+      this.item = result[3];
+      
       this.progressBarService.hide();
     }, (error) => this.progressBarService.hide());
   }
@@ -62,7 +67,7 @@ export class ItemFieldConfigListComponent implements OnInit {
   }
 
   getSelectedInstructionFieldConfigs(): FieldConfig[] {
-    const instructionFields = this.instructionsFields[this.selectedItemFieldConfig.fieldConfigName];
+    const instructionFields = this.instructionsFields[this.selectedItemFieldConfig.fieldConfig.name];
     if (instructionFields && instructionFields.length > 0) {
       let result: FieldConfig[] = [];
       instructionFields.forEach(fieldName => result.push(this.instructionsFieldCofigsMap[fieldName]));

@@ -14,7 +14,7 @@ export class ItemFieldConfig {
   public static readonly DEFAULT_STORE_LAST_USER_INPUT = false;
 
   constructor(
-    public fieldConfigName: string,
+    public fieldConfig: FieldConfig,
     public active: boolean,
     public required: boolean,
     public editable: boolean,
@@ -34,7 +34,7 @@ export class ItemFieldConfig {
 
   public static copy(itemFieldConfig: ItemFieldConfig) {
     return new ItemFieldConfig(
-      itemFieldConfig.fieldConfigName,
+      itemFieldConfig.fieldConfig,
       itemFieldConfig.active,
       itemFieldConfig.required,
       itemFieldConfig.editable,
@@ -70,9 +70,9 @@ export class ItemFieldConfig {
     dest.storeLastUserInput = src.storeLastUserInput;
   }
 
-  public static default(fieldConfigName: string, isTextField?: boolean): ItemFieldConfig {
+  public static default(fieldConfig: FieldConfig, isTextField?: boolean): ItemFieldConfig {
     return new ItemFieldConfig(
-      fieldConfigName,
+      fieldConfig,
       ItemFieldConfig.DEFAULT_ACTIVE,
       ItemFieldConfig.DEFAULT_REQUIRED,
       ItemFieldConfig.DEFAULT_EDITABLE,

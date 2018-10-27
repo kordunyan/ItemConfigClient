@@ -145,7 +145,6 @@ export class FieldConfigListControlComponent implements OnInit {
 
   private saveItemFieldConfig(saveForAll: boolean, saveForAllStrategy?: string, selectedItemNumbers?: string[]) {
     let changedItemFields = this.itemFieldConfigHolder.getChangedItemFields();
-
     if (changedItemFields == null || changedItemFields.length === 0) {
       return;
     }

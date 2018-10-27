@@ -41,6 +41,7 @@ export class FieldConfigListComponent implements OnInit {
     ).subscribe(
       (result) => {
         // result[0] = Item, result[1] = fieldConfigs, result[2] = instruction fields
+        console.log(result);
         this.itemFieldConfigHolder = new ItemFieldConfigHolder(result[0], result[1], result[2]);
         this.progressBarService.hide();
         this.isLoaded = true;

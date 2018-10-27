@@ -27,7 +27,7 @@ export class ItemManager {
       return null;
     }
     return item.itemFieldConfigs && item.itemFieldConfigs.length > 0
-      ? item.itemFieldConfigs.find((field) => field.fieldConfigName === fieldConfigName)
+      ? item.itemFieldConfigs.find((field) => field.fieldConfig.name === fieldConfigName)
       : null;
   }
 

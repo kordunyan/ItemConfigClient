@@ -57,8 +57,8 @@ export class MultipleEditDialogComponent {
   searchFieldConfigsByregex() {
     const regex = new RegExp(this.fieldConfigNameRegex, "i");
     const matchedFieldConfigs = this.itemFieldConfigs.filter(itemFieldConfig => {
-      return regex.test(itemFieldConfig.fieldConfigName)
-        && itemFieldConfig.fieldConfigName !== this.selectedItemFieldConfig.fieldConfigName;
+      const fieldConfigName = itemFieldConfig.fieldConfig.name;
+      return regex.test(fieldConfigName) && fieldConfigName !== this.selectedItemFieldConfig.fieldConfig.name;
     });
 
     this.matchedFieldConfigsMap = ItemFieldConfigHolder.createItemFieldConfigMap(matchedFieldConfigs);
@@ -94,20 +94,20 @@ export class MultipleEditDialogComponent {
     }
     ItemFieldConfig.copyValues(this.selectedItemFieldConfigCopy, this.selectedItemFieldConfig);
     this.matchedItemFieldConfigsCopy.forEach(itemFieldConfigCopy => {
-      let originItemFieldConfig = this.matchedFieldConfigsMap[itemFieldConfigCopy.fieldConfigName];
+      let originItemFieldConfig = this.matchedFieldConfigsMap[itemFieldConfigCopy.fieldConfig.name];
       ItemFieldConfig.copyValues(itemFieldConfigCopy, originItemFieldConfig);
     });
     this.dialogRef.close();
   }
 
   getItemFieldConfig(fieldConfigName) {
-    return this.itemFieldConfigs.find(itemFieldConfig => itemFieldConfig.fieldConfigName === fieldConfigName);
+    return this.itemFieldConfigs.find(itemFieldConfig => itemFieldConfig.fieldConfig.name === fieldConfigName);
   }
 
   private _filter(fieldConfigName: string): ItemFieldConfig[] {
     const inLowerCase = fieldConfigName.toLocaleLowerCase();
     return this.itemFieldConfigs.filter(itemFieldConfig => {
-      return itemFieldConfig.fieldConfigName.toLocaleLowerCase().startsWith(inLowerCase);
+      return itemFieldConfig.fieldConfig.name.toLocaleLowerCase().startsWith(inLowerCase);
     });
   }
 

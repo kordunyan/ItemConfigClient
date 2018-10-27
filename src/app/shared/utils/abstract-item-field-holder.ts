@@ -13,8 +13,6 @@ export abstract class AbstractItemFieldConfigHolder {
     this.fieldConfigs.forEach((fieldConfig: FieldConfig) => this.fieldConfigMap[fieldConfig.name] = fieldConfig);  
   }
 
-  abstract createNoActiveFieldConfigs();
-
   sortFieldConfigs(fieldConfigs: FieldConfig[]) {
     ArrayUtils.sort(fieldConfigs, (fieldConfig: FieldConfig) => fieldConfig.name.toLowerCase());
   }

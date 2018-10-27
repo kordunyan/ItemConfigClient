@@ -37,16 +37,12 @@ export class ItemFieldConfigHolder extends AbstractItemFieldConfigHolder {
 
   setIsTextField() {
     this.item.itemFieldConfigs.forEach((itemFieldConfig: ItemFieldConfig) => {
-      itemFieldConfig.isTextField = this.isTextField(itemFieldConfig.fieldConfigName);
+      itemFieldConfig.isTextField = this.isTextField(itemFieldConfig.fieldConfig);
     });
   }
 
-  isTextField(fieldConfigName): boolean {
-    const fieldConfig = this.fieldConfigMap[fieldConfigName];
-    if (fieldConfig) {
-      return this.fieldConfigMap[fieldConfigName].type === FieldType.TEXT_FIELD;  
-    }
-    return false;
+  isTextField(fieldConfig: FieldConfig): boolean {
+    return fieldConfig.type === FieldType.TEXT_FIELD;
   }
 
   setItem(item: Item) {
@@ -63,7 +59,7 @@ export class ItemFieldConfigHolder extends AbstractItemFieldConfigHolder {
   public static createItemFieldConfigMap(itemFieldConfigs: ItemFieldConfig[]) {
     const itemFieldConfigsCopyMap = {};
     itemFieldConfigs.forEach((itemFieldConfig: ItemFieldConfig) => {
-      itemFieldConfigsCopyMap[itemFieldConfig.fieldConfigName] = itemFieldConfig;
+      itemFieldConfigsCopyMap[itemFieldConfig.fieldConfig.name] = itemFieldConfig;
     });
     return itemFieldConfigsCopyMap;
   }
@@ -84,7 +80,8 @@ export class ItemFieldConfigHolder extends AbstractItemFieldConfigHolder {
     }
     let newItemFields = fieldConfigNames.map(fieldConfigName => {
       this.removeNoActiveField(fieldConfigName);
-      return ItemFieldConfig.default(fieldConfigName, this.isTextField(fieldConfigName));
+      const fieldConfig = this.fieldConfigMap[fieldConfigName];
+      return ItemFieldConfig.default(fieldConfig, this.isTextField(fieldConfig));
     });
     this.item.itemFieldConfigs = this.item.itemFieldConfigs.concat(newItemFields);
     this.sortItemFieldConfigs(this.item.itemFieldConfigs);
@@ -92,7 +89,7 @@ export class ItemFieldConfigHolder extends AbstractItemFieldConfigHolder {
   }
 
   sortItemFieldConfigs(itemFieldConfigs: ItemFieldConfig[]) {
-    ArrayUtils.sort(itemFieldConfigs, (itemFieldConfig: ItemFieldConfig) => itemFieldConfig.fieldConfigName.toLowerCase());
+    ArrayUtils.sort(itemFieldConfigs, (itemFieldConfig: ItemFieldConfig) => itemFieldConfig.fieldConfig.name.toLowerCase());
   }
 
   resetItemFieldConfigs() {
@@ -119,7 +116,7 @@ export class ItemFieldConfigHolder extends AbstractItemFieldConfigHolder {
   getChangedItemFields(): ItemFieldConfig[] {
     let result: ItemFieldConfig[] = [];
     this.item.itemFieldConfigs.forEach((itemFieldConfig: ItemFieldConfig) => {
-      let copiedField = this.itemFieldConfigsCopyMap[itemFieldConfig.fieldConfigName];
+      let copiedField = this.itemFieldConfigsCopyMap[itemFieldConfig.fieldConfig.name];
       ItemFieldConfigManager.minimizeFieldValues(itemFieldConfig);
       if (copiedField == null) {
         result.push(itemFieldConfig);

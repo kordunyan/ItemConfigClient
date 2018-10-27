@@ -6,7 +6,7 @@ export class ItemFieldConfigManager {
         if (fieldA == null || fieldB == null) {
             return false;
         }
-        if (fieldA.fieldConfigName !== fieldB.fieldConfigName) {
+        if (fieldA.fieldConfig.name !== fieldB.fieldConfig.name) {
             return false;
         }
         if (fieldA.active !== fieldB.active) {

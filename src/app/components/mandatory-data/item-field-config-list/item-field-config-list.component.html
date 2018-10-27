@@ -8,7 +8,7 @@
                     [ngClass]="{'list-group-item-secondary': itemFieldConfig.id === selectedItemFieldConfig.id}" 
                     (click)="select(itemFieldConfig)"
                     *ngFor="let itemFieldConfig of itemFieldConfigs">
-                    {{ itemFieldConfig.fieldConfigName }}
+                    {{ itemFieldConfig.fieldConfig.name }}
                 </a>
             </div>
         </div>
