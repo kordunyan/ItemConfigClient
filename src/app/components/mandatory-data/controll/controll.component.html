@@ -20,6 +20,8 @@
 </button>
 <app-delete [btnType]="'danger'" 
             (onOkChoosen)="onDelete()"
+            (onAllChoosen)="onDeleteCurrent()"
+            (onByChoosen)="onDeleteByNumbers($event)"
             [small]="true" 
             [withByItemNumbers]="true"></app-delete>
 <button class="btn btn-primary btn-sm ml-1"

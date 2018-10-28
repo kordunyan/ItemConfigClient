@@ -49,4 +49,15 @@ export class ControllComponent implements OnInit {
     this.delete.emit();  
   }
 
+  onDeleteCurrent() {
+    this.delete.emit({deleteForAll: true})   
+  }
+
+  onDeleteByNumbers(itemNumbers: string[]) {
+    this.delete.emit({
+      deleteForAll: true,
+      itemNumbers: itemNumbers  
+    });
+  }
+
 }

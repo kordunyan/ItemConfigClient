@@ -152,9 +152,16 @@ export class ItemFieldConfigListComponent implements OnInit {
       return;
     }
     this.progressBarService.show();
-    const dto = this.buildDeleteTranslationsDto(itemFieldConfigsWithSelectedData, false);
+    let deleteForAll = deleteOptions && deleteOptions['deleteForAll'] ? true : false; 
+    let itemNumbers = [];
+    if (deleteForAll) {
+      itemNumbers.push(this.getItemNumber());
+      if (deleteOptions['itemNumbers']) {
+        itemNumbers = itemNumbers.concat(deleteOptions['itemNumbers']);
+      }
+    }
+    const dto = this.buildDeleteTranslationsDto(itemFieldConfigsWithSelectedData, deleteForAll, itemNumbers);
     this.mandatoryTranslationsHttpService.delete(dto).subscribe((result) => {
-      console.log(result);
       itemFieldConfigsWithSelectedData.forEach(itemFieldConfig => {
         itemFieldConfig.mandatoryTranslations = itemFieldConfig.mandatoryTranslations.filter(translation => !translation.selected);   
       });
