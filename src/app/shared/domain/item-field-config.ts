@@ -27,7 +27,9 @@ export class ItemFieldConfig {
     public checked?: boolean,
     public isTextField?: boolean,
     public mandatoryTranslations?: MandatoryTranslation[],
-    public mandatoryFields?: MandatoryField[]
+    public mandatoryFields?: MandatoryField[],
+    public hasNewMandatoryData?: boolean,
+    public hasSelectedMandatoryData?: boolean
   ) {
 
   }

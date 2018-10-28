@@ -23,7 +23,7 @@ export class FilterRegexComponent {
   }
 
   getInstructionFields(itemFieldConfig: ItemFieldConfig) {
-    return this.instructionsFields[itemFieldConfig.fieldConfig.name];
+    return this.instructionsFields[itemFieldConfig.fieldConfig.type];
   }
 
 }

@@ -1,12 +1,12 @@
 import {ItemFieldConfig} from '../domain/item-field-config';
 import {MandatoryTranslation} from '../domain/mandatory-translation';
+import { Item } from '../domain/item';
 
 export class SaveMandatoryDataDto {
   constructor(
-    public itemFieldConfig: ItemFieldConfig,
+    public itemFieldConfigs: ItemFieldConfig[],
     public saveForAll: boolean,
-    public newMandatoryTranslations?: MandatoryTranslation[],
-    public saveForAllStrategy?: string
+    public itemNumbers?: string[]
   ) {
   }
 }

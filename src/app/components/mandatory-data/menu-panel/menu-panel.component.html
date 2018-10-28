@@ -1,5 +1,10 @@
 <div class="card mb-3">
   <div class="card-header">
-    Mandatory Translations
+    <span class="mt-2 d-inline-block">Mandatory Translations</span>
+    <div class="float-right">
+      <app-export-item-number [itemNumber]="itemNumber" class="mr-1"></app-export-item-number>
+      <button class="btn btn-primary mr-1" (click)="goToItemFieldConfig()"><i aria-hidden="true" class="fa fa-sliders"></i></button>
+      <button class="btn btn-primary" (click)="goBack()">Back</button>
+    </div>
   </div>
 </div>

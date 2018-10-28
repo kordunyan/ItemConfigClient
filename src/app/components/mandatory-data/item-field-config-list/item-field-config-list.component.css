@@ -1,8 +1,16 @@
 .max-height-scrollbar {
-    max-height: 780px;
+    max-height: 710px;
     overflow: auto;
 }
 
 .max-height-scrollbar>a {
     cursor: pointer;
+}
+
+.list-group-item-light {
+    background: #F0F0F0;
+}
+
+.list-group-item-elow-gray {
+    background: rgb(236, 207, 163);
 }

@@ -11,10 +11,13 @@ export class ControllComponent implements OnInit {
   @Output('add') add = new EventEmitter();
   @Output('reset') reset = new EventEmitter();
   @Output('save') save = new EventEmitter();
-  @Output('saveForItemNumber') saveForItemNumber = new EventEmitter();
+  @Output('saveForItemNumber') saveForItemNumber = new EventEmitter<string[]>();
+  @Output('delete') delete = new EventEmitter<{}>();
   @Input('valuesToSelect') valuesToSelect: string[] = [];
 
-  constructor() {
+  constructor(
+    private dialogService: DialogService
+  ) {
   }
 
   ngOnInit() {
@@ -34,6 +37,16 @@ export class ControllComponent implements OnInit {
 
   onSaveForItemNumber() {
     this.saveForItemNumber.emit();
+  }
+
+  saveFotItemNumbers() {
+    this.dialogService.openItemNumberSelectDialog().subscribe(result => {
+      this.saveForItemNumber.emit(result);
+    });
+  }
+
+  onDelete() {
+    this.delete.emit();  
   }
 
 }

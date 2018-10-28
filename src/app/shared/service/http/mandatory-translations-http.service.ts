@@ -7,6 +7,7 @@ import {MandatoryTranslation} from '../../domain/mandatory-translation';
 import {catchError} from 'rxjs/operators';
 import {Observable} from 'rxjs';
 import {Injectable} from '@angular/core';
+import { DeleteMandatoryDataDto } from '../../dto/delete-mandatory-data.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -23,6 +24,13 @@ export class MandatoryTranslationsHttpService extends AbstractHttpService {
       .pipe(
         catchError(this.handleTrowableError('Failed to save new mandatory translations', saveDto))
       );
+  }
+
+  public delete(dto: DeleteMandatoryDataDto): Observable<any> {
+    return this.http.post(this.getRelatedUrl('/delete'), dto, this.getHttpOptions())
+      .pipe(
+        catchError(this.handleTrowableError('Failed to delete mandatory translations', dto.translationsToDeleteByFieldName))  
+      )
   }
 
 }

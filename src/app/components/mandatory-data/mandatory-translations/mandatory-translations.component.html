@@ -6,12 +6,14 @@
                         [valuesToSelect]="languagesToSelect"
                         (reset)="reset()"
                         (save)="save()"
-                        (saveForItemNumber)="saveForItemNumber()"
+                        (saveForItemNumber)="saveForItemNumber($event)"
+                        (delete)="delete($event)"
                         (add)="addTranslation()"></app-controll>
       </div>
   </div>
   <div class="card-body max-height-scrollbar">
     <app-translation *ngFor="let mandatoryTranslation of itemFieldConfig.mandatoryTranslations"
+                    (changedSelection)="changedSelection($event)"
                     [mandatoryTranslation]="mandatoryTranslation"></app-translation>
   </div>
 </div>

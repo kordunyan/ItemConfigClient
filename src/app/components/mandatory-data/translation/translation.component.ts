@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { MandatoryTranslation } from 'src/app/shared/domain/mandatory-translation';
 
 @Component({
@@ -9,6 +9,7 @@ import { MandatoryTranslation } from 'src/app/shared/domain/mandatory-translatio
 export class TranslationComponent implements OnInit {
 
   @Input('mandatoryTranslation') mandatoryTranslation: MandatoryTranslation;
+  @Output('changedSelection') changedSelection = new EventEmitter<boolean>();
 
   constructor() { }
 
@@ -17,6 +18,7 @@ export class TranslationComponent implements OnInit {
 
   selected() {
     this.mandatoryTranslation.selected = !this.mandatoryTranslation.selected;
+    this.changedSelection.emit(this.mandatoryTranslation.selected);
   }
 
 }
