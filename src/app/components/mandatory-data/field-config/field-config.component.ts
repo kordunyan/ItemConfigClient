@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import { MandatoryField } from 'src/app/shared/domain/mandatory-field';
 
 @Component({
@@ -9,6 +9,7 @@ import { MandatoryField } from 'src/app/shared/domain/mandatory-field';
 export class FieldConfigComponent implements OnInit {
 
   @Input('mandatoryField') mandatoryField: MandatoryField;
+  @Output('changedSelection') changedSelection = new EventEmitter<boolean>();
 
   constructor() { }
 
@@ -17,6 +18,7 @@ export class FieldConfigComponent implements OnInit {
 
   selected() {
     this.mandatoryField.selected = !this.mandatoryField.selected;
+    this.changedSelection.emit(this.mandatoryField.selected);
   }
 
 }

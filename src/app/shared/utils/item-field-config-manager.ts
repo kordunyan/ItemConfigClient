@@ -1,4 +1,5 @@
 import { ItemFieldConfig } from "../domain/item-field-config";
+import {ArrayUtils} from './array-utils';
 
 export class ItemFieldConfigManager {
 
@@ -50,5 +51,21 @@ export class ItemFieldConfigManager {
         if (itemFieldConfig.filterRegex != null && itemFieldConfig.filterRegex.length === 0) {
             itemFieldConfig.filterRegex = null;
         }
+    }
+
+    public static hasSelectedMandatoryData(itemFieldConfig: ItemFieldConfig): boolean {
+      if (ArrayUtils.isNotEmpty(itemFieldConfig.mandatoryFields)) {
+        const selectedMandatoryField = itemFieldConfig.mandatoryFields.find(field => field.selected);
+        if (selectedMandatoryField) {
+          return true;
+        }
+      }
+      if (ArrayUtils.isNotEmpty(itemFieldConfig.mandatoryTranslations)) {
+        const selectedTranslation = itemFieldConfig.mandatoryTranslations.find(translation => translation.selected);
+        if (selectedTranslation) {
+          return true;
+        }
+      }
+      return false;
     }
 }

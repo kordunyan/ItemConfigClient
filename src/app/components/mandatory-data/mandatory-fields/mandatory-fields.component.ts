@@ -1,8 +1,9 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { ItemFieldConfig } from 'src/app/shared/domain/item-field-config';
-import { FieldConfig } from 'src/app/shared/domain/field-config';
-import { DialogService } from 'src/app/shared/service/dialog.service';
-import { MandatoryField } from 'src/app/shared/domain/mandatory-field';
+import {Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter} from '@angular/core';
+import {ItemFieldConfig} from 'src/app/shared/domain/item-field-config';
+import {FieldConfig} from 'src/app/shared/domain/field-config';
+import {DialogService} from 'src/app/shared/service/dialog.service';
+import {MandatoryField} from 'src/app/shared/domain/mandatory-field';
+import {ItemFieldConfigManager} from '../../../shared/utils/item-field-config-manager';
 
 @Component({
   selector: 'app-mandatory-fields',
@@ -12,12 +13,16 @@ import { MandatoryField } from 'src/app/shared/domain/mandatory-field';
 export class MandatoryFieldsComponent implements OnInit, OnChanges {
 
   @Input('itemFieldConfig') itemFieldConfig: ItemFieldConfig;
-  @Input('instructionsFieldConfigs') instructionsFieldConfigs: FieldConfig[]; 
+  @Input('instructionsFieldConfigs') instructionsFieldConfigs: FieldConfig[];
+
+  @Output('saveForItemNumber') onSaveForItemNumber = new EventEmitter<string[]>();
+  @Output('saveForCurrent') onSaveForCurrent = new EventEmitter();
   fieldConfigsToSelect: string[] = [];
 
   constructor(
     private dialogService: DialogService
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
   }
@@ -26,12 +31,20 @@ export class MandatoryFieldsComponent implements OnInit, OnChanges {
     this.fieldConfigsToSelect = this.instructionsFieldConfigs.map(fieldConfig => fieldConfig.name);
   }
 
+  changedSelection(selected) {
+    if (selected) {
+      this.itemFieldConfig.hasSelectedMandatoryData = true;
+    }
+    this.itemFieldConfig.hasSelectedMandatoryData = ItemFieldConfigManager.hasSelectedMandatoryData(this.itemFieldConfig);
+  }
+
   addField() {
     this.dialogService.openSelectValuesDialog(this.fieldConfigsToSelect)
-    .subscribe((selectedFieldConfigNames: string[]) => {
-      this.addNewMandatoryFields(this.getFieldConfigsByNames(selectedFieldConfigNames));
-      this.filterFieldConfigsToSelect(selectedFieldConfigNames);
-    });
+      .subscribe((selectedFieldConfigNames: string[]) => {
+        this.addNewMandatoryFields(this.getFieldConfigsByNames(selectedFieldConfigNames));
+        this.filterFieldConfigsToSelect(selectedFieldConfigNames);
+        this.itemFieldConfig.hasNewMandatoryData = true;
+      });
   }
 
   filterFieldConfigsToSelect(fieldConfigNames: string[]) {
@@ -49,6 +62,14 @@ export class MandatoryFieldsComponent implements OnInit, OnChanges {
 
   getFieldConfigsByNames(fieldConfigNames: string[]): FieldConfig[] {
     return this.instructionsFieldConfigs.filter(fieldConfig => fieldConfigNames.indexOf(fieldConfig.name) > -1);
+  }
+
+  save() {
+    this.onSaveForCurrent.emit();
+  }
+
+  saveForItemNumber(itemNumbers?: string[]) {
+    this.onSaveForItemNumber.emit(itemNumbers);
   }
 
 }

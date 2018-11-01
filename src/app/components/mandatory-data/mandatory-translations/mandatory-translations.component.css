@@ -3,3 +3,7 @@
     min-height: 710px;
     overflow: auto;
 }
+
+.empty-list {
+  background: #f5f5f5;
+}

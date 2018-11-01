@@ -1,9 +1,11 @@
 export class DeleteMandatoryDataDto {
-    constructor(
-        public translationsToDeleteByFieldName: {},
-        public deleteForAll: boolean,
-        public itemNumbers?: string[]
-    ) {
+  public translationsToDeleteByFieldName: {};
+  public fieldsToDeleteByFieldName: {};
 
-    }
+  constructor(
+    public deleteForAll: boolean,
+    public itemNumbers?: string[]
+  ) {
+
+  }
 }

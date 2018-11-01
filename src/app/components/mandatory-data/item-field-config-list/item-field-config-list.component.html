@@ -2,17 +2,24 @@
 <div class="row">
     <div class="col-sm-3">
         <div class="card">
-            <div class="card-header">Item Field Configs</div>
+            <div class="card-header">
+              <mat-form-field class="w-100">
+                <input matInput
+                       [formControl]="itemFieldConfigNameInput"
+                       placeholder="Item Field Configs">
+              </mat-form-field>
+
+            </div>
             <div class="list-group list-group-flush max-height-scrollbar">
                 <a class="list-group-item list-group-item-action"
+                   *ngFor="let itemFieldConfig of filteredItemFieldConfigs | async"
                     [ngClass]="{
                             'list-group-item-secondary': itemFieldConfig.id === selectedItemFieldConfig.id,
                             'list-group-item-warning': itemFieldConfig.hasNewMandatoryData && itemFieldConfig.id !== selectedItemFieldConfig.id,
                             'list-group-item-light': itemFieldConfig.hasSelectedMandatoryData && itemFieldConfig.id !== selectedItemFieldConfig.id,
                             'list-group-item-elow-gray': itemFieldConfig.hasSelectedMandatoryData && itemFieldConfig.hasNewMandatoryData && itemFieldConfig.id !== selectedItemFieldConfig.id
                         }" 
-                    (click)="select(itemFieldConfig)"
-                    *ngFor="let itemFieldConfig of itemFieldConfigs">
+                    (click)="select(itemFieldConfig)">
                     {{ itemFieldConfig.fieldConfig.name }}
                 </a>
             </div>
@@ -29,6 +36,8 @@
             </div>
             <div class="col-sm-6">
                 <app-mandatory-fields   [itemFieldConfig]="selectedItemFieldConfig"
+                                        (saveForCurrent)="saveForCurrentFields()"
+                                        (saveForItemNumber)="saveForItemNumberFields($event)"
                                         [instructionsFieldConfigs]="selectedInstructionFieldConfigs"></app-mandatory-fields>   
             </div>
         </div>

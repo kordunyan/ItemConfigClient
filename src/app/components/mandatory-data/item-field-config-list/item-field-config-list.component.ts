@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {ItemFieldConfigHttpService} from 'src/app/shared/service/http/item-field-config-http.service';
 import {ActivatedRoute, ParamMap} from '@angular/router';
-import {forkJoin} from 'rxjs';
-import {first, switchMap} from 'rxjs/operators';
+import {forkJoin, Observable} from 'rxjs';
+import {first, map, startWith, switchMap} from 'rxjs/operators';
 import {AppProperties} from 'src/app/shared/domain/app-properties';
 import {ItemFieldConfig} from 'src/app/shared/domain/item-field-config';
 import {FieldConfigHttpService} from 'src/app/shared/service/http/field-config-http.service';
@@ -11,13 +11,16 @@ import {Language} from 'src/app/shared/domain/language';
 import {ProgressBarService} from 'src/app/shared/service/progress-bar.service';
 import {ItemHttpService} from '../../../shared/service/http/item-http.service';
 import {FieldConfig} from 'src/app/shared/domain/field-config';
-import { InstructionTypeInputConfigHttpService } from 'src/app/shared/service/http/instruction-type-input-config-http.service';
-import { Item } from 'src/app/shared/domain/item';
-import { SaveMandatoryDataDto } from 'src/app/shared/dto/save-mandatory-data.dto';
-import { MandatoryTranslationsHttpService } from 'src/app/shared/service/http/mandatory-translations-http.service';
-import { ItemManager } from 'src/app/shared/utils/item.manager';
-import { MessageService } from 'src/app/shared/service/message.service';
-import { DeleteMandatoryDataDto } from 'src/app/shared/dto/delete-mandatory-data.dto';
+import {InstructionTypeInputConfigHttpService} from 'src/app/shared/service/http/instruction-type-input-config-http.service';
+import {Item} from 'src/app/shared/domain/item';
+import {SaveMandatoryDataDto} from 'src/app/shared/dto/save-mandatory-data.dto';
+import {MandatoryTranslationsHttpService} from 'src/app/shared/service/http/mandatory-translations-http.service';
+import {ItemManager} from 'src/app/shared/utils/item.manager';
+import {MessageService} from 'src/app/shared/service/message.service';
+import {DeleteMandatoryDataDto} from 'src/app/shared/dto/delete-mandatory-data.dto';
+import {MandatoryTranslationsService} from '../../../shared/service/mandatory-translations.service';
+import {FormControl} from '@angular/forms';
+import {MandatoryFieldsService} from '../../../shared/service/mandatory-fields.service';
 
 @Component({
   selector: 'app-item-field-config-list',
@@ -25,8 +28,9 @@ import { DeleteMandatoryDataDto } from 'src/app/shared/dto/delete-mandatory-data
   styleUrls: ['./item-field-config-list.component.css']
 })
 export class ItemFieldConfigListComponent implements OnInit {
-
+  itemFieldConfigNameInput = new FormControl();
   itemFieldConfigs: ItemFieldConfig[] = [];
+  filteredItemFieldConfigs: Observable<ItemFieldConfig[]>;
   instructionsFields = {};
   instructionLanguages = {};
   instructionsFieldCofigsMap = {};
@@ -37,9 +41,10 @@ export class ItemFieldConfigListComponent implements OnInit {
 
   constructor(
     private instructionConfigHttpService: InstructionTypeInputConfigHttpService,
-    private mandatoryTranslationsHttpService: MandatoryTranslationsHttpService,
+    private mandatoryTranslationsService: MandatoryTranslationsService,
     private itemFieldConfigHttpService: ItemFieldConfigHttpService,
     private fieldConfigHttpService: FieldConfigHttpService,
+    private mandatoryFieldsService: MandatoryFieldsService,
     private progressBarService: ProgressBarService,
     private messageService: MessageService,
     private itemHttpService: ItemHttpService,
@@ -57,15 +62,30 @@ export class ItemFieldConfigListComponent implements OnInit {
       this.itemHttpService.getByIdWithoutItemFieldConfig(itemId),
       this.instructionConfigHttpService.getInstructionsLanguages()
     ).subscribe((result) => {
-      // result[0] = item field configs, result[1] = instructions fields, result[2] = instructions field configs map, 
+      // result[0] = item field configs, result[1] = instructions fields, result[2] = instructions field configs map,
       // result[3] = item, result[4] = instruction languages
       this.itemFieldConfigs = result[0];
       this.instructionsFields = result[1];
       this.instructionsFieldCofigsMap = result[2];
       this.item = result[3];
       this.instructionLanguages = result[4];
+      this.initFilter();
       this.progressBarService.hide();
     }, (error) => this.progressBarService.hide());
+  }
+
+  initFilter() {
+    this.filteredItemFieldConfigs = this.itemFieldConfigNameInput.valueChanges.pipe(
+      startWith<string>(''),
+      map((fieldConfigName: string) => {
+        return fieldConfigName ? this._filter(fieldConfigName) : this.itemFieldConfigs.slice();
+      })
+    );
+  }
+
+  private _filter(fieldConfigName: string): ItemFieldConfig[] {
+    const inLowerCase = fieldConfigName.trim().toLowerCase();
+    return this.itemFieldConfigs.filter(itemFieldConfig => itemFieldConfig.fieldConfig.name.toLowerCase().indexOf(inLowerCase) > -1);
   }
 
   select(itemFieldConfig: ItemFieldConfig) {
@@ -85,7 +105,7 @@ export class ItemFieldConfigListComponent implements OnInit {
   }
 
   getSelectedInstructionLanguages() {
-    const languages = this.instructionLanguages[this.selectedItemFieldConfig.fieldConfig.type]; 
+    const languages = this.instructionLanguages[this.selectedItemFieldConfig.fieldConfig.type];
     return languages && languages.length > 0 ? languages : [];
   }
 
@@ -94,7 +114,7 @@ export class ItemFieldConfigListComponent implements OnInit {
   }
 
   getItemFieldConfigsWithSelectedData() {
-    return this.itemFieldConfigs.filter(fieldConfig => fieldConfig.hasSelectedMandatoryData);  
+    return this.itemFieldConfigs.filter(fieldConfig => fieldConfig.hasSelectedMandatoryData);
   }
 
   getItemNumber(): string {
@@ -102,80 +122,22 @@ export class ItemFieldConfigListComponent implements OnInit {
   }
 
   saveForCurrentTranslations() {
-    this.createDtoAndSaveTranslations(false);
+    this.mandatoryTranslationsService.save(this.getItemFieldConfigsWithNewData());
+  }
+
+  saveForCurrentFields() {
+    this.mandatoryFieldsService.save(this.getItemFieldConfigsWithNewData());
   }
 
   saveForItemNumberTranslations(itemNumbers?: string[]) {
-    let selectedItemNumbers = [this.getItemNumber()];
-    if (itemNumbers && itemNumbers.length > 0) {
-      selectedItemNumbers = selectedItemNumbers.concat(itemNumbers);
-    }
-    this.createDtoAndSaveTranslations(true, selectedItemNumbers);
+    this.mandatoryTranslationsService.saveForItemNumbers(this.getItemFieldConfigsWithNewData(), this.getItemNumber(), itemNumbers);
   }
 
-  createDtoAndSaveTranslations(saveForAll, itemNumbers?: string[]) {
-    const iteFieldConfigsWithNewData = this.getItemFieldConfigsWithNewData(); 
-    if (!iteFieldConfigsWithNewData || iteFieldConfigsWithNewData.length === 0) {
-      return;
-    }  
-    const dto = this.buildSaveMandatoryDataDto(iteFieldConfigsWithNewData, saveForAll, itemNumbers);
-    this.saveMandatoryTranslations(dto);
-  }
-
-  saveMandatoryTranslations(dto: SaveMandatoryDataDto) {
-    this.progressBarService.show();
-    this.mandatoryTranslationsHttpService.save(dto).subscribe(result => {
-      this.replaceItemFieldConfigs(result);
-      this.messageService.success('Mandatory translations were saved');
-      this.progressBarService.hide();
-    }, error => this.progressBarService.hide());
-  }
-
-  replaceItemFieldConfigs(changedItemFieldConfigs: ItemFieldConfig[]) {
-    changedItemFieldConfigs.forEach(changedField => {
-      const idx = this.itemFieldConfigs.findIndex(fieldConfig => fieldConfig.id === changedField.id );
-      this.itemFieldConfigs[idx] = changedField;
-      if (this.selectedItemFieldConfig.id === changedField.id) {
-        this.selectedItemFieldConfig = changedField;
-      }
-    });  
-  }
-
-  buildSaveMandatoryDataDto(itemFieldConfigs: ItemFieldConfig[], 
-    saveForAll: boolean, itemNumbers?: string[]): SaveMandatoryDataDto {
-      return new SaveMandatoryDataDto(itemFieldConfigs, saveForAll, itemNumbers);
+  saveForItemNumberFields(itemNumbers?: string[]) {
+    this.mandatoryFieldsService.saveForItemNumbers(this.getItemFieldConfigsWithNewData(), this.getItemNumber(), itemNumbers);
   }
 
   deleteTranslation(deleteOptions?: {}) {
-    const itemFieldConfigsWithSelectedData = this.getItemFieldConfigsWithSelectedData(); 
-    if (!itemFieldConfigsWithSelectedData || itemFieldConfigsWithSelectedData.length === 0) {
-      return;
-    }
-    this.progressBarService.show();
-    let deleteForAll = deleteOptions && deleteOptions['deleteForAll'] ? true : false; 
-    let itemNumbers = [];
-    if (deleteForAll) {
-      itemNumbers.push(this.getItemNumber());
-      if (deleteOptions['itemNumbers']) {
-        itemNumbers = itemNumbers.concat(deleteOptions['itemNumbers']);
-      }
-    }
-    const dto = this.buildDeleteTranslationsDto(itemFieldConfigsWithSelectedData, deleteForAll, itemNumbers);
-    this.mandatoryTranslationsHttpService.delete(dto).subscribe((result) => {
-      itemFieldConfigsWithSelectedData.forEach(itemFieldConfig => {
-        itemFieldConfig.mandatoryTranslations = itemFieldConfig.mandatoryTranslations.filter(translation => !translation.selected);   
-      });
-      this.messageService.success('Mandatory translations were deleted');
-      this.progressBarService.hide();
-    }, (error) => this.progressBarService.hide());
-  }
-
-  buildDeleteTranslationsDto(itemFieldConfigs: ItemFieldConfig[], deleteForAll: boolean, itemNumbers?: string[]): DeleteMandatoryDataDto {
-    let translationsToDeleteByFieldName = {};
-    itemFieldConfigs.forEach(itemFieldConfig => {
-      translationsToDeleteByFieldName[itemFieldConfig.fieldConfig.name] = 
-          itemFieldConfig.mandatoryTranslations.filter(translation => translation.selected);   
-    });
-    return new DeleteMandatoryDataDto(translationsToDeleteByFieldName, deleteForAll, itemNumbers);
+    this.mandatoryTranslationsService.deleteTranslations(this.getItemFieldConfigsWithSelectedData(), deleteOptions);
   }
 }

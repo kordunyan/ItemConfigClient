@@ -1,8 +1,9 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
-import { ItemFieldConfig } from 'src/app/shared/domain/item-field-config';
-import { DialogService } from 'src/app/shared/service/dialog.service';
-import { Language } from 'src/app/shared/domain/language';
-import { MandatoryTranslation } from 'src/app/shared/domain/mandatory-translation';
+import {Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter} from '@angular/core';
+import {ItemFieldConfig} from 'src/app/shared/domain/item-field-config';
+import {DialogService} from 'src/app/shared/service/dialog.service';
+import {Language} from 'src/app/shared/domain/language';
+import {MandatoryTranslation} from 'src/app/shared/domain/mandatory-translation';
+import {ItemFieldConfigManager} from '../../../shared/utils/item-field-config-manager';
 
 @Component({
   selector: 'app-mandatory-translations',
@@ -21,7 +22,8 @@ export class MandatoryTranslationsComponent implements OnInit, OnChanges {
 
   constructor(
     private dialogService: DialogService
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
   }
@@ -46,8 +48,7 @@ export class MandatoryTranslationsComponent implements OnInit, OnChanges {
     if (selected) {
       this.itemFieldConfig.hasSelectedMandatoryData = true;
     }
-    const translation = this.itemFieldConfig.mandatoryTranslations.find(translation => translation.selected);
-    this.itemFieldConfig.hasSelectedMandatoryData = translation ? true : false; 
+    this.itemFieldConfig.hasSelectedMandatoryData = ItemFieldConfigManager.hasSelectedMandatoryData(this.itemFieldConfig);
   }
 
   private sortMandatoryTranslations() {
@@ -68,7 +69,7 @@ export class MandatoryTranslationsComponent implements OnInit, OnChanges {
         this.sortMandatoryTranslations();
         this.filterLanguagesToSelect(selectedLanguageNames);
         this.itemFieldConfig.hasNewMandatoryData = true;
-    });
+      });
   }
 
   addNewMandatoryTrnalsations(languages: Language[]) {
