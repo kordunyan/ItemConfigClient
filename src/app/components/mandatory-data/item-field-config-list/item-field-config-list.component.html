@@ -38,6 +38,7 @@
                 <app-mandatory-fields   [itemFieldConfig]="selectedItemFieldConfig"
                                         (saveForCurrent)="saveForCurrentFields()"
                                         (saveForItemNumber)="saveForItemNumberFields($event)"
+                                        (delete)="deleteFields($event)"
                                         [instructionsFieldConfigs]="selectedInstructionFieldConfigs"></app-mandatory-fields>   
             </div>
         </div>

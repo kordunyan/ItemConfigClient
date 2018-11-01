@@ -46,7 +46,6 @@ export class ItemFieldConfigListComponent implements OnInit {
     private fieldConfigHttpService: FieldConfigHttpService,
     private mandatoryFieldsService: MandatoryFieldsService,
     private progressBarService: ProgressBarService,
-    private messageService: MessageService,
     private itemHttpService: ItemHttpService,
     private route: ActivatedRoute,
   ) {
@@ -138,6 +137,10 @@ export class ItemFieldConfigListComponent implements OnInit {
   }
 
   deleteTranslation(deleteOptions?: {}) {
-    this.mandatoryTranslationsService.deleteTranslations(this.getItemFieldConfigsWithSelectedData(), deleteOptions);
+    this.mandatoryTranslationsService.delete(this.getItemFieldConfigsWithSelectedData(), this.getItemNumber(), deleteOptions);
+  }
+
+  deleteFields(deleteOptions?: {}) {
+    this.mandatoryFieldsService.delete(this.getItemFieldConfigsWithSelectedData(), this.getItemNumber(), deleteOptions);  
   }
 }

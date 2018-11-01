@@ -3,47 +3,37 @@ import {ProgressBarService} from './progress-bar.service';
 import {MessageService} from './message.service';
 import {MandatoryFieldsHttpService} from './http/mandatory-fields-http.service';
 import {ItemFieldConfig} from '../domain/item-field-config';
-import {ArrayUtils} from '../utils/array-utils';
 import {SaveMandatoryDataDto} from '../dto/save-mandatory-data.dto';
+import { DeleteMandatoryDataDto } from '../dto/delete-mandatory-data.dto';
+import { AbstractMandatoryDataService } from './abstract-mandatory-data.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class MandatoryFieldsService {
+export class MandatoryFieldsService extends AbstractMandatoryDataService{
 
   constructor(
-    private progressBarService: ProgressBarService,
-    private messageService: MessageService,
+    progressBarService: ProgressBarService,
+    messageService: MessageService,
     private mandatoryFieldsHttpService: MandatoryFieldsHttpService
   ) {
+    super(progressBarService, messageService);
   }
 
-  public save(itemFieldConfigsWithNewData: ItemFieldConfig[]) {
-    this._createDtoAndSave(itemFieldConfigsWithNewData, false);
+  protected _deleteFromServer(dto: DeleteMandatoryDataDto, itemFieldConfigsWithSelectedData: ItemFieldConfig[]) {
+    this.progressBarService.show();
+    this.mandatoryFieldsHttpService.delete(dto).subscribe(
+      result => {
+        itemFieldConfigsWithSelectedData.forEach(itemFieldConfig => {
+          itemFieldConfig.mandatoryFields = itemFieldConfig.mandatoryFields.filter(field => !field.selected);
+        });
+        this.messageService.success('Mandatory fields were deleted');
+        this.progressBarService.hide();
+      }, error => this.progressBarService.hide()
+    );
   }
 
-  public saveForItemNumbers(itemFieldConfigsWithNewData: ItemFieldConfig[], currentItemNumber, itemNumbers?: string[]) {
-    let selectedItemNumbers = [currentItemNumber];
-    if (ArrayUtils.isNotEmpty(itemNumbers)) {
-      selectedItemNumbers = selectedItemNumbers.concat(itemNumbers);
-    }
-    this._createDtoAndSave(itemFieldConfigsWithNewData, true, selectedItemNumbers);
-  }
-
-  private _createDtoAndSave(itemFieldConfigsWithNewData: ItemFieldConfig[], saveForAll, itemNumbers?: string[]) {
-    const itemFieldConfigsWithNewFields = this._filterWithNewData(itemFieldConfigsWithNewData);
-    if (ArrayUtils.isEmpty(itemFieldConfigsWithNewFields)) {
-      return;
-    }
-    const dto = this.buildSaveMandatoryDataDto(itemFieldConfigsWithNewFields, saveForAll, itemNumbers);
-    this._saveOnServer(dto, itemFieldConfigsWithNewFields);
-  }
-
-  protected buildSaveMandatoryDataDto(itemFieldConfigs: ItemFieldConfig[], saveForAll: boolean, itemNumbers?: string[]): SaveMandatoryDataDto {
-    return new SaveMandatoryDataDto(itemFieldConfigs, saveForAll, itemNumbers);
-  }
-
-  private _saveOnServer(dto: SaveMandatoryDataDto, itemFieldConfigsWithNewData: ItemFieldConfig[]) {
+  protected _saveOnServer(dto: SaveMandatoryDataDto, itemFieldConfigsWithNewData: ItemFieldConfig[]) {
     this.progressBarService.show();
     this.mandatoryFieldsHttpService.save(dto).subscribe(
       result => {
@@ -53,21 +43,21 @@ export class MandatoryFieldsService {
       }, error => this.progressBarService.hide());
   }
 
-  protected _replaceItemFieldConfigs(changedItemFieldConfigs: ItemFieldConfig[], itemFieldConfigsWithNewData: ItemFieldConfig[]) {
-    changedItemFieldConfigs.forEach(changedField => {
-      const itemFieldConfig = itemFieldConfigsWithNewData.find(fieldConfig => fieldConfig.id === changedField.id);
-      itemFieldConfig.mandatoryTranslations = changedField.mandatoryTranslations;
-      itemFieldConfig.mandatoryFields = changedField.mandatoryFields;
+  protected _buildDeleteDto(itemFieldConfigs: ItemFieldConfig[], deleteForAll: boolean, itemNumbers?: string[]): DeleteMandatoryDataDto {
+    const fieldsToDeleteByFieldName = {};
+    itemFieldConfigs.forEach(itemFieldConfig => {
+      fieldsToDeleteByFieldName[itemFieldConfig.fieldConfig.name] = itemFieldConfig.mandatoryFields.filter(field => field.selected);  
     });
+    const result = new DeleteMandatoryDataDto(deleteForAll, itemNumbers);
+    result.fieldsToDeleteByFieldName = fieldsToDeleteByFieldName;
+    return result;
   }
 
-  private _filterWithNewData(itemFieldConfigs: ItemFieldConfig[]): ItemFieldConfig[] {
-    return itemFieldConfigs.filter(itemFieldConfig => this.hasNewData(itemFieldConfig));
+  protected _hasSelectedData(itemFieldConfig: ItemFieldConfig): boolean {
+    return itemFieldConfig.mandatoryFields.findIndex(field => field.selected) >= 0;
   }
 
-  protected hasNewData(itemFieldConfigs: ItemFieldConfig): boolean {
+  protected _hasNewData(itemFieldConfigs: ItemFieldConfig): boolean {
     return itemFieldConfigs.mandatoryFields.findIndex(field => !field.id) >= 0;
   }
-
-
 }

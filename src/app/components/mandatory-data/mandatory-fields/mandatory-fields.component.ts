@@ -17,6 +17,7 @@ export class MandatoryFieldsComponent implements OnInit, OnChanges {
 
   @Output('saveForItemNumber') onSaveForItemNumber = new EventEmitter<string[]>();
   @Output('saveForCurrent') onSaveForCurrent = new EventEmitter();
+  @Output('delete') onDelete = new EventEmitter<{}>();
   fieldConfigsToSelect: string[] = [];
 
   constructor(
@@ -70,6 +71,10 @@ export class MandatoryFieldsComponent implements OnInit, OnChanges {
 
   saveForItemNumber(itemNumbers?: string[]) {
     this.onSaveForItemNumber.emit(itemNumbers);
+  }
+
+  delete(deleteOptions?: {}) {
+    this.onDelete.emit(deleteOptions);
   }
 
 }
