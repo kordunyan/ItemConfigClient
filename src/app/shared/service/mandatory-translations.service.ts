@@ -5,7 +5,8 @@ import {SaveMandatoryDataDto} from '../dto/save-mandatory-data.dto';
 import {ProgressBarService} from './progress-bar.service';
 import {MessageService} from './message.service';
 import {DeleteMandatoryDataDto} from '../dto/delete-mandatory-data.dto';
-import { AbstractMandatoryDataService } from './abstract-mandatory-data.service';
+import {AbstractMandatoryDataService} from './abstract-mandatory-data.service';
+import {ItemFieldConfigManager} from '../utils/item-field-config-manager';
 
 @Injectable({
   providedIn: 'root',
@@ -42,6 +43,7 @@ export class MandatoryTranslationsService extends AbstractMandatoryDataService {
     this.mandatoryTranslationsHttpService.delete(dto).subscribe((result) => {
       itemFieldConfigsWithSelectedData.forEach(itemFieldConfig => {
         itemFieldConfig.mandatoryTranslations = itemFieldConfig.mandatoryTranslations.filter(translation => !translation.selected);
+        itemFieldConfig.hasSelectedMandatoryData = ItemFieldConfigManager.hasSelectedMandatoryData(itemFieldConfig);
       });
       this.messageService.success('Mandatory translations were deleted');
       this.progressBarService.hide();
