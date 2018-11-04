@@ -21,6 +21,18 @@
                         }" 
                     (click)="select(itemFieldConfig)">
                     {{ itemFieldConfig.fieldConfig.name }}
+                    <div class="float-right">
+                        <span class="badge badge-primary mr-1"
+                            title="Translations"
+                            *ngIf="itemFieldConfig.mandatoryTranslations">
+                            {{itemFieldConfig.mandatoryTranslations.length}}
+                        </span>
+                        <span class="badge badge-info"
+                                title="Fields"
+                                *ngIf="itemFieldConfig.mandatoryFields">
+                                {{ itemFieldConfig.mandatoryFields.length }}
+                        </span>
+                    </div>
                 </a>
             </div>
         </div>

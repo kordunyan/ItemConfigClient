@@ -67,6 +67,7 @@ export abstract class AbstractMandatoryDataService {
       itemFieldConfig.mandatoryTranslations = changedField.mandatoryTranslations;
       itemFieldConfig.mandatoryFields = changedField.mandatoryFields;
       itemFieldConfig.hasNewMandatoryData = ItemFieldConfigManager.hasNewMandatoryData(itemFieldConfig);
+      itemFieldConfig.hasSelectedMandatoryData = ItemFieldConfigManager.hasSelectedMandatoryData(itemFieldConfig);
     });
   }
 

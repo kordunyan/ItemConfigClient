@@ -28,6 +28,7 @@ export class MandatoryFieldsService extends AbstractMandatoryDataService {
         itemFieldConfigsWithSelectedData.forEach(itemFieldConfig => {
           itemFieldConfig.mandatoryFields = itemFieldConfig.mandatoryFields.filter(field => !field.selected);
           itemFieldConfig.hasSelectedMandatoryData = ItemFieldConfigManager.hasSelectedMandatoryData(itemFieldConfig);
+          itemFieldConfig.hasNewMandatoryData = ItemFieldConfigManager.hasNewMandatoryData(itemFieldConfig);
         });
         this.messageService.success('Mandatory fields were deleted');
         this.progressBarService.hide();

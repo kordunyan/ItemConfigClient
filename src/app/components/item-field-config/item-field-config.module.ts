@@ -5,12 +5,10 @@ import { MainComponentsModule } from '../../shared/components/main-components.mo
 import { MaterialModulesModule } from '../../shared/modules/material-modules/material-modules.module';
 import { ItemFieldConfigComponent } from './item-field-config/item-field-config.component';
 import { FieldConfigListComponent } from './field-config-list/field-config-list.component';
-import { FieldConfigRowComponent } from './field-config-row/field-config-row.component';
 import { FieldConfigListControlComponent } from './field-config-list-control/field-config-list-control.component';
 import { SaveForAllDialogComponent } from './save-for-all-dialog/save-for-all-dialog.component';
 import { MultipleEditDialogComponent } from './multiple-edit-dialog/multiple-edit-dialog.component';
-import { ItemFieldConfigsTableComponent } from './item-field-configs-table/item-field-configs-table.component';
-import { FieldConfogTableComponent } from './field-confog-table/field-confog-table.component';
+import { FieldConfigTableComponent } from './field-config-table/field-config-table.component';
 import { FilterRegexDialogComponent } from './filter-regex-dialog/filter-regex-dialog.component';
 import { FilterRegexComponent } from './filter-regex/filter-regex.component';
 
@@ -24,12 +22,10 @@ import { FilterRegexComponent } from './filter-regex/filter-regex.component';
   declarations: [
     ItemFieldConfigComponent,
     FieldConfigListComponent,
-    FieldConfigRowComponent,
     FieldConfigListControlComponent,
     SaveForAllDialogComponent,
     MultipleEditDialogComponent,
-    ItemFieldConfigsTableComponent,
-    FieldConfogTableComponent,
+    FieldConfigTableComponent,
     FilterRegexDialogComponent,
     FilterRegexComponent
   ],

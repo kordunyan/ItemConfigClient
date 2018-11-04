@@ -1,14 +1,16 @@
 <div class="card">
   <div class="card-header">
       <span class="d-inline-block">Mandatory Fields</span>
-      <div class="button-wrapper float-right">
-          <app-controll *ngIf="itemFieldConfig.id && instructionsFieldConfigs.length"
-                        [valuesToSelect]="fieldConfigsToSelect"
-                        (save)="save()"
+      <div class="button-wrapper float-right"
+            *ngIf="itemFieldConfig.id && instructionsFieldConfigs.length">
+          <app-controll (save)="save()"
                         (saveForItemNumber)="saveForItemNumber($event)"
                         (delete)="delete($event)"
-                        (reset)="reset()"
-                        (add)="addField()"></app-controll>
+                        (reset)="reset()"></app-controll>
+            <app-add-mandatory-field [mandatoryFields]="itemFieldConfig.mandatoryFields"
+                                     (addNewData)="addFields($event)"
+                                     [instructionsFieldConfigs]="instructionsFieldConfigs">
+            </app-add-mandatory-field>
       </div>
   </div>
   <div class="card-body max-height-scrollbar" [ngClass]="{'empty-list': !instructionsFieldConfigs.length}">

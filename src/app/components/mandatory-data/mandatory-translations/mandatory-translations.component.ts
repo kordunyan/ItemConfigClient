@@ -10,7 +10,7 @@ import {ItemFieldConfigManager} from '../../../shared/utils/item-field-config-ma
   templateUrl: './mandatory-translations.component.html',
   styleUrls: ['./mandatory-translations.component.css']
 })
-export class MandatoryTranslationsComponent implements OnInit, OnChanges {
+export class MandatoryTranslationsComponent implements OnChanges {
 
   @Input('itemFieldConfig') itemFieldConfig: ItemFieldConfig;
   @Input('languages') languages: Language[] = [];
@@ -18,21 +18,11 @@ export class MandatoryTranslationsComponent implements OnInit, OnChanges {
   @Output('saveForCurrent') onSaveForCurrent = new EventEmitter();
   @Output('saveForItemNumber') onSaveForItemNumber = new EventEmitter<string[]>();
   @Output('delete') onDelete = new EventEmitter<{}>();
-  languagesToSelect: string[] = [];
 
-  constructor(
-    private dialogService: DialogService
-  ) {
-  }
-
-  ngOnInit() {
+  constructor() {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    this.languagesToSelect = this.languages
-      .filter(language => this.itemFieldConfig.mandatoryTranslations.findIndex(translation =>
-        translation.language.code === language.code) < 0)
-      .map(language => language.name);
     this.sortMandatoryTranslations();
   }
 
@@ -62,27 +52,19 @@ export class MandatoryTranslationsComponent implements OnInit, OnChanges {
     this.itemFieldConfig.hasSelectedMandatoryData = false;
   }
 
-  addTranslation() {
-    this.dialogService.openSelectValuesDialog(this.languagesToSelect, 'Selected Languages')
-      .subscribe((selectedLanguageNames: string[]) => {
-        this.addNewMandatoryTrnalsations(this.getLanguagesByNames(selectedLanguageNames));
-        this.sortMandatoryTranslations();
-        this.filterLanguagesToSelect(selectedLanguageNames);
-        this.itemFieldConfig.hasNewMandatoryData = true;
-      });
+  addTranslation(selectedLanguageNames: string[]) {
+    this.addNewMandatoryTrnalsations(this.getLanguagesByNames(selectedLanguageNames));
+    this.sortMandatoryTranslations();
+    this.itemFieldConfig.hasNewMandatoryData = true;
   }
 
   addNewMandatoryTrnalsations(languages: Language[]) {
-    languages.map(language => new MandatoryTranslation(language))
-      .forEach(mandatorytranslation => this.itemFieldConfig.mandatoryTranslations.push(mandatorytranslation));
+    const newTranslations = languages.map(language => new MandatoryTranslation(language));
+    this.itemFieldConfig.mandatoryTranslations = this.itemFieldConfig.mandatoryTranslations.concat(newTranslations);
   }
 
   getLanguagesByNames(names: string[]): Language[] {
     return this.languages.filter(language => names.indexOf(language.name) > -1);
-  }
-
-  filterLanguagesToSelect(selectedLanguages: string[]) {
-    this.languagesToSelect = this.languagesToSelect.filter(language => selectedLanguages.indexOf(language) < 0);
   }
 
   delete(deleteOptions?: {}) {

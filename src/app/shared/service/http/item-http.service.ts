@@ -94,6 +94,9 @@ export class ItemHttpService extends AbstractHttpService {
   }
 
   public getByIdWithoutItemFieldConfig(id: string): Observable<Item> {
+    if (id === null) {
+      return of(null);
+    }
     return this.http.get<Item>(this.getRelatedUrl(`/without-field-configs/id/${id}`), this.getHttpOptions())
       .pipe(
         catchError(this.handleError(`Failed to get item by id: ${id}`, null))

@@ -1,7 +1,6 @@
-import {Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter} from '@angular/core';
+import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import {ItemFieldConfig} from 'src/app/shared/domain/item-field-config';
 import {FieldConfig} from 'src/app/shared/domain/field-config';
-import {DialogService} from 'src/app/shared/service/dialog.service';
 import {MandatoryField} from 'src/app/shared/domain/mandatory-field';
 import {ItemFieldConfigManager} from '../../../shared/utils/item-field-config-manager';
 
@@ -10,7 +9,7 @@ import {ItemFieldConfigManager} from '../../../shared/utils/item-field-config-ma
   templateUrl: './mandatory-fields.component.html',
   styleUrls: ['./mandatory-fields.component.css']
 })
-export class MandatoryFieldsComponent implements OnInit, OnChanges {
+export class MandatoryFieldsComponent {
 
   @Input('itemFieldConfig') itemFieldConfig: ItemFieldConfig;
   @Input('instructionsFieldConfigs') instructionsFieldConfigs: FieldConfig[];
@@ -18,18 +17,8 @@ export class MandatoryFieldsComponent implements OnInit, OnChanges {
   @Output('saveForItemNumber') onSaveForItemNumber = new EventEmitter<string[]>();
   @Output('saveForCurrent') onSaveForCurrent = new EventEmitter();
   @Output('delete') onDelete = new EventEmitter<{}>();
-  fieldConfigsToSelect: string[] = [];
-
-  constructor(
-    private dialogService: DialogService
-  ) {
-  }
-
-  ngOnInit() {
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    this.fieldConfigsToSelect = this.instructionsFieldConfigs.map(fieldConfig => fieldConfig.name);
+  
+  constructor() {
   }
 
   changedSelection(selected) {
@@ -39,17 +28,9 @@ export class MandatoryFieldsComponent implements OnInit, OnChanges {
     this.itemFieldConfig.hasSelectedMandatoryData = ItemFieldConfigManager.hasSelectedMandatoryData(this.itemFieldConfig);
   }
 
-  addField() {
-    this.dialogService.openSelectValuesDialog(this.fieldConfigsToSelect)
-      .subscribe((selectedFieldConfigNames: string[]) => {
-        this.addNewMandatoryFields(this.getFieldConfigsByNames(selectedFieldConfigNames));
-        this.filterFieldConfigsToSelect(selectedFieldConfigNames);
-        this.itemFieldConfig.hasNewMandatoryData = true;
-      });
-  }
-
-  filterFieldConfigsToSelect(fieldConfigNames: string[]) {
-    this.fieldConfigsToSelect = this.fieldConfigsToSelect.filter(fieldName => fieldConfigNames.indexOf(fieldName) < 0);
+  addFields(selectedFieldConfigNames: string[]) {
+    this.addNewMandatoryFields(this.getFieldConfigsByNames(selectedFieldConfigNames));
+    this.itemFieldConfig.hasNewMandatoryData = true;
   }
 
   addNewMandatoryFields(newFieldConfigs: FieldConfig[]) {

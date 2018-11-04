@@ -2,7 +2,11 @@ import { Component, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatCheckboxChange } from '@angular/material';
 import { InsertItemNumberDialog } from '../insert-item-number-dialog/insert-item-number-dialog';
 import {ItemHttpService} from '../../service/http/item-http.service';
-import {DialogService} from '../../service/dialog.service';
+import {FormControl} from '@angular/forms';
+import { startWith, map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { DocumentUtils } from '../../utils/document-utils';
+import { MessageService } from '../../service/message.service';
 
 @Component({
   selector: 'app-item-numbers-select-dialog',
@@ -10,35 +14,68 @@ import {DialogService} from '../../service/dialog.service';
   styleUrls: ['./item-numbers-select-dialog.css']
 })
 export class ItemNumbersSelectDialog {
+  
+  itemNumberInput = new FormControl();
+  public filteredItemNumbers: SelectableItemNumber[];
   public itemNumbersMap = {};
-  public itemNumbers: string[] = [];
-  public selectedItemNumbers: string[] = [];
   public allItemNumbersSelected = false;
+  public itemNumbersForSelect: SelectableItemNumber[] = [];
+  public isLoaded = false;
 
   constructor(
     public dialog: MatDialog,
     public dialogRef: MatDialogRef<ItemNumbersSelectDialog>,
     private itemService: ItemHttpService,
+    private messageService: MessageService,
       @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.itemService.getAllItemValues().subscribe((numbers: string[]) => {
-      this.itemNumbers = numbers;
+      this.createItemNumbersForSelect(numbers);
       this.createItemNumbersMap();
+      this.initFilter();
+      this.isLoaded = true;
     });
   }
 
-  selectDeselectAll(change: MatCheckboxChange) {
-    this.allItemNumbersSelected = change.checked;
-    this.selectedItemNumbers = this.allItemNumbersSelected ? this.itemNumbers : [];
+  createItemNumbersForSelect(itemNumbes: string[]) {
+    this.itemNumbersForSelect = itemNumbes.map(itemNumber => {
+      return new SelectableItemNumber(itemNumber);
+    });
   }
 
-  onChangeSelection() {
-    this.allItemNumbersSelected = this.selectedItemNumbers.length === this.itemNumbers.length;
+  initFilter() {
+    this.itemNumberInput.valueChanges.pipe(
+      startWith<string>(''),
+      map((itemNumber: string) => {
+        return itemNumber ? this._filter(itemNumber) : this.itemNumbersForSelect;
+      })
+    ).subscribe(result => {
+      this.filteredItemNumbers = result;
+      this.updateSelectedAll();
+    });
+  }
+
+  private _filter(itemNumberFilter: string): SelectableItemNumber[] {
+    const inLowerCase = itemNumberFilter.trim().toLowerCase();
+    return this.itemNumbersForSelect.filter(item => item.itemNumber.toLowerCase().indexOf(inLowerCase) > -1);
+  }
+
+  select(item: SelectableItemNumber) {
+    item.selected = !item.selected;
+    this.updateSelectedAll();
+  }
+
+  updateSelectedAll() {
+    this.allItemNumbersSelected = this.getSelectedItems().length === this.filteredItemNumbers.length;  
+  }
+
+  selectDeselectAll(change: MatCheckboxChange) {
+    this.filteredItemNumbers.forEach(item => item.selected = this.allItemNumbersSelected);
   }
 
   createItemNumbersMap() {
-    this.itemNumbers.forEach(itemNumber => {
-      this.itemNumbersMap[itemNumber] = itemNumber;
+    this.itemNumbersForSelect.forEach(item => {
+      this.itemNumbersMap[item.itemNumber] = item;
     });
   }
 
@@ -46,12 +83,21 @@ export class ItemNumbersSelectDialog {
     this.dialogRef.close();
   }
 
-  onClear() {
-    this.selectedItemNumbers = [];
+  getSelectedItems(): string[] {
+    return this.filteredItemNumbers
+        .filter(item => item.selected)
+        .map(item => item.itemNumber);
   }
 
   okClick() {
-    this.dialogRef.close(this.selectedItemNumbers);
+    this.dialogRef.close(this.getSelectedItems());
+  }
+
+  copyToBuffer() {
+    const text = this.itemNumbersForSelect.map(item => item.itemNumber).join(",\n"); 
+    if (DocumentUtils.clipboard(text)) {
+      this.messageService.info('Item numbers were copied to bufer');
+    }
   }
 
   openInsertItem() {
@@ -61,29 +107,18 @@ export class ItemNumbersSelectDialog {
 
     dialogRef.beforeClose().subscribe(result => {
       if (result) {
-        let newItemNumbers = [];
         result.forEach(itemNumber => {
-          if (this.itemNumbersMap[itemNumber]) {
-            newItemNumbers.push(itemNumber);
-          }
+          this.itemNumbersMap[itemNumber].selected = true;  
         });
-        this.updateSelectedItems(newItemNumbers);
+        this.updateSelectedAll();
       }
    });
   }
+}
 
-  onSelectAll() {
-    this.selectedItemNumbers = this.itemNumbers;
-  }
-
-  private updateSelectedItems(newItemNumbers: string[]) {
-    let updatedItemNumbers = this.selectedItemNumbers.slice();
-    newItemNumbers.forEach(newItemNumber => {
-      if (updatedItemNumbers.indexOf(newItemNumber) === -1) {
-        updatedItemNumbers.push(newItemNumber);
-      }
-    });
-    this.selectedItemNumbers = updatedItemNumbers;
-  }
-
+class SelectableItemNumber {
+  constructor(
+    public itemNumber: string,
+    public selected: boolean = false
+  ) {}
 }

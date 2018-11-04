@@ -18,15 +18,10 @@
         title="Save for item numbers">
   <i class="fa fa-check-square" aria-hidden="true"></i>
 </button>
-<app-delete [btnType]="'danger'" 
+<app-delete [btnType]="'danger'"
             (onOkChoosen)="onDelete()"
             (onAllChoosen)="onDeleteCurrent()"
             (onByChoosen)="onDeleteByNumbers($event)"
-            [small]="true" 
-            [withByItemNumbers]="true"></app-delete>
-<button class="btn btn-primary btn-sm ml-1"
-        (click)="onAdd()"
-        *ngIf="valuesToSelect && valuesToSelect.length > 0"
-        title="Add">
-  <i class="fa fa-plus"  aria-hidden="true"></i>
-</button>
+            [small]="true"
+            [withByItemNumbers]="true">
+</app-delete>

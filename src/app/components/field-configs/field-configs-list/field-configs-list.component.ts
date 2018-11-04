@@ -22,7 +22,7 @@ export class FieldConfigsListComponent implements OnInit {
   private fieldConfigs: FieldConfig[];
   private fieldConfigsCopy: FieldConfig[];
   fieldConfigsCopyMap = {};
-  dataSource;
+  dataSource: MatTableDataSource<FieldConfig>;
 
   constructor(private fieldConfigHttpService: FieldConfigHttpService,
               private messageService: MessageService,

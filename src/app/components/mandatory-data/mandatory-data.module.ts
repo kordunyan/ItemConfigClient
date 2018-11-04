@@ -12,6 +12,8 @@ import {MandatoryFieldsComponent} from './mandatory-fields/mandatory-fields.comp
 import {TranslationComponent} from './translation/translation.component';
 import {FieldConfigComponent} from './field-config/field-config.component';
 import {MenuPanelComponent} from './menu-panel/menu-panel.component';
+import { AddMandatoryFieldComponent } from './add-mandatory-field/add-mandatory-field.component';
+import { AddMandatoryTranslationComponent } from './add-mandatory-translation/add-mandatory-translation.component';
 
 @NgModule({
   imports: [
@@ -28,7 +30,10 @@ import {MenuPanelComponent} from './menu-panel/menu-panel.component';
     MandatoryFieldsComponent,
     TranslationComponent,
     FieldConfigComponent,
-    MenuPanelComponent],
+    MenuPanelComponent,
+    AddMandatoryFieldComponent,
+    AddMandatoryTranslationComponent
+  ],
   exports: [
     MandatoryDataRoutingModule
   ]

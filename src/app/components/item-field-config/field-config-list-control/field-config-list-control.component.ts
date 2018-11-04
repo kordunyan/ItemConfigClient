@@ -61,10 +61,6 @@ export class FieldConfigListControlComponent implements OnInit {
     this.onReset.emit();
   }
 
-  onBackClick() {
-    this.router.navigate(['/items', this.itemNumber, this.rboCodeService.getRboObject()]);
-  }
-
   onAddNewFields(fieldConfigNames: string[]) {
     this.itemFieldConfigHolder.createNewItemFieldConfigs(fieldConfigNames);
   }
@@ -177,7 +173,7 @@ export class FieldConfigListControlComponent implements OnInit {
   }
 
   openMultipleEditDialog() {
-    let dialogRef = this.dialog.open(MultipleEditDialogComponent, {
+    this.dialog.open(MultipleEditDialogComponent, {
       width: '1300px',
       data: {
         itemFieldConfigs: this.itemFieldConfigHolder.item.itemFieldConfigs,
@@ -188,6 +184,10 @@ export class FieldConfigListControlComponent implements OnInit {
 
   goToMandatoryFields() {
     this.router.navigate(['/mandatory-data', this.itemFieldConfigHolder.item.id, this.rboCodeService.getRboObject()]); 
+  }
+
+  onBackClick() {
+    this.router.navigate(['/items', this.itemNumber, this.rboCodeService.getRboObject()]);
   }
 
 }

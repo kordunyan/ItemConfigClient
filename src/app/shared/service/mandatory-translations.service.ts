@@ -44,6 +44,7 @@ export class MandatoryTranslationsService extends AbstractMandatoryDataService {
       itemFieldConfigsWithSelectedData.forEach(itemFieldConfig => {
         itemFieldConfig.mandatoryTranslations = itemFieldConfig.mandatoryTranslations.filter(translation => !translation.selected);
         itemFieldConfig.hasSelectedMandatoryData = ItemFieldConfigManager.hasSelectedMandatoryData(itemFieldConfig);
+        itemFieldConfig.hasNewMandatoryData = ItemFieldConfigManager.hasNewMandatoryData(itemFieldConfig);
       });
       this.messageService.success('Mandatory translations were deleted');
       this.progressBarService.hide();

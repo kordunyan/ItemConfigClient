@@ -1,6 +1,7 @@
 <div class="card mb-3">
   <div class="card-header">
-    <span class="mt-2 d-inline-block">Mandatory Translations: {{ itemNumber }}</span>
+    <span class="mt-2 d-inline-block mr-4"><b>Mandatory Translations: </b>{{ itemNumber }}</span>
+    <app-multiple-fields [item]="item"></app-multiple-fields>
     <div class="float-right">
       <app-export-item-number [itemNumber]="itemNumber" class="mr-1"></app-export-item-number>
       <button class="btn btn-primary mr-1" (click)="goToItemFieldConfig()"><i aria-hidden="true" class="fa fa-sliders"></i></button>

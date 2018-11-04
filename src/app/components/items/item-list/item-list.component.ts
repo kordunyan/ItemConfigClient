@@ -1,11 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {ItemHttpService} from '../../../shared/service/http/item-http.service';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {ProgressBarService} from '../../../shared/service/progress-bar.service';
 import {ActivatedRoute} from '@angular/router';
 import {RboCodeService} from '../../../shared/service/rbo-code.service';
 import { FormControl } from '@angular/forms';
 import { startWith, map } from 'rxjs/operators';
+import { MessageService } from 'src/app/shared/service/message.service';
 
 @Component({
   selector: 'app-item-list',
@@ -20,7 +21,8 @@ export class ItemListComponent implements OnInit {
   constructor(
     private itemService: ItemHttpService,
     private progressBarService: ProgressBarService,
-    public rboCodeService: RboCodeService
+    public rboCodeService: RboCodeService,
+    private messageService: MessageService
   ) {
   }
 
@@ -56,8 +58,10 @@ export class ItemListComponent implements OnInit {
     this.progressBarService.show();
     this.itemService.deleteByItemNumber(itemNumber).subscribe(
       (result) => {
-        this.progressBarService.hide();
         this.items = this.items.filter(i => i !== itemNumber);
+        this.filteredItems = of(this.items);
+        this.messageService.success(`Item: '${itemNumber}' were deleted`);
+        this.progressBarService.hide();
       },
       (error) => this.progressBarService.hide()
     );

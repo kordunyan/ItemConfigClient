@@ -1,7 +1,10 @@
 <div class="container-fluid">
     <div class="card mt-4">
         <div class="card-header">
-          <span class="float-left mt-1"><b>Item:</b> {{itemNumber}}</span>
+          <div class="float-left mt-1">
+            <span class="mr-4"><b>Item:</b> {{itemNumber}}</span>
+            <app-multiple-fields [item]="itemFieldConfigHolder.item"></app-multiple-fields>
+          </div>
           <div class="float-right">
             <app-export-item-number [itemNumber]="itemNumber" class="mr-1"></app-export-item-number>
             <button class="btn btn-primary mr-1"

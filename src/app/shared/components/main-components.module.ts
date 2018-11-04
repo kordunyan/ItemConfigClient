@@ -21,6 +21,8 @@ import {RboSelectComponent} from './rbo-select/rbo-select.component';
 import {HeaderComponent} from './header/header.component';
 import {RouterModule} from '@angular/router';
 import {ExportItemNumberComponent} from './export-item-number/export-item-number.component';
+import { MultipleFieldsComponent } from './multiple-fields/multiple-fields.component';
+import { ProgressBarComponent } from './progress-bar/progress-bar.component';
 
 @NgModule({
   imports: [
@@ -47,7 +49,9 @@ import {ExportItemNumberComponent} from './export-item-number/export-item-number
     SelectValuesDialogComponent,
     SelectValuesButtonComponent,
     RboSelectComponent,
-    ExportItemNumberComponent
+    ExportItemNumberComponent,
+    MultipleFieldsComponent,
+    ProgressBarComponent
   ],
   entryComponents: [
     DeleteDialog,
@@ -75,7 +79,9 @@ import {ExportItemNumberComponent} from './export-item-number/export-item-number
     SelectValuesDialogComponent,
     SelectValuesButtonComponent,
     RboSelectComponent,
-    ExportItemNumberComponent
+    ExportItemNumberComponent,
+    MultipleFieldsComponent,
+    ProgressBarComponent
   ]
 })
 export class MainComponentsModule {
