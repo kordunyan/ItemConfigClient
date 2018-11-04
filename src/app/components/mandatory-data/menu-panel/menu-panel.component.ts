@@ -1,9 +1,10 @@
-import { Component, OnInit, Input, SimpleChanges, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges, OnChanges, Output, EventEmitter } from '@angular/core';
 import { Item } from 'src/app/shared/domain/item';
 import { ItemManager } from 'src/app/shared/utils/item.manager';
 import { AppProperties } from 'src/app/shared/domain/app-properties';
 import { RboCodeService } from 'src/app/shared/service/rbo-code.service';
 import { Router } from '@angular/router';
+import { ItemFieldConfig } from 'src/app/shared/domain/item-field-config';
 
 @Component({
   selector: 'app-menu-panel',
@@ -13,6 +14,8 @@ import { Router } from '@angular/router';
 export class MenuPanelComponent implements OnInit, OnChanges {
 
   @Input('item') item: Item;
+  @Input('selectedItemFieldConfig') selectedItemFieldConfig: ItemFieldConfig;
+  @Output('multipleEdit') multipleEdit = new EventEmitter();
   itemNumber: string;
 
   constructor(
@@ -36,6 +39,10 @@ export class MenuPanelComponent implements OnInit, OnChanges {
 
   goToItemFieldConfig() {
     this.router.navigate(['/item-field-config', this.item.id, this.rboCodeService.getRboObject()]);
+  }
+
+  onMultipleEdit() {
+    this.multipleEdit.emit();  
   }
 
 }

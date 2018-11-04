@@ -5,3 +5,7 @@
 .bg-new-selected {
     background: rgba(236, 187, 113, 0.678);
 }
+
+.list-group-item {
+    padding: 7px 10px;
+}

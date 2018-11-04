@@ -1,0 +1,26 @@
+.list-group-item-action {
+    cursor: pointer;
+}
+
+.max-height-fields-list {
+    min-height: 500px;
+    max-height: 500px;
+    overflow: auto;
+}
+
+.list-group-item-action {
+    padding: 7px 15px 7px 10px;
+}
+
+.select-all {
+    margin-top: 18px;
+    margin-right: 14px;
+}
+
+.checkbox-overlay {
+    height: 21px;
+    width: 21px;
+    position: absolute;
+    top: 6px;
+    right: 14px;
+}

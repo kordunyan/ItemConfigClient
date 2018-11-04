@@ -1,0 +1,40 @@
+<h1 mat-dialog-title>Multiple Edit Mandatory Data</h1>
+<div mat-dialog-content>
+  <div class="row">
+    <div class="col-sm-4">
+      <div class="card">
+        <div class="card-header">
+          <mat-form-field class="w-75">
+            <input matInput
+                   [formControl]="itemFieldConfigNameInput"
+                   placeholder="Item Field Configs">
+          </mat-form-field>
+          <mat-checkbox class="select-all float-right"
+                  [(ngModel)]="allItemFieldConfigsSelected"
+                  (change)="selectDeselectAll()">
+          </mat-checkbox>
+        </div>
+        <div class="list-group list-group-flush max-height-fields-list">
+          <a class="list-group-item list-group-item-action"
+              (click)="select(itemFieldConfig)"
+              *ngFor="let itemFieldConfig of filteredItemFieldConfigs">
+            <span>{{ itemFieldConfig.fieldConfig.name }}</span>
+            <mat-checkbox class="float-right"
+                  [(ngModel)]="itemFieldConfig.checked">
+            </mat-checkbox>
+            <div class="checkbox-overlay"></div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <div class="text-right w-100">
+    <button class="btn btn-light mr-2"
+            (click)="onCancel()">Cancel</button>
+    <button class="btn btn-primary"
+            (click)="updateChangedFields()"
+            cdkFocusInitial>Ok</button>
+  </div>
+</div>

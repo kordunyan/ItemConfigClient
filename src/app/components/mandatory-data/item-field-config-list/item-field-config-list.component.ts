@@ -21,6 +21,8 @@ import {DeleteMandatoryDataDto} from 'src/app/shared/dto/delete-mandatory-data.d
 import {MandatoryTranslationsService} from '../../../shared/service/mandatory-translations.service';
 import {FormControl} from '@angular/forms';
 import {MandatoryFieldsService} from '../../../shared/service/mandatory-fields.service';
+import { MatDialog } from '@angular/material';
+import { MultipleEditDialogComponent } from '../multiple-edit-dialog/multiple-edit-dialog.component';
 
 @Component({
   selector: 'app-item-field-config-list',
@@ -48,6 +50,7 @@ export class ItemFieldConfigListComponent implements OnInit {
     private progressBarService: ProgressBarService,
     private itemHttpService: ItemHttpService,
     private route: ActivatedRoute,
+    private dialog: MatDialog,
   ) {
   }
 
@@ -80,6 +83,16 @@ export class ItemFieldConfigListComponent implements OnInit {
         return fieldConfigName ? this._filter(fieldConfigName) : this.itemFieldConfigs.slice();
       })
     );
+  }
+
+  multipleEdit() {
+    this.dialog.open(MultipleEditDialogComponent, {
+      width: '1300px',
+      data: {
+        selectedItemFieldConfig: this.selectedItemFieldConfig,
+        itemFieldConfigs: this.itemFieldConfigs
+      }
+    })
   }
 
   private _filter(fieldConfigName: string): ItemFieldConfig[] {

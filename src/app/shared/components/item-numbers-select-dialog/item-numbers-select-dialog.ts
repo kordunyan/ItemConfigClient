@@ -66,7 +66,7 @@ export class ItemNumbersSelectDialog {
   }
 
   updateSelectedAll() {
-    this.allItemNumbersSelected = this.getSelectedItems().length === this.filteredItemNumbers.length;  
+    this.allItemNumbersSelected = this.getSelectedFilteredItems().length === this.filteredItemNumbers.length;  
   }
 
   selectDeselectAll(change: MatCheckboxChange) {
@@ -83,14 +83,20 @@ export class ItemNumbersSelectDialog {
     this.dialogRef.close();
   }
 
-  getSelectedItems(): string[] {
+  getSelectedFilteredItems(): string[] {
     return this.filteredItemNumbers
         .filter(item => item.selected)
         .map(item => item.itemNumber);
   }
 
+  getSelectedItemNumbers() {
+    return this.itemNumbersForSelect
+      .filter(item => item.selected)
+      .map(item => item.itemNumber);
+  }
+
   okClick() {
-    this.dialogRef.close(this.getSelectedItems());
+    this.dialogRef.close(this.getSelectedItemNumbers());
   }
 
   copyToBuffer() {

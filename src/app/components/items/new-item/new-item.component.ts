@@ -64,7 +64,6 @@ export class NewItemComponent implements OnInit {
     ).subscribe((result) => {
       // result[0] = copyItem, result[1] = fieldConfigs, result[2] = multiple fields
       this.copyItem = result[0];
-      console.log(this.copyItem);
       this.fieldConfigs = result[1];
       this.createMultipleFieldsMap(result[2]);
       this.setIppsAndSb();

@@ -51,6 +51,14 @@ export class ItemFieldConfig {
     );
   }
 
+  public static copyOnlyMandatoryData(itemFieldConfig: ItemFieldConfig) {
+    const result =  ItemFieldConfig.default(itemFieldConfig.fieldConfig); 
+    result.mandatoryFields = itemFieldConfig.mandatoryFields;
+    result.mandatoryTranslations = itemFieldConfig.mandatoryTranslations;
+    result.id = itemFieldConfig.id;
+    return result;
+  }
+
   public static copyValues(src: ItemFieldConfig, dest: ItemFieldConfig) {
     dest.active = src.active;
     dest.required = src.required;
