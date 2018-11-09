@@ -1,12 +1,12 @@
-import { Component, Inject } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatCheckboxChange } from '@angular/material';
-import { InsertItemNumberDialog } from '../insert-item-number-dialog/insert-item-number-dialog';
+import {Component, Inject} from '@angular/core';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatCheckboxChange} from '@angular/material';
+import {InsertItemNumberDialog} from '../insert-item-number-dialog/insert-item-number-dialog';
 import {ItemHttpService} from '../../service/http/item-http.service';
 import {FormControl} from '@angular/forms';
-import { startWith, map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
-import { DocumentUtils } from '../../utils/document-utils';
-import { MessageService } from '../../service/message.service';
+import {startWith, map} from 'rxjs/operators';
+import {Observable} from 'rxjs';
+import {DocumentUtils} from '../../utils/document-utils';
+import {MessageService} from '../../service/message.service';
 
 @Component({
   selector: 'app-item-numbers-select-dialog',
@@ -14,7 +14,7 @@ import { MessageService } from '../../service/message.service';
   styleUrls: ['./item-numbers-select-dialog.css']
 })
 export class ItemNumbersSelectDialog {
-  
+
   itemNumberInput = new FormControl();
   public filteredItemNumbers: SelectableItemNumber[];
   public itemNumbersMap = {};
@@ -27,7 +27,7 @@ export class ItemNumbersSelectDialog {
     public dialogRef: MatDialogRef<ItemNumbersSelectDialog>,
     private itemService: ItemHttpService,
     private messageService: MessageService,
-      @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.itemService.getAllItemValues().subscribe((numbers: string[]) => {
       this.createItemNumbersForSelect(numbers);
@@ -66,7 +66,7 @@ export class ItemNumbersSelectDialog {
   }
 
   updateSelectedAll() {
-    this.allItemNumbersSelected = this.getSelectedFilteredItems().length === this.filteredItemNumbers.length;  
+    this.allItemNumbersSelected = this.getSelectedFilteredItems().length === this.filteredItemNumbers.length;
   }
 
   selectDeselectAll(change: MatCheckboxChange) {
@@ -85,8 +85,8 @@ export class ItemNumbersSelectDialog {
 
   getSelectedFilteredItems(): string[] {
     return this.filteredItemNumbers
-        .filter(item => item.selected)
-        .map(item => item.itemNumber);
+      .filter(item => item.selected)
+      .map(item => item.itemNumber);
   }
 
   getSelectedItemNumbers() {
@@ -100,9 +100,9 @@ export class ItemNumbersSelectDialog {
   }
 
   copyToBuffer() {
-    const text = this.itemNumbersForSelect.map(item => item.itemNumber).join(",\n"); 
+    const text = this.itemNumbersForSelect.map(item => item.itemNumber).join(',\n');
     if (DocumentUtils.clipboard(text)) {
-      this.messageService.info('Item numbers were copied to bufer');
+      this.messageService.info('Item numbers were copied to buffer');
     }
   }
 
@@ -114,11 +114,11 @@ export class ItemNumbersSelectDialog {
     dialogRef.beforeClose().subscribe(result => {
       if (result) {
         result.forEach(itemNumber => {
-          this.itemNumbersMap[itemNumber].selected = true;  
+          this.itemNumbersMap[itemNumber].selected = true;
         });
         this.updateSelectedAll();
       }
-   });
+    });
   }
 }
 
@@ -126,5 +126,6 @@ class SelectableItemNumber {
   constructor(
     public itemNumber: string,
     public selected: boolean = false
-  ) {}
+  ) {
+  }
 }

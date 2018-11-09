@@ -1,6 +1,6 @@
 .max-height-scrollbar {
-    max-height: 629px;
-    min-height: 629px;
+    max-height: 100%;
+    min-height: 100%;
     overflow: auto;
 }
 

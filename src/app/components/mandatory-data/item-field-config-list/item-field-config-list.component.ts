@@ -21,8 +21,8 @@ import {DeleteMandatoryDataDto} from 'src/app/shared/dto/delete-mandatory-data.d
 import {MandatoryTranslationsService} from '../../../shared/service/mandatory-translations.service';
 import {FormControl} from '@angular/forms';
 import {MandatoryFieldsService} from '../../../shared/service/mandatory-fields.service';
-import { MatDialog } from '@angular/material';
-import { MultipleEditDialogComponent } from '../multiple-edit-dialog/multiple-edit-dialog.component';
+import {MatDialog} from '@angular/material';
+import {MultipleEditDialogComponent} from '../multiple-edit-dialog/multiple-edit-dialog.component';
 
 @Component({
   selector: 'app-item-field-config-list',
@@ -90,9 +90,11 @@ export class ItemFieldConfigListComponent implements OnInit {
       width: '1300px',
       data: {
         selectedItemFieldConfig: this.selectedItemFieldConfig,
-        itemFieldConfigs: this.itemFieldConfigs
+        itemFieldConfigs: this.itemFieldConfigs,
+        selectedInstructionFieldConfigs: this.selectedInstructionFieldConfigs,
+        selectedInstructionLanguages: this.selectedInstructionLanguages
       }
-    })
+    });
   }
 
   private _filter(fieldConfigName: string): ItemFieldConfig[] {
@@ -154,6 +156,6 @@ export class ItemFieldConfigListComponent implements OnInit {
   }
 
   deleteFields(deleteOptions?: {}) {
-    this.mandatoryFieldsService.delete(this.getItemFieldConfigsWithSelectedData(), this.getItemNumber(), deleteOptions);  
+    this.mandatoryFieldsService.delete(this.getItemFieldConfigsWithSelectedData(), this.getItemNumber(), deleteOptions);
   }
 }

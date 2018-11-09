@@ -40,6 +40,7 @@ export class MandatoryFieldsComponent {
 
   reset() {
     this.itemFieldConfig.mandatoryFields.forEach(fieldConfig => fieldConfig.selected = false);
+    this.itemFieldConfig.hasSelectedMandatoryData = ItemFieldConfigManager.hasSelectedMandatoryData(this.itemFieldConfig);
   }
 
   getFieldConfigsByNames(fieldConfigNames: string[]): FieldConfig[] {

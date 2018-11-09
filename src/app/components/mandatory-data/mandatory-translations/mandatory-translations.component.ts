@@ -49,7 +49,7 @@ export class MandatoryTranslationsComponent implements OnChanges {
 
   reset() {
     this.itemFieldConfig.mandatoryTranslations.forEach(mandatoryTranslation => mandatoryTranslation.selected = false);
-    this.itemFieldConfig.hasSelectedMandatoryData = false;
+    this.itemFieldConfig.hasSelectedMandatoryData = ItemFieldConfigManager.hasSelectedMandatoryData(this.itemFieldConfig);
   }
 
   addTranslation(selectedLanguageNames: string[]) {

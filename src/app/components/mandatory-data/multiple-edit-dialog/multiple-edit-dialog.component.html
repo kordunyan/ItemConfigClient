@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>Multiple Edit Mandatory Data</h1>
+<h1 mat-dialog-title>Multiple Edit Mandatory Data: <b>{{selectedItemFieldConfig.fieldConfig.name}}</b></h1>
 <div mat-dialog-content>
   <div class="row">
     <div class="col-sm-4">
@@ -26,6 +26,16 @@
           </a>
         </div>
       </div>
+    </div>
+    <div class="col-sm-4">
+      <app-mandatory-translations [itemFieldConfig]="selectedItemFieldConfig"
+                                  [languages]="selectedInstructionLanguages">
+      </app-mandatory-translations>
+    </div>
+    <div class="col-sm-4">
+      <app-mandatory-fields   [itemFieldConfig]="selectedItemFieldConfig"
+                              [instructionsFieldConfigs]="selectedInstructionFieldConfigs">
+      </app-mandatory-fields>
     </div>
   </div>
 </div>
