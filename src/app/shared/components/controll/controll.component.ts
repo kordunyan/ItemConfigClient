@@ -8,12 +8,13 @@ import {DialogService} from 'src/app/shared/service/dialog.service';
 })
 export class ControllComponent implements OnInit {
 
+  @Input('withReset') withReset = true;
+
   @Output('add') add = new EventEmitter();
   @Output('reset') reset = new EventEmitter();
   @Output('save') save = new EventEmitter();
   @Output('saveForItemNumber') saveForItemNumber = new EventEmitter<string[]>();
   @Output('delete') delete = new EventEmitter<{}>();
-  @Input('valuesToSelect') valuesToSelect: string[] = [];
 
   constructor(
     private dialogService: DialogService

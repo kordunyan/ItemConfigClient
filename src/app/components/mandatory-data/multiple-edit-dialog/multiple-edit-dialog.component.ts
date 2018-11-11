@@ -1,4 +1,4 @@
-import {Component, OnInit, Inject} from '@angular/core';
+import {Component, Inject} from '@angular/core';
 import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import {FormControl} from '@angular/forms';
 import {ItemFieldConfig} from 'src/app/shared/domain/item-field-config';
@@ -6,33 +6,41 @@ import {startWith, map, catchError} from 'rxjs/operators';
 import {of} from 'rxjs';
 import {FieldConfig} from '../../../shared/domain/field-config';
 import {Language} from '../../../shared/domain/language';
+import { ArrayUtils } from 'src/app/shared/utils/array-utils';
+import { ItemFieldConfigManager } from 'src/app/shared/utils/item-field-config-manager';
+import { MandatoryDataManager } from 'src/app/shared/utils/mandatory-data-manager';
 
 @Component({
   selector: 'app-multiple-edit-dialog',
   templateUrl: './multiple-edit-dialog.component.html',
   styleUrls: ['./multiple-edit-dialog.component.css']
 })
-export class MultipleEditDialogComponent implements OnInit {
+export class MultipleEditDialogComponent {
 
   itemFieldConfigNameInput = new FormControl();
   selectedItemFieldConfig: ItemFieldConfig;
+  selectedItemFieldConfigCopy: ItemFieldConfig;
   filteredItemFieldConfigs: ItemFieldConfig[] = [];
   itemFieldConfigs: ItemFieldConfig[] = [];
-  itemFieldConfigsMap: {};
   allItemFieldConfigsSelected = false;
   selectedInstructionFieldConfigs: FieldConfig[] = [];
   selectedInstructionLanguages: Language[] = [];
+  mandatoryDataManager: MandatoryDataManager;
 
   constructor(
     public dialogRef: MatDialogRef<MultipleEditDialogComponent>,
     @Inject(MAT_DIALOG_DATA) data: any
   ) {
-    console.log(data);
     this.selectedItemFieldConfig = data.selectedItemFieldConfig;
-    this.createItemFieldConfigCopy(data.itemFieldConfigs);
-    this.createItemFieldConfigsMap(data.itemFieldConfigs);
+    this.selectedItemFieldConfigCopy = ItemFieldConfig.copyOnlyMandatoryData(this.selectedItemFieldConfig);
+    this.itemFieldConfigs = this.filterSelectedItemFieldConfig(data.itemFieldConfigs);
+    
     this.selectedInstructionFieldConfigs = data.selectedInstructionFieldConfigs;
     this.selectedInstructionLanguages = data.selectedInstructionLanguages;
+
+
+    this.mandatoryDataManager = new MandatoryDataManager(data.instructionLanguages, data.instructionsFields);
+
     this.initFilter();
   }
 
@@ -57,17 +65,8 @@ export class MultipleEditDialogComponent implements OnInit {
     return this.itemFieldConfigs.filter(fieldConfig => filterRegexp.test(fieldConfig.fieldConfig.name));
   }
 
-  createItemFieldConfigsMap(itemFieldConfigs: ItemFieldConfig[]) {
-    this.itemFieldConfigsMap = {};
-    itemFieldConfigs.forEach(fieldConfig => {
-      this.itemFieldConfigsMap[fieldConfig.id] = fieldConfig;
-    });
-  }
-
-  createItemFieldConfigCopy(itemFieldConfigs: ItemFieldConfig[]) {
-    this.itemFieldConfigs = itemFieldConfigs
-      .filter(fieldConfig => fieldConfig.id !== this.selectedItemFieldConfig.id)
-      .map(fieldConfig => ItemFieldConfig.copyOnlyMandatoryData(fieldConfig));
+  filterSelectedItemFieldConfig(itemFieldConfigs: ItemFieldConfig[]) {
+    return itemFieldConfigs.filter(fieldConfig => fieldConfig.id !== this.selectedItemFieldConfig.id)
   }
 
   selectDeselectAll() {
@@ -82,16 +81,35 @@ export class MultipleEditDialogComponent implements OnInit {
     this.allItemFieldConfigsSelected = this.getSelectedFilteredItemFieldConfigs().length === this.filteredItemFieldConfigs.length;
   }
 
-  ngOnInit() {
-  }
-
-  onCancel() {
+  close() {
     this.dialogRef.close();
   }
 
   select(itemFieldConfig: ItemFieldConfig) {
     itemFieldConfig.checked = !itemFieldConfig.checked;
     this.updateAllItemFieldConfigsSelected();
+  }
+
+  getSelectedItemFieldConfigs(): ItemFieldConfig[] {
+    return this.itemFieldConfigs.filter(itemFieldConfig => itemFieldConfig.checked);
+  }
+
+  copyOnlyNewMandatoryData() {
+    ItemFieldConfigManager.copyMandatoryData(this.selectedItemFieldConfigCopy, this.selectedItemFieldConfig);
+    const selectedItemFieldConfigs = this.getSelectedItemFieldConfigs(); 
+    if (ArrayUtils.isNotEmpty(selectedItemFieldConfigs)) {
+      this.mandatoryDataManager.copyNewMandatoryData(selectedItemFieldConfigs, this.selectedItemFieldConfig);
+    }
+    this.close();
+  }
+
+  copyAllMandatoryData() {
+    ItemFieldConfigManager.copyMandatoryData(this.selectedItemFieldConfigCopy, this.selectedItemFieldConfig);
+    const selectedItemFieldConfigs = this.getSelectedItemFieldConfigs(); 
+    if (ArrayUtils.isNotEmpty(selectedItemFieldConfigs)) {
+      this.mandatoryDataManager.copyAllMandatoryData(selectedItemFieldConfigs, this.selectedItemFieldConfig);
+    }
+    this.close(); 
   }
 
 }

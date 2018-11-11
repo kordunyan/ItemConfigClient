@@ -7,9 +7,9 @@ export class SaveItemFieldConfigDto extends ItemCrudOperationsDto{
     item: Item,
     itemNumbers: string[],
     itemFieldConfigs: ItemFieldConfig[],
-    public saveForAll: boolean,
+    saveForAll: boolean,
     public saveForAllStrategy?: string
   ) {
-    super(item, itemNumbers, itemFieldConfigs);
+    super(item, itemNumbers, itemFieldConfigs, saveForAll);
   }
 }

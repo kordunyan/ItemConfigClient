@@ -1,24 +1,21 @@
 import {Component, OnInit, Output, Input, EventEmitter} from '@angular/core';
 import {Item} from '../../../shared/domain/item';
-import {Router, ActivatedRoute, ParamMap} from '@angular/router';
+import {Router} from '@angular/router';
 import {ItemManager} from '../../../shared/utils/item.manager';
 import {AppProperties} from '../../../shared/domain/app-properties';
 import {ItemFieldConfigHolder} from '../../../shared/utils/item-field-config-holder';
 import {SaveItemFieldConfigDto} from '../../../shared/dto/save-item-field-config.dto';
 import {ItemFieldConfigHttpService} from '../../../shared/service/http/item-field-config-http.service';
 import {ProgressBarService} from '../../../shared/service/progress-bar.service';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
-import {SaveForAllDialogComponent} from '../save-for-all-dialog/save-for-all-dialog.component';
+import {MatDialog} from '@angular/material';
 import {MessageService} from '../../../shared/service/message.service';
 import {DeleteComponent} from '../../../shared/components/delete/delete.component';
-import {ItemWithItemFieldConfigDto} from '../../../shared/dto/item-with-item-field-config.dto';
 import {ItemCrudOperationsDto} from '../../../shared/dto/item-crud-operations.dto';
 import {ItemFieldConfig} from '../../../shared/domain/item-field-config';
 import {MultipleEditDialogComponent} from '../multiple-edit-dialog/multiple-edit-dialog.component';
-import {ItemNumbersSelectDialog} from '../../../shared/components/item-numbers-select-dialog/item-numbers-select-dialog';
 import {DialogService} from '../../../shared/service/dialog.service';
-import {ItemFieldConfigFilter} from '../../../shared/utils/item-field-config-filter';
 import { RboCodeService } from '../../../shared/service/rbo-code.service';
+import { FieldConfig } from 'src/app/shared/domain/field-config';
 
 
 @Component({
@@ -61,18 +58,18 @@ export class FieldConfigListControlComponent implements OnInit {
     this.onReset.emit();
   }
 
-  onAddNewFields(fieldConfigNames: string[]) {
-    this.itemFieldConfigHolder.createNewItemFieldConfigs(fieldConfigNames);
+  onAddNewFields(fieldConfigs: FieldConfig[]) {
+    this.itemFieldConfigHolder.createNewItemFieldConfigs(fieldConfigs);
   }
 
   getCurrentItemNumber() {
     return ItemManager.getItemFieldValue(this.itemFieldConfigHolder.item, AppProperties.FIELD_D2COMM_ITEM_NUMBER);
   }
 
-  onSaveAllForItem() {
+  onSaveAllForItem(itemNumbers?: string[]) {
     this.dialogService.openSaveForAllStrategyDialog()
       .subscribe(saveForAllStrategy => {
-        this.saveItemFieldConfig(true, saveForAllStrategy);
+        this.saveItemFieldConfig(true, saveForAllStrategy, itemNumbers);
       });
   }
 
@@ -80,20 +77,27 @@ export class FieldConfigListControlComponent implements OnInit {
     this.saveItemFieldConfig(false);
   }
 
-  saveByItemNumbers() {
-    this.dialogService.openItemNumbersAndSaveStrategyDialog()
-      .subscribe((result) => {
-        this.saveItemFieldConfig(true, result.saveForAllStrategy, result.itemNumbers);
-      });
+  private buildCrudOperationsDto(itemFieldConfigs: ItemFieldConfig[], forAll: boolean, selectedItemNumbers?: string[]): ItemCrudOperationsDto {
+    let itemNumbers = [this.getCurrentItemNumber()];
+    if (selectedItemNumbers && selectedItemNumbers.length > 0) {
+      itemNumbers = itemNumbers.concat(selectedItemNumbers);
+    }
+    return new ItemCrudOperationsDto(
+      Item.copyWithoutFieldConfigs(this.itemFieldConfigHolder.item),
+      itemNumbers,
+      itemFieldConfigs,
+      forAll
+    );
   }
 
-  onDelete() {
+  delete(options?: any) {
     const itemFieldConfigs = this.itemFieldConfigHolder.getSelectedNoNewItemFieldConfigs();
     if (itemFieldConfigs.length === 0) {
       return;
     }
+    let itemNumbers = options ? options.itemNumbers : undefined;
     this.progressBarService.show();
-    this.itemFieldConfigHttpService.delete(this.buildCrudOperationsDto(itemFieldConfigs))
+    this.itemFieldConfigHttpService.delete(this.buildCrudOperationsDto(itemFieldConfigs, !!options, itemNumbers))
       .subscribe(
         (result) => {
           this.messageService.success('Item field configs have succesfult deleted');
@@ -104,39 +108,7 @@ export class FieldConfigListControlComponent implements OnInit {
           this.progressBarService.hide();
           console.error(error);
         }
-      );
-  }
-
-  private buildCrudOperationsDto(itemFieldConfigs: ItemFieldConfig[], selectedItemNumbers?: string[]): ItemCrudOperationsDto {
-    let itemNumbers = [this.getCurrentItemNumber()];
-    if (selectedItemNumbers && selectedItemNumbers.length > 0) {
-      itemNumbers = itemNumbers.concat(selectedItemNumbers);
-    }
-    return new ItemCrudOperationsDto(
-      Item.copyWithoutFieldConfigs(this.itemFieldConfigHolder.item),
-      itemNumbers,
-      itemFieldConfigs
-    );
-  }
-
-  onDeleteForAll(itemNumbers: string[] = []) {
-    const itemFieldConfigs = this.itemFieldConfigHolder.getSelectedNoNewItemFieldConfigs();
-    if (itemFieldConfigs.length === 0) {
-      return;
-    }
-    this.progressBarService.show();
-    this.itemFieldConfigHttpService.deleteForAll(this.buildCrudOperationsDto(itemFieldConfigs, itemNumbers))
-      .subscribe(
-        (result) => {
-          this.messageService.success('Item field configs have succesfult deleted for all items');
-          this.progressBarService.hide();
-          this.onItemFieldConfigChanged.emit();
-        },
-        (error) => {
-          this.progressBarService.hide();
-          console.error(error);
-        }
-      );
+      );    
   }
 
   private saveItemFieldConfig(saveForAll: boolean, saveForAllStrategy?: string, selectedItemNumbers?: string[]) {

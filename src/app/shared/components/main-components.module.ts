@@ -12,8 +12,6 @@ import {DeleteDialog} from './delete-dialog/delete-dialog.component';
 import {ChooseFieldDialog} from './choose-field/choose-field.component';
 import {ExcludedFieldsComponent} from './excluded-fields/excluded-fields.component';
 import {ExportComponent} from './export/export.component';
-import {ItemNumbersSelectDialog} from './item-numbers-select-dialog/item-numbers-select-dialog';
-import {InsertItemNumberDialog} from './insert-item-number-dialog/insert-item-number-dialog';
 import {ScrollTopComponent} from './scroll-top/scroll-top.component';
 import {SelectValuesDialogComponent} from './select-values-dialog/select-values-dialog.component';
 import {SelectValuesButtonComponent} from './select-values-button/select-values-button.component';
@@ -23,6 +21,10 @@ import {RouterModule} from '@angular/router';
 import {ExportItemNumberComponent} from './export-item-number/export-item-number.component';
 import { MultipleFieldsComponent } from './multiple-fields/multiple-fields.component';
 import { ProgressBarComponent } from './progress-bar/progress-bar.component';
+import { ControllComponent } from './controll/controll.component';
+import { OptionsSelectDialog } from './options-select-dialog/options-select-dialog';
+import { InsertOptionDialog } from './insert-options-dialog/insert-option-dialog';
+
 
 @NgModule({
   imports: [
@@ -43,22 +45,23 @@ import { ProgressBarComponent } from './progress-bar/progress-bar.component';
     ChooseFieldDialog,
     ExcludedFieldsComponent,
     ExportComponent,
-    ItemNumbersSelectDialog,
-    InsertItemNumberDialog,
+    InsertOptionDialog,
     ScrollTopComponent,
     SelectValuesDialogComponent,
     SelectValuesButtonComponent,
     RboSelectComponent,
     ExportItemNumberComponent,
     MultipleFieldsComponent,
-    ProgressBarComponent
+    ProgressBarComponent,
+    ControllComponent,
+    OptionsSelectDialog
   ],
   entryComponents: [
     DeleteDialog,
     ChooseFieldDialog,
-    ItemNumbersSelectDialog,
-    InsertItemNumberDialog,
-    SelectValuesDialogComponent
+    InsertOptionDialog,
+    SelectValuesDialogComponent,
+    OptionsSelectDialog
   ],
   exports: [
     HeaderComponent,
@@ -74,14 +77,16 @@ import { ProgressBarComponent } from './progress-bar/progress-bar.component';
     ChooseFieldDialog,
     ExcludedFieldsComponent,
     ExportComponent,
-    ItemNumbersSelectDialog,
     ScrollTopComponent,
     SelectValuesDialogComponent,
     SelectValuesButtonComponent,
     RboSelectComponent,
     ExportItemNumberComponent,
     MultipleFieldsComponent,
-    ProgressBarComponent
+    ProgressBarComponent,
+    ControllComponent,
+    OptionsSelectDialog,
+    InsertOptionDialog
   ]
 })
 export class MainComponentsModule {

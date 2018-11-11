@@ -195,18 +195,11 @@ export class NewItemComponent implements OnInit {
     });
   }
 
-  addFieldsFromExcluded(fieldConfigNames: string[]) {
-    fieldConfigNames.forEach(fieldConfigName => {
-      let fieldConfig = this.findExcludedField(fieldConfigName);
-      if (fieldConfig) {
+  addFieldsFromExcluded(fieldConfigs: FieldConfig[]) {
+    fieldConfigs.forEach(fieldConfig => {
         this.addItemField(fieldConfig);
         this.removeFromExludedField(fieldConfig);
-      }
     });
-  }
-
-  findExcludedField(fieldConfigName): FieldConfig {
-    return this.excludedFieldConfigs.find(f => f.name === fieldConfigName);
   }
 
   removeFromExludedField(fieldConfig: FieldConfig) {

@@ -84,4 +84,11 @@ export class ItemFieldConfigManager {
     }
     return false;
   }
+
+  public static copyMandatoryData(from: ItemFieldConfig, to: ItemFieldConfig) {
+    to.mandatoryFields = from.mandatoryFields;
+    to.mandatoryTranslations = from.mandatoryTranslations;
+    to.hasSelectedMandatoryData = ItemFieldConfigManager.hasSelectedMandatoryData(to);
+    to.hasNewMandatoryData = ItemFieldConfigManager.hasNewMandatoryData(to);
+  }
 }

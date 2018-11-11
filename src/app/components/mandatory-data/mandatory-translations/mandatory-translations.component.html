@@ -1,12 +1,12 @@
 <div class="card">
   <div class="card-header">
-      <span class="d-inline-block">Mandatory Translations</span>
+      <span class="d-inline-block">Translations</span>
       <div class="button-wrapper float-right"
             *ngIf="itemFieldConfig.id && languages.length">
-          <app-controll (reset)="reset()"
-                        (save)="save()"
-                        (saveForItemNumber)="saveForItemNumber($event)"
-                        (delete)="delete($event)"></app-controll>
+          <button class="btn btn-primary btn-sm" 
+                  (click)="reset()">
+              <i class="fa fa-refresh" aria-hidden="true"></i>
+          </button>
           <app-add-mandatory-translation
                         [languages]="languages"
                         (addNewData)="addTranslation($event)"
@@ -14,7 +14,9 @@
           </app-add-mandatory-translation>
       </div>
   </div>
-  <div class="card-body max-height-scrollbar" [ngClass]="{'empty-list': !languages.length}">
+  <div class="card-body max-height-scrollbar"
+        [ngStyle]="{'max-height': height, 'min-height': height}" 
+        [ngClass]="{'empty-list': !languages.length}">
     <app-translation *ngFor="let mandatoryTranslation of itemFieldConfig.mandatoryTranslations"
                     (changedSelection)="changedSelection($event)"
                     [mandatoryTranslation]="mandatoryTranslation"></app-translation>

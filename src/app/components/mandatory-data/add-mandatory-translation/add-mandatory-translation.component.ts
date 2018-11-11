@@ -13,7 +13,7 @@ export class AddMandatoryTranslationComponent implements OnChanges {
   @Input('mandatoryTranslations') mandatoryTranslations: MandatoryTranslation[];
   @Input('languages') languages: Language[] = [];
   @Output('addNewData') addNewData = new EventEmitter<string[]>();
-  languagesToSelect: string[] = [];
+  languagesToSelect: Language[] = [];
 
   constructor(private dialogService: DialogService) {
   }
@@ -21,16 +21,13 @@ export class AddMandatoryTranslationComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     this.languagesToSelect = this.languages
       .filter(language => this.mandatoryTranslations.findIndex(translation =>
-        translation.language.code === language.code) < 0)
-      .map(language => language.name);
+        translation.language.code === language.code) < 0);
   }
 
   onAdd() {
-    this.dialogService.openSelectValuesDialog(this.languagesToSelect, 'Selected Languages')
-      .subscribe((selectedLanguageNames: string[]) => {
-        this.addNewData.emit(selectedLanguageNames);
+    this.dialogService.openOptionsSelectDialog(this.languagesToSelect, 'Selected Languages', (language) => language.name)
+      .subscribe(selectedLanguages => {
+        this.addNewData.emit(selectedLanguages);  
       });
   }
-
-
 }

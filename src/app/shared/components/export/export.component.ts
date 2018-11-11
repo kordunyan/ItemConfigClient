@@ -1,10 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {ExportHttpService} from '../../service/http/export.http.service';
 import {MatDialog} from '@angular/material';
-import {ItemNumbersSelectDialog} from '../item-numbers-select-dialog/item-numbers-select-dialog';
-import {ItemHttpService} from '../../service/http/item-http.service';
 import {ProgressBarService} from '../../service/progress-bar.service';
 import {FileUtils} from '../../utils/file_utils';
+import { DialogService } from '../../service/dialog.service';
 
 @Component({
   selector: 'app-export',
@@ -13,11 +12,10 @@ import {FileUtils} from '../../utils/file_utils';
 })
 export class ExportComponent implements OnInit {
 
-
   constructor(
+    private progressBarService: ProgressBarService,
     private exportService: ExportHttpService,
-    public dialog: MatDialog,
-    private progressBarService: ProgressBarService
+    public dialogService: DialogService
   ) { }
 
   ngOnInit() {
@@ -35,14 +33,8 @@ export class ExportComponent implements OnInit {
   }
 
   onExportBy() {
-    let dialogRef = this.dialog.open(ItemNumbersSelectDialog, {
-      width: '500px',
-    });
-
-    dialogRef.beforeClose().subscribe(result => {
-      if (result && result.length > 0) {
-        this.exportBy(result);
-      }
+    this.dialogService.openItemNumberSelectDialog().subscribe(itemNumbers => {
+      this.exportBy(itemNumbers);  
     });
   }
 

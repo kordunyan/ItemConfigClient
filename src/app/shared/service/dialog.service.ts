@@ -2,12 +2,15 @@ import {Injectable} from '@angular/core';
 import {MatDialog} from '@angular/material';
 import {SaveForAllDialogComponent} from '../../components/item-field-config/save-for-all-dialog/save-for-all-dialog.component';
 import {Observable} from 'rxjs';
-import {ItemNumbersSelectDialog} from '../components/item-numbers-select-dialog/item-numbers-select-dialog';
 import {filter, flatMap, map} from 'rxjs/operators';
 import {DeleteDialog} from '../components/delete-dialog/delete-dialog.component';
 import {FilterRegexDialogComponent} from '../../components/item-field-config/filter-regex-dialog/filter-regex-dialog.component';
 import {ItemFieldConfig} from '../domain/item-field-config';
 import {SelectValuesDialogComponent} from '../components/select-values-dialog/select-values-dialog.component';
+import { OptionsSelectDialog } from '../components/options-select-dialog/options-select-dialog';
+import { ArrayUtils } from '../utils/array-utils';
+import { ItemHttpService } from './http/item-http.service';
+import { ProgressBarService } from './progress-bar.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +18,8 @@ import {SelectValuesDialogComponent} from '../components/select-values-dialog/se
 export class DialogService {
 
   constructor(
+    private progressBarService: ProgressBarService,
+    private itemService: ItemHttpService,
     public dialog: MatDialog
   ) {
   }
@@ -42,12 +47,28 @@ export class DialogService {
   }
 
   openItemNumberSelectDialog(): Observable<string[]> {
-    return this.dialog.open(ItemNumbersSelectDialog, {
-      width: '500px'
-    }).beforeClose()
+    this.progressBarService.show();
+    return this.itemService.getAllItemValues()
       .pipe(
-        filter((itemNumbers) => itemNumbers && itemNumbers.length > 0)
+        flatMap(itemNumbers => {
+          this.progressBarService.hide();
+          return this.openOptionsSelectDialog(itemNumbers, 'Select Item Number', (name) => name)
+        }) 
       );
+  }
+
+  openOptionsSelectDialog(options: any[], title: string, getFieldValueFunction): Observable<any[]> {
+    return this.dialog.open(OptionsSelectDialog, {
+      width: '500px',
+      data: {
+        options: options,
+        title: title,
+        getFieldValueFunction: getFieldValueFunction
+      }
+    }).beforeClose()
+    .pipe(
+      filter(result => ArrayUtils.isNotEmpty(result))
+    );
   }
 
   openItemNumbersAndSaveStrategyDialog(): Observable<any> {

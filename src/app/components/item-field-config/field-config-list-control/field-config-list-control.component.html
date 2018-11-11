@@ -34,33 +34,11 @@
                 </div>
                 <div class="col">
                   <div class="float-right">
-                    <button class="btn btn-primary ml-1"
-                            title="Reset"
-                            (click)="onResetClick()">
-                      <i class="fa fa-refresh" aria-hidden="true"></i>
-                    </button>
-                    <div class="btn-group" role="group" >
-                      <button class="btn btn-primary ml-1"
-                              (click)="onSaveClick()"
-                              title="Save">
-                        <i class="fa fa-save" aria-hidden="true"></i>
-                      </button>
-                      <button class="btn btn-info"
-                              (click)="onSaveAllForItem()"
-                              title="Save For All">
-                        <i class="fa fa-copy" aria-hidden="true"></i>
-                      </button>
-                      <button class="btn btn-primary"
-                              (click)="saveByItemNumbers()"
-                              title="Save By Item Numbers">
-                        <i class="fa fa-check-square" aria-hidden="true"></i>
-                      </button>
-                    </div>
-                    <app-delete [btnType]="btnType"
-                                [withByItemNumbers]="true"
-                                (onOkChoosen)="onDelete()"
-                                (onByChoosen)="onDeleteForAll($event)"
-                                (onAllChoosen)="onDeleteForAll()"></app-delete>
+                    <app-controll (save)="onSaveClick()"
+                                  (saveForItemNumber)="onSaveAllForItem($event)"
+                                  (delete)="delete($event)"
+                                  (reset)="onResetClick()">
+                    </app-controll>
                   </div>
                 </div>
               </div>

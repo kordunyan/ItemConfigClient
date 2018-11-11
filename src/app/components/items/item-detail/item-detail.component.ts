@@ -47,8 +47,8 @@ export class ItemDetailComponent implements OnInit {
     this.show.isShow = !this.show.isShow;
   }
 
-  onChoseFields(fieldConfigNames: string[]) {
-    this.itemFieldsHolder.createNewItemFields(fieldConfigNames);
+  onChoseFields(fieldConfigs: FieldConfig[]) {
+    this.itemFieldsHolder.createNewItemFields(fieldConfigs);
   }
 
   reloadData() {

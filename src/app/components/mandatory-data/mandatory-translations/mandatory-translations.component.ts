@@ -14,24 +14,13 @@ export class MandatoryTranslationsComponent implements OnChanges {
 
   @Input('itemFieldConfig') itemFieldConfig: ItemFieldConfig;
   @Input('languages') languages: Language[] = [];
-
-  @Output('saveForCurrent') onSaveForCurrent = new EventEmitter();
-  @Output('saveForItemNumber') onSaveForItemNumber = new EventEmitter<string[]>();
-  @Output('delete') onDelete = new EventEmitter<{}>();
+  @Input('height') height: string = '100px';
 
   constructor() {
   }
 
   ngOnChanges(changes: SimpleChanges) {
     this.sortMandatoryTranslations();
-  }
-
-  save() {
-    this.onSaveForCurrent.emit();
-  }
-
-  saveForItemNumber(itemNumbers?: string[]) {
-    this.onSaveForItemNumber.emit(itemNumbers);
   }
 
   changedSelection(selected) {
@@ -52,8 +41,8 @@ export class MandatoryTranslationsComponent implements OnChanges {
     this.itemFieldConfig.hasSelectedMandatoryData = ItemFieldConfigManager.hasSelectedMandatoryData(this.itemFieldConfig);
   }
 
-  addTranslation(selectedLanguageNames: string[]) {
-    this.addNewMandatoryTrnalsations(this.getLanguagesByNames(selectedLanguageNames));
+  addTranslation(selectedLanguages: Language[]) {
+    this.addNewMandatoryTrnalsations(selectedLanguages);
     this.sortMandatoryTranslations();
     this.itemFieldConfig.hasNewMandatoryData = true;
   }
@@ -61,13 +50,5 @@ export class MandatoryTranslationsComponent implements OnChanges {
   addNewMandatoryTrnalsations(languages: Language[]) {
     const newTranslations = languages.map(language => new MandatoryTranslation(language));
     this.itemFieldConfig.mandatoryTranslations = this.itemFieldConfig.mandatoryTranslations.concat(newTranslations);
-  }
-
-  getLanguagesByNames(names: string[]): Language[] {
-    return this.languages.filter(language => names.indexOf(language.name) > -1);
-  }
-
-  delete(deleteOptions?: {}) {
-    this.onDelete.emit(deleteOptions);
   }
 }

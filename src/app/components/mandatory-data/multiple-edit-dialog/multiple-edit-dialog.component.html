@@ -28,23 +28,27 @@
       </div>
     </div>
     <div class="col-sm-4">
-      <app-mandatory-translations [itemFieldConfig]="selectedItemFieldConfig"
+      <app-mandatory-translations [itemFieldConfig]="selectedItemFieldConfigCopy"
+                                  [height]="'534px'"
                                   [languages]="selectedInstructionLanguages">
       </app-mandatory-translations>
     </div>
     <div class="col-sm-4">
-      <app-mandatory-fields   [itemFieldConfig]="selectedItemFieldConfig"
+        <app-mandatory-fields [itemFieldConfig]="selectedItemFieldConfigCopy"
+                              [height]="'534px'"
                               [instructionsFieldConfigs]="selectedInstructionFieldConfigs">
-      </app-mandatory-fields>
+        </app-mandatory-fields>     
     </div>
   </div>
 </div>
 <div mat-dialog-actions>
   <div class="text-right w-100">
     <button class="btn btn-light mr-2"
-            (click)="onCancel()">Cancel</button>
+            (click)="close()">Cancel</button>
+    <button class="btn btn-primary mr-2"
+            (click)="copyAllMandatoryData()">All</button>
     <button class="btn btn-primary"
-            (click)="updateChangedFields()"
-            cdkFocusInitial>Ok</button>
+            (click)="copyOnlyNewMandatoryData()"
+            cdkFocusInitial>New</button>
   </div>
 </div>

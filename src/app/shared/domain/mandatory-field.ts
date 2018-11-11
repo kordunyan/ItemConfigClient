@@ -8,4 +8,8 @@ export class MandatoryField {
     ) {
 
     }
+
+    public static copyWithoutId(src: MandatoryField): MandatoryField {
+        return new MandatoryField(src.fieldConfig);
+    }
 }

@@ -13,10 +13,7 @@ export class MandatoryFieldsComponent {
 
   @Input('itemFieldConfig') itemFieldConfig: ItemFieldConfig;
   @Input('instructionsFieldConfigs') instructionsFieldConfigs: FieldConfig[];
-
-  @Output('saveForItemNumber') onSaveForItemNumber = new EventEmitter<string[]>();
-  @Output('saveForCurrent') onSaveForCurrent = new EventEmitter();
-  @Output('delete') onDelete = new EventEmitter<{}>();
+  @Input('height') height: string = '100px';
   
   constructor() {
   }
@@ -28,8 +25,8 @@ export class MandatoryFieldsComponent {
     this.itemFieldConfig.hasSelectedMandatoryData = ItemFieldConfigManager.hasSelectedMandatoryData(this.itemFieldConfig);
   }
 
-  addFields(selectedFieldConfigNames: string[]) {
-    this.addNewMandatoryFields(this.getFieldConfigsByNames(selectedFieldConfigNames));
+  addFields(selectedFieldConfigs: FieldConfig[]) {
+    this.addNewMandatoryFields(selectedFieldConfigs);
     this.itemFieldConfig.hasNewMandatoryData = true;
   }
 
@@ -42,21 +39,4 @@ export class MandatoryFieldsComponent {
     this.itemFieldConfig.mandatoryFields.forEach(fieldConfig => fieldConfig.selected = false);
     this.itemFieldConfig.hasSelectedMandatoryData = ItemFieldConfigManager.hasSelectedMandatoryData(this.itemFieldConfig);
   }
-
-  getFieldConfigsByNames(fieldConfigNames: string[]): FieldConfig[] {
-    return this.instructionsFieldConfigs.filter(fieldConfig => fieldConfigNames.indexOf(fieldConfig.name) > -1);
-  }
-
-  save() {
-    this.onSaveForCurrent.emit();
-  }
-
-  saveForItemNumber(itemNumbers?: string[]) {
-    this.onSaveForItemNumber.emit(itemNumbers);
-  }
-
-  delete(deleteOptions?: {}) {
-    this.onDelete.emit(deleteOptions);
-  }
-
 }

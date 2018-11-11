@@ -8,4 +8,8 @@ export class MandatoryTranslation {
     ) {
 
     }
+
+    public static copyWithoutId(src: MandatoryTranslation): MandatoryTranslation {
+        return new MandatoryTranslation(src.language);
+    }
 }

@@ -1,28 +1,23 @@
 import {Component, OnInit} from '@angular/core';
 import {ItemFieldConfigHttpService} from 'src/app/shared/service/http/item-field-config-http.service';
-import {ActivatedRoute, ParamMap} from '@angular/router';
+import {ActivatedRoute} from '@angular/router';
 import {forkJoin, Observable} from 'rxjs';
-import {first, map, startWith, switchMap} from 'rxjs/operators';
+import {map, startWith} from 'rxjs/operators';
 import {AppProperties} from 'src/app/shared/domain/app-properties';
 import {ItemFieldConfig} from 'src/app/shared/domain/item-field-config';
 import {FieldConfigHttpService} from 'src/app/shared/service/http/field-config-http.service';
-import {LanguageHttpService} from 'src/app/shared/service/http/language-http.service';
 import {Language} from 'src/app/shared/domain/language';
 import {ProgressBarService} from 'src/app/shared/service/progress-bar.service';
 import {ItemHttpService} from '../../../shared/service/http/item-http.service';
 import {FieldConfig} from 'src/app/shared/domain/field-config';
 import {InstructionTypeInputConfigHttpService} from 'src/app/shared/service/http/instruction-type-input-config-http.service';
 import {Item} from 'src/app/shared/domain/item';
-import {SaveMandatoryDataDto} from 'src/app/shared/dto/save-mandatory-data.dto';
-import {MandatoryTranslationsHttpService} from 'src/app/shared/service/http/mandatory-translations-http.service';
 import {ItemManager} from 'src/app/shared/utils/item.manager';
-import {MessageService} from 'src/app/shared/service/message.service';
-import {DeleteMandatoryDataDto} from 'src/app/shared/dto/delete-mandatory-data.dto';
-import {MandatoryTranslationsService} from '../../../shared/service/mandatory-translations.service';
 import {FormControl} from '@angular/forms';
-import {MandatoryFieldsService} from '../../../shared/service/mandatory-fields.service';
 import {MatDialog} from '@angular/material';
 import {MultipleEditDialogComponent} from '../multiple-edit-dialog/multiple-edit-dialog.component';
+import { MandatoryDataService } from 'src/app/shared/service/mandatory-data.service';
+
 
 @Component({
   selector: 'app-item-field-config-list',
@@ -43,10 +38,9 @@ export class ItemFieldConfigListComponent implements OnInit {
 
   constructor(
     private instructionConfigHttpService: InstructionTypeInputConfigHttpService,
-    private mandatoryTranslationsService: MandatoryTranslationsService,
     private itemFieldConfigHttpService: ItemFieldConfigHttpService,
     private fieldConfigHttpService: FieldConfigHttpService,
-    private mandatoryFieldsService: MandatoryFieldsService,
+    private mandatoryDataService: MandatoryDataService,
     private progressBarService: ProgressBarService,
     private itemHttpService: ItemHttpService,
     private route: ActivatedRoute,
@@ -92,7 +86,9 @@ export class ItemFieldConfigListComponent implements OnInit {
         selectedItemFieldConfig: this.selectedItemFieldConfig,
         itemFieldConfigs: this.itemFieldConfigs,
         selectedInstructionFieldConfigs: this.selectedInstructionFieldConfigs,
-        selectedInstructionLanguages: this.selectedInstructionLanguages
+        selectedInstructionLanguages: this.selectedInstructionLanguages,
+        instructionLanguages: this.instructionLanguages,
+        instructionsFields: this.instructionsFields
       }
     });
   }
@@ -127,7 +123,7 @@ export class ItemFieldConfigListComponent implements OnInit {
     return this.itemFieldConfigs.filter(fieldConfig => fieldConfig.hasNewMandatoryData);
   }
 
-  getItemFieldConfigsWithSelectedData() {
+  getItemFieldConfigsWithSelectedData(): ItemFieldConfig[] {
     return this.itemFieldConfigs.filter(fieldConfig => fieldConfig.hasSelectedMandatoryData);
   }
 
@@ -135,27 +131,23 @@ export class ItemFieldConfigListComponent implements OnInit {
     return ItemManager.getItemFieldValue(this.item, AppProperties.FIELD_D2COMM_ITEM_NUMBER);
   }
 
-  saveForCurrentTranslations() {
-    this.mandatoryTranslationsService.save(this.getItemFieldConfigsWithNewData());
+  saveForItemNumber(itemNumbers?: string[]) {
+    this.mandatoryDataService.saveForItemNumbers(this.getItemFieldConfigsWithNewData(), this.getItemNumber(), itemNumbers);
   }
 
-  saveForCurrentFields() {
-    this.mandatoryFieldsService.save(this.getItemFieldConfigsWithNewData());
+  saveForCurrent() {
+    this.mandatoryDataService.save(this.getItemFieldConfigsWithNewData());
   }
 
-  saveForItemNumberTranslations(itemNumbers?: string[]) {
-    this.mandatoryTranslationsService.saveForItemNumbers(this.getItemFieldConfigsWithNewData(), this.getItemNumber(), itemNumbers);
+  delete(deleteOptions?: {}) {
+    this.mandatoryDataService.delete(this.getItemFieldConfigsWithSelectedData(), this.getItemNumber(), deleteOptions);
   }
 
-  saveForItemNumberFields(itemNumbers?: string[]) {
-    this.mandatoryFieldsService.saveForItemNumbers(this.getItemFieldConfigsWithNewData(), this.getItemNumber(), itemNumbers);
-  }
-
-  deleteTranslation(deleteOptions?: {}) {
-    this.mandatoryTranslationsService.delete(this.getItemFieldConfigsWithSelectedData(), this.getItemNumber(), deleteOptions);
-  }
-
-  deleteFields(deleteOptions?: {}) {
-    this.mandatoryFieldsService.delete(this.getItemFieldConfigsWithSelectedData(), this.getItemNumber(), deleteOptions);
+  resetAllSelection() {
+    this.itemFieldConfigs.forEach(fieldConfig => {
+      fieldConfig.mandatoryFields.forEach(field => field.selected = false);
+      fieldConfig.mandatoryTranslations.forEach(translation => translation.selected = false);
+      fieldConfig.hasSelectedMandatoryData = false;  
+    });
   }
 }

@@ -23,10 +23,10 @@ export class ItemFieldsHolder {
     this.sortFields(this.itemFields);
   }
 
-  public createNewItemFields(fieldConfigNames: string[]) {
-    fieldConfigNames.forEach(fieldConfigName => {
-      this.newItemFields.push(new Field(fieldConfigName, ''));
-      this.removeNoActiveField(fieldConfigName);
+  public createNewItemFields(fieldConfigs: FieldConfig[]) {
+    fieldConfigs.forEach(fieldConfig => {
+      this.newItemFields.push(new Field(fieldConfig.name, ''));
+      this.removeNoActiveField(fieldConfig.name);
     });
     this.sortFields(this.newItemFields);
   }

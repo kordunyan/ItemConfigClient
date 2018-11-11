@@ -16,5 +16,12 @@
         Multiple Edit
       </button>
     </div>
+    <div class="float-right">
+        <app-controll (save)="save()"
+                      (saveForItemNumber)="saveForItemNumber($event)"
+                      (delete)="delete($event)"
+                      (reset)="onResetClick()">
+        </app-controll>  
+    </div>
   </div>
 </div>

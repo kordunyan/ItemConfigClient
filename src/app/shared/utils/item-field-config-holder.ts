@@ -74,13 +74,12 @@ export class ItemFieldConfigHolder extends AbstractItemFieldConfigHolder {
     this.sortFieldConfigs(this.noActiveFieldConfigs);
   }
 
-  createNewItemFieldConfigs(fieldConfigNames: string[]) {
+  createNewItemFieldConfigs(fieldConfigs: FieldConfig[]) {
     if (!this.item.itemFieldConfigs) {
       this.item.itemFieldConfigs = [];
     }
-    let newItemFields = fieldConfigNames.map(fieldConfigName => {
-      this.removeNoActiveField(fieldConfigName);
-      const fieldConfig = this.fieldConfigMap[fieldConfigName];
+    let newItemFields = fieldConfigs.map(fieldConfig => {
+      this.removeNoActiveField(fieldConfig.name);
       return ItemFieldConfig.default(fieldConfig, this.isTextField(fieldConfig));
     });
     this.item.itemFieldConfigs = this.item.itemFieldConfigs.concat(newItemFields);

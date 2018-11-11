@@ -5,7 +5,8 @@ export class ItemCrudOperationsDto {
     constructor(
         public item: Item,
         public itemNumbers: string[],
-        public itemFieldConfigs: ItemFieldConfig[]
+        public itemFieldConfigs: ItemFieldConfig[],
+        public forAll: boolean
       ) {
     
       }

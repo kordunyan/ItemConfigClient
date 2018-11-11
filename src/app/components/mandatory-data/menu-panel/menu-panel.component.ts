@@ -15,7 +15,13 @@ export class MenuPanelComponent implements OnInit, OnChanges {
 
   @Input('item') item: Item;
   @Input('selectedItemFieldConfig') selectedItemFieldConfig: ItemFieldConfig;
+
   @Output('multipleEdit') multipleEdit = new EventEmitter();
+  @Output('delete') onDelete = new EventEmitter<{}>();
+  @Output('saveForCurrent') onSaveForCurrent = new EventEmitter();
+  @Output('saveForItemNumber') onSaveForItemNumber = new EventEmitter<string[]>();
+  @Output('reset') onReset = new EventEmitter();
+  
   itemNumber: string;
 
   constructor(
@@ -43,6 +49,22 @@ export class MenuPanelComponent implements OnInit, OnChanges {
 
   onMultipleEdit() {
     this.multipleEdit.emit();  
+  }
+
+  delete(deleteOptions?: {}) {
+    this.onDelete.emit(deleteOptions);
+  }
+
+  save() {
+    this.onSaveForCurrent.emit();
+  }
+
+  saveForItemNumber(itemNumbers?: string[]) {
+    this.onSaveForItemNumber.emit(itemNumbers);
+  }
+
+  onResetClick() {
+    this.onReset.emit();
   }
 
 }
