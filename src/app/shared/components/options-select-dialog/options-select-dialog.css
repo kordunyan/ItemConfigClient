@@ -1,0 +1,24 @@
+.options-wraper {
+    height: 500px;
+    position: relative;
+}
+
+.options-wraper .list-group-item{
+    cursor: pointer;
+}
+
+.checkbox-ovelay {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    top: 11px;
+    right: 19px;
+}
+
+.select-all {
+    margin-right: 37px;
+}
+
+.btn-wrapper {
+    margin-top: 22px;
+}

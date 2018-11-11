@@ -1,0 +1,40 @@
+<h1 mat-dialog-title>
+  <mat-form-field class="w-50">
+    <input matInput
+           [formControl]="optionValueInput"
+           [placeholder]="title">
+  </mat-form-field>
+  <div class="float-right btn-wrapper">
+    <button class="btn btn-info btn-sm mr-1"
+            (click)="copyToBuffer()">
+      <i class="fa fa-clone" aria-hidden="true"></i> 
+    </button>
+    <button class="btn btn-info btn-sm mr-1"
+            (click)="openInsertOptios()">
+        <i class="fa fa-exchange" aria-hidden="true"></i>
+    </button>
+    <mat-checkbox class="select-all"
+                  [(ngModel)]="allOptionsSelected"
+                  (change)="selectDeselectAll($event)">
+    </mat-checkbox>
+  </div>
+</h1>
+<div mat-dialog-content>
+  <div class="options-wraper">
+    <div class="list-group list-group-flush">
+      <a class="list-group-item list-group-item-action"
+         *ngFor="let option of filteredOptions"      
+         (click)="select(option)">
+            <span>{{ option.getValue() }}</span>
+            <mat-checkbox [(ngModel)]="option.selected" class="float-right"></mat-checkbox>
+            <div class="checkbox-ovelay"></div>
+      </a>
+    </div>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <div class="text-right w-100">
+      <button class="btn btn-light mr-2" (click)="close()">Close</button>
+      <button class="btn btn-primary" cdkFocusInitial (click)="ok()">Ok</button>
+  </div>
+</div>
