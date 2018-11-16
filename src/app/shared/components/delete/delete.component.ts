@@ -1,7 +1,5 @@
 import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import {DeleteDialog} from '../delete-dialog/delete-dialog.component';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
-import {ItemNumbersSelectDialog} from '../item-numbers-select-dialog/item-numbers-select-dialog';
 import {DialogService} from '../../service/dialog.service';
 
 @Component({
@@ -23,7 +21,6 @@ export class DeleteComponent implements OnInit {
   @Output('onByChoosen') onByChoosen = new EventEmitter<string[]>();
 
   constructor(
-    public dialog: MatDialog,
     public dialogService: DialogService
   ) {
   }

@@ -11,7 +11,7 @@ import {DialogService} from '../../../shared/service/dialog.service';
 export class FieldConfigTableComponent implements OnInit, OnChanges {
   displayedColumns: string[] = ['fieldConfigName', 'active', 'required', 'editable', 'dataSourceName', 'predefinedValue',
     'filterRegex', 'storeLastUserInput', 'canAddLater'];
-  
+
   dataSource: MatTableDataSource<ItemFieldConfig>;
   filterValue: string;
 
@@ -39,7 +39,13 @@ export class FieldConfigTableComponent implements OnInit, OnChanges {
   initDataSource() {
     this.dataSource = new MatTableDataSource(this.itemFieldConfigs);
     this.dataSource.filterPredicate = (data, filter) => {
-      return data.fieldConfig.name.toLowerCase().indexOf(filter) >= 0;
+      let regex = null;
+      try {
+        regex = new RegExp(filter, 'i');
+      } catch (e) {
+        regex = new RegExp('', 'i');
+      }
+      return regex.test(data.fieldConfig.name);
     };
     if (this.filterValue) {
       this.filterItemFieldConfigs();

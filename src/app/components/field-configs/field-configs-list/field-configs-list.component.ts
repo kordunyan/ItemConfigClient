@@ -48,7 +48,13 @@ export class FieldConfigsListComponent implements OnInit {
   initDatasource() {
     this.dataSource = new MatTableDataSource(this.fieldConfigs);
     this.dataSource.filterPredicate = (data, filter) => {
-      return data.name.toLowerCase().indexOf(filter) >= 0;
+      let regex = null;
+      try {
+        regex = new RegExp(filter, 'i');
+      } catch (e) {
+        regex = new RegExp('', 'i');
+      }
+      return regex.test(data.name);
     };
     if (this.filterValue) {
       this.filterFieldConfigs();
