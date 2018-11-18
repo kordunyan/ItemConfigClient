@@ -60,7 +60,7 @@ export class ItemFieldComponent implements OnInit {
   }
 
   onSaveAllForItem() {
-    this.dialogService.openSaveForAllStrategyDialog().subscribe((saveForAllStrategy) => {
+    this.dialogService.openSaveForAllConfigurationDialog().subscribe((saveForAllStrategy) => {
       if (saveForAllStrategy) {
         let dto = new ItemFieldCrudOperationsDto([this.itemNumber], [this.field], saveForAllStrategy);
         this.saveField(dto);

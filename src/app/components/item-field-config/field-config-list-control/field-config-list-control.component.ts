@@ -67,7 +67,7 @@ export class FieldConfigListControlComponent implements OnInit {
   }
 
   onSaveAllForItem(itemNumbers?: string[]) {
-    this.dialogService.openSaveForAllStrategyDialog()
+    this.dialogService.openSaveForAllConfigurationDialog(this.itemFieldConfigHolder.item)
       .subscribe(saveForAllStrategy => {
         this.saveItemFieldConfig(true, saveForAllStrategy, itemNumbers);
       });

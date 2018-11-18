@@ -84,4 +84,25 @@ export class FieldConfigHttpService extends AbstractHttpService {
         catchError(this.handleTrowableError(`Failed to save field config`, fieldConfig))
       );
   }
+
+  public getAllOwners(): Observable<string[]> {
+    return this.http.get<string[]>(this.getRelatedUrl('/owners'), this.getHttpOptions())
+      .pipe(
+        catchError(this.handleError(`Failed to get all owners for field configs`, []))
+      );
+  }
+
+  public getAllTypes(): Observable<string[]> {
+    return this.http.get<string[]>(this.getRelatedUrl('/types'), this.getHttpOptions())
+      .pipe(
+        catchError(this.handleError(`Failed to get all types for field configs`, []))
+      );
+  }
+
+  public getAllNames(): Observable<string[]> {
+    return this.http.get<string[]>(this.getRelatedUrl('/names'), this.getHttpOptions())
+      .pipe(
+        catchError(this.handleError(`Failed to get all names for field configs`, []))
+      );
+  }
 }

@@ -1,11 +1,24 @@
 <ul class="navbar-nav">
-  <li class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+  <li class="nav-item">
+    <a class="nav-link dropdown-item" [matMenuTriggerFor]="exportTypes">
       <i class="fa fa-cloud-download" aria-hidden="true"></i>
     </a>
-    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-      <a class="dropdown-item" (click)="onExportBy()">By</a>
-      <a class="dropdown-item" (click)="exportAll()">All</a>
-    </div>
   </li>
 </ul>
+
+<mat-menu #exportTypes="matMenu">
+  <button mat-menu-item [matMenuTriggerFor]="itemOptions">Items</button>
+  <button mat-menu-item [matMenuTriggerFor]="fieldConfigOptions">Field Configs</button>
+</mat-menu>
+
+<mat-menu #itemOptions="matMenu">
+  <button mat-menu-item (click)="onExportBy()">By</button>
+  <button mat-menu-item (click)="exportAll()">All</button>
+</mat-menu>
+
+<mat-menu #fieldConfigOptions="matMenu">
+  <button mat-menu-item (click)="exportFieldsByNames()">By Name</button>
+  <button mat-menu-item (click)="exportFieldsByTypes()">By Type</button>
+  <button mat-menu-item (click)="exportFieldsByOwners()">By Owner</button>
+  <button mat-menu-item (click)="exportAllFields()">All</button>
+</mat-menu>

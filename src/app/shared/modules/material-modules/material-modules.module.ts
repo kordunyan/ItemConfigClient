@@ -12,6 +12,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import {MatInputModule} from '@angular/material/input';
 import {MatListModule} from '@angular/material/list';
 import {MatTableModule} from '@angular/material/table';
+import {MatMenuModule} from '@angular/material/menu';
 
 
 @NgModule({
@@ -28,7 +29,8 @@ import {MatTableModule} from '@angular/material/table';
     MatAutocompleteModule,
     MatInputModule,
     MatListModule,
-    MatTableModule
+    MatTableModule,
+    MatMenuModule
   ],
   exports: [
     MatCheckboxModule,
@@ -43,7 +45,8 @@ import {MatTableModule} from '@angular/material/table';
     MatAutocompleteModule,
     MatInputModule,
     MatListModule,
-    MatTableModule
+    MatTableModule,
+    MatMenuModule
   ],
   declarations: []
 })

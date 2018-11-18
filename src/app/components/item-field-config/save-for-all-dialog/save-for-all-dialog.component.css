@@ -1,4 +1,13 @@
 .radio-wrapper {
-    height: 100px;
     padding: 10px;
+}
+
+.item-fields-values {
+    max-height: 240px;
+    overflow: auto;
+}
+
+.row {
+    margin-left: 0;
+    margin-right: 0;
 }

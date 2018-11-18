@@ -7,7 +7,7 @@ import {DialogService} from '../../service/dialog.service';
   templateUrl: './delete.component.html',
   styleUrls: ['./delete.component.css']
 })
-export class DeleteComponent implements OnInit {
+export class DeleteComponent {
 
   public static readonly DELETE_BTN_TYPE_DEFAULT = 'default';
   public static readonly DELETE_BTN_TYPE_DANGER = 'danger';
@@ -23,9 +23,6 @@ export class DeleteComponent implements OnInit {
   constructor(
     public dialogService: DialogService
   ) {
-  }
-
-  ngOnInit() {
   }
 
   getDangerBtnType() {

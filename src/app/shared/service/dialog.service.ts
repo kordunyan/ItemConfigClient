@@ -11,6 +11,7 @@ import { OptionsSelectDialog } from '../components/options-select-dialog/options
 import { ArrayUtils } from '../utils/array-utils';
 import { ItemHttpService } from './http/item-http.service';
 import { ProgressBarService } from './progress-bar.service';
+import { Item } from '../domain/item';
 
 @Injectable({
   providedIn: 'root'
@@ -24,9 +25,12 @@ export class DialogService {
   ) {
   }
 
-  openSaveForAllStrategyDialog(): Observable<string> {
+  openSaveForAllConfigurationDialog(item?: Item): Observable<string> {
     return this.dialog.open(SaveForAllDialogComponent, {
-      width: '300px'
+      width: '700px',
+      data: {
+        item: item
+      }
     }).beforeClose()
       .pipe(
         filter(saveForAllStrategy => saveForAllStrategy !== undefined)
@@ -74,7 +78,7 @@ export class DialogService {
   openItemNumbersAndSaveStrategyDialog(): Observable<any> {
     return this.openItemNumberSelectDialog().pipe(
       flatMap((itemNumbers) => {
-        return this.openSaveForAllStrategyDialog().pipe(
+        return this.openSaveForAllConfigurationDialog().pipe(
           map(saveForAllStrategy => {
             return {
               saveForAllStrategy: saveForAllStrategy,

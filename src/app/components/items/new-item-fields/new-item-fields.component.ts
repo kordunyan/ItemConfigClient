@@ -33,7 +33,7 @@ export class NewItemFieldsComponent implements OnInit {
   }
 
   onSaveAllForItem() {
-     this.dialogService.openSaveForAllStrategyDialog().subscribe((saveForAllStrategy) => {
+     this.dialogService.openSaveForAllConfigurationDialog().subscribe((saveForAllStrategy) => {
        let dto = new ItemFieldCrudOperationsDto([this.getItemNumber()], this.getNonEmptyFields(), saveForAllStrategy);
        this.saveField(dto);
      });

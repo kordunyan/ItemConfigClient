@@ -6,6 +6,7 @@ import {catchError, map} from 'rxjs/operators';
 import {Observable} from 'rxjs';
 import { Header } from '../../domain/header';
 import { RboCodeService } from '../rbo-code.service';
+import { ExprotFieldConfigDto } from '../../dto/export-field-config.dto';
 
 @Injectable({
     providedIn: 'root',
@@ -30,7 +31,7 @@ export class ExportHttpService extends AbstractHttpService {
                  fileName: response.headers.get(Header.FILENAME)
                 };
             }),
-            catchError(this.handleTrowableError(`Failed generate report for all items`))
+            catchError(this.handleTrowableError(`Failed to export all items`))
         );
     }
 
@@ -47,8 +48,15 @@ export class ExportHttpService extends AbstractHttpService {
               fileName: response.headers.get(Header.FILENAME)
             };
           }),
-          catchError(this.handleTrowableError(`Failed generate report for items`, itemNumbers))
+          catchError(this.handleTrowableError(`Failed to export items`, itemNumbers))
         );
+    }
+
+    exportFieldConfigs(dto: ExprotFieldConfigDto): Observable<any> {
+        return this.http.post(this.getRelatedUrl('/field-configs'), dto, this.getHttpOptions())
+            .pipe(
+                catchError(this.handleTrowableError(`Failed export field configs`, dto))
+            );    
     }
 
 }
