@@ -1,11 +1,9 @@
 import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import {Field} from '../../../shared/domain/field';
-import {FieldConfigHttpService} from '../../../shared/service/http/field-config-http.service';
 import {FieldHttpService} from '../../../shared/service/http/field-http.service';
 import {ProgressBarService} from '../../../shared/service/progress-bar.service';
 import {MessageService} from '../../../shared/service/message.service';
 import {ItemFieldCrudOperationsDto} from '../../../shared/dto/item-field-crud-operations.dto';
-import {MatDialog} from '@angular/material';
 import {DialogService} from '../../../shared/service/dialog.service';
 
 @Component({

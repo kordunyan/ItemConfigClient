@@ -6,7 +6,7 @@ import {Observable, of} from 'rxjs';
 import {catchError, map, tap} from 'rxjs/operators';
 import {MessageService} from '../message.service';
 import { RboCodeService } from '../rbo-code.service';
-import {SaveItemFieldConfigDto} from '../../dto/save-item-field-config.dto';
+
 
 @Injectable({
   providedIn: 'root',

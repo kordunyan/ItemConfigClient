@@ -109,7 +109,7 @@ export class ItemFieldConfigHolder extends AbstractItemFieldConfigHolder {
   }
 
   getSelectedNoNewItemFieldConfigs(): ItemFieldConfig[] {
-    return this.getSelectedItemFieldConfigs().filter(itemFieeldConfig => itemFieeldConfig.id !== undefined);
+    return this.getSelectedItemFieldConfigs().filter(itemFieldConfig => itemFieldConfig.id !== undefined);
   }
 
   getChangedItemFields(): ItemFieldConfig[] {

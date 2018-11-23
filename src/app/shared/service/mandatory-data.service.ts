@@ -7,6 +7,7 @@ import {SaveMandatoryDataDto} from '../dto/save-mandatory-data.dto';
 import {ItemFieldConfigManager} from '../utils/item-field-config-manager';
 import { MandatoryDataHttpService } from './http/mandatory-data-http,service';
 import { Injectable } from '@angular/core';
+import {ItemFieldsCriteria} from '../dto/item-fields-criteria.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -37,24 +38,27 @@ export class MandatoryDataService {
     this.createDtoAndSave(itemFieldConfigsWithNewData, false);
   }
 
-  public saveForItemNumbers(itemFieldConfigsWithNewData: ItemFieldConfig[], currentItemNumber, itemNumbers?: string[]) {
+  public saveForItemNumbers(itemFieldConfigsWithNewData: ItemFieldConfig[], currentItemNumber, itemsCriteria: any) {
+    console.log(itemsCriteria);
     let selectedItemNumbers = [currentItemNumber];
-    if (ArrayUtils.isNotEmpty(itemNumbers)) {
-      selectedItemNumbers = selectedItemNumbers.concat(itemNumbers);
+    if (ArrayUtils.isNotEmpty(itemsCriteria.itemNumbers)) {
+      selectedItemNumbers = selectedItemNumbers.concat(itemsCriteria.itemNumbers);
     }
-    this.createDtoAndSave(itemFieldConfigsWithNewData, true, selectedItemNumbers);
+    this.createDtoAndSave(itemFieldConfigsWithNewData, true, selectedItemNumbers, itemsCriteria.itemFieldsCriteria);
   }
 
-  protected createDtoAndSave(itemFieldConfigsWithNewData: ItemFieldConfig[], saveForAll, itemNumbers?: string[]) {
+  protected createDtoAndSave(itemFieldConfigsWithNewData: ItemFieldConfig[], saveForAll, itemNumbers?: string[],
+      itemsCriteria?: ItemFieldsCriteria) {
     if (ArrayUtils.isEmpty(itemFieldConfigsWithNewData)) {
       return;
     }
-    const dto = this.buildSaveMandatoryDataDto(itemFieldConfigsWithNewData, saveForAll, itemNumbers);
+    const dto = this.buildSaveMandatoryDataDto(itemFieldConfigsWithNewData, saveForAll, itemNumbers, itemsCriteria);
     this.saveOnServer(dto, itemFieldConfigsWithNewData);
   }
 
-  protected buildSaveMandatoryDataDto(itemFieldConfigs: ItemFieldConfig[], saveForAll: boolean, itemNumbers?: string[]): SaveMandatoryDataDto {
-    return new SaveMandatoryDataDto(itemFieldConfigs, saveForAll, itemNumbers);
+  protected buildSaveMandatoryDataDto(itemFieldConfigs: ItemFieldConfig[], saveForAll: boolean, itemNumbers?: string[],
+      itemsCriteria?: ItemFieldsCriteria): SaveMandatoryDataDto {
+    return new SaveMandatoryDataDto(itemFieldConfigs, saveForAll, itemNumbers, itemsCriteria);
   }
 
   protected replaceItemFieldConfigs(changedItemFieldConfigs: ItemFieldConfig[], itemFieldConfigsWithNewData: ItemFieldConfig[]) {

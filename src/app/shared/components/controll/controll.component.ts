@@ -1,5 +1,6 @@
 import {Component, OnInit, Output, EventEmitter, Input} from '@angular/core';
 import {DialogService} from 'src/app/shared/service/dialog.service';
+import {Item} from '../../domain/item';
 
 @Component({
   selector: 'app-controll',
@@ -9,6 +10,7 @@ import {DialogService} from 'src/app/shared/service/dialog.service';
 export class ControllComponent implements OnInit {
 
   @Input('withReset') withReset = true;
+  @Input('item') item: Item;
 
   @Output('add') add = new EventEmitter();
   @Output('reset') reset = new EventEmitter();
@@ -47,17 +49,27 @@ export class ControllComponent implements OnInit {
   }
 
   onDelete() {
-    this.delete.emit();  
+    this.delete.emit();
   }
 
   onDeleteCurrent() {
-    this.delete.emit({deleteForAll: true})   
+    if (this.item) {
+      this.dialogService.openSaveForAllConfigurationDialog(this.item)
+        .subscribe(fieldsCriteria => {
+          this.delete.emit({
+            deleteForAll: true,
+            fieldsCriteria: fieldsCriteria
+          });
+        });
+    } else {
+      this.delete.emit({deleteForAll: true});
+    }
   }
 
   onDeleteByNumbers(itemNumbers: string[]) {
     this.delete.emit({
       deleteForAll: true,
-      itemNumbers: itemNumbers  
+      itemNumbers: itemNumbers
     });
   }
 

@@ -1,12 +1,13 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { Item } from 'src/app/shared/domain/item';
-import { MultipleField } from 'src/app/shared/domain/multiple-field';
-import { DialogService } from 'src/app/shared/service/dialog.service';
-import { OptionsSelectDialog } from 'src/app/shared/components/options-select-dialog/options-select-dialog';
-import { Field } from 'src/app/shared/domain/field';
-import { filter } from 'rxjs/operators';
-import { ArrayUtils } from 'src/app/shared/utils/array-utils';
+import {Component, OnInit, Inject} from '@angular/core';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import {Item} from 'src/app/shared/domain/item';
+import {MultipleField} from 'src/app/shared/domain/multiple-field';
+import {DialogService} from 'src/app/shared/service/dialog.service';
+import {OptionsSelectDialog} from 'src/app/shared/components/options-select-dialog/options-select-dialog';
+import {Field} from 'src/app/shared/domain/field';
+import {filter} from 'rxjs/operators';
+import {ArrayUtils} from 'src/app/shared/utils/array-utils';
+import {ItemFieldsCriteria} from '../../../shared/dto/item-fields-criteria.dto';
 
 @Component({
   selector: 'app-save-for-all-dialog',
@@ -18,6 +19,7 @@ export class SaveForAllDialogComponent {
   public static readonly ONLY_FOR_NEW = 'ONLY_FOR_NEW';
   public static readonly OVERRIDE_CHANGED = 'OVERRIDE_CHANGED';
 
+  withSaveStrategy = true;
   saveStrategy: string;
   item: Item;
   multipleFields: MultipleField[] = [];
@@ -28,14 +30,19 @@ export class SaveForAllDialogComponent {
     private dialogRef: MatDialogRef<SaveForAllDialogComponent>,
     @Inject(MAT_DIALOG_DATA) data: any,
     private dialog: MatDialog
-  ) { 
+  ) {
     this.saveStrategy = this.getOverideChangeOptionValue();
     this.item = data.item;
-    this.fieldsToSelect = this.item.fields;
+    if (this.item) {
+      this.fieldsToSelect = this.item.fields;
+    }
+    if (data.withSaveStrategy !== undefined) {
+      this.withSaveStrategy = data.withSaveStrategy;
+    }
   }
 
   onCancel() {
-    this.dialogRef.close(); 
+    this.dialogRef.close();
   }
 
   getOnlyForNewOptionValue(): string {
@@ -43,7 +50,7 @@ export class SaveForAllDialogComponent {
   }
 
   getOverideChangeOptionValue(): string {
-    return SaveForAllDialogComponent.OVERRIDE_CHANGED; 
+    return SaveForAllDialogComponent.OVERRIDE_CHANGED;
   }
 
   addField() {
@@ -56,10 +63,10 @@ export class SaveForAllDialogComponent {
         getFieldValueFunction: (field: Field) => field.fieldConfigName
       }
     }).beforeClose()
-    .pipe(
-      filter(result => ArrayUtils.isNotEmpty(result))
-    ).subscribe((selectedFields: Field[]) => {
-      this.addMultipleField(selectedFields); 
+      .pipe(
+        filter(result => ArrayUtils.isNotEmpty(result))
+      ).subscribe((selectedFields: Field[]) => {
+      this.addMultipleField(selectedFields);
       this.addToSelectedFieldsMap(selectedFields);
       this.fieldsToSelect = this.getNonSelectedFields();
     });
@@ -76,6 +83,10 @@ export class SaveForAllDialogComponent {
   private addMultipleField(fields: Field[]) {
     fields.map(field => MultipleField.createFromField(field))
       .forEach(multipleField => this.multipleFields.push(multipleField));
+  }
+
+  createFieldsCriteria() {
+    this.dialogRef.close(new ItemFieldsCriteria(this.saveStrategy, this.multipleFields));
   }
 
 }

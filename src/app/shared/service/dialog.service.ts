@@ -12,6 +12,7 @@ import { ArrayUtils } from '../utils/array-utils';
 import { ItemHttpService } from './http/item-http.service';
 import { ProgressBarService } from './progress-bar.service';
 import { Item } from '../domain/item';
+import {ItemFieldsCriteria} from '../dto/item-fields-criteria.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -25,11 +26,12 @@ export class DialogService {
   ) {
   }
 
-  openSaveForAllConfigurationDialog(item?: Item): Observable<string> {
+  openSaveForAllConfigurationDialog(item?: Item, withSaveStrategy = true): Observable<ItemFieldsCriteria> {
     return this.dialog.open(SaveForAllDialogComponent, {
       width: '700px',
       data: {
-        item: item
+        item: item,
+        withSaveStrategy: withSaveStrategy
       }
     }).beforeClose()
       .pipe(

@@ -1,10 +1,12 @@
-import { Component, OnInit, Input, SimpleChanges, OnChanges, Output, EventEmitter } from '@angular/core';
-import { Item } from 'src/app/shared/domain/item';
-import { ItemManager } from 'src/app/shared/utils/item.manager';
-import { AppProperties } from 'src/app/shared/domain/app-properties';
-import { RboCodeService } from 'src/app/shared/service/rbo-code.service';
-import { Router } from '@angular/router';
-import { ItemFieldConfig } from 'src/app/shared/domain/item-field-config';
+import {Component, OnInit, Input, SimpleChanges, OnChanges, Output, EventEmitter} from '@angular/core';
+import {Item} from 'src/app/shared/domain/item';
+import {ItemManager} from 'src/app/shared/utils/item.manager';
+import {AppProperties} from 'src/app/shared/domain/app-properties';
+import {RboCodeService} from 'src/app/shared/service/rbo-code.service';
+import {Router} from '@angular/router';
+import {ItemFieldConfig} from 'src/app/shared/domain/item-field-config';
+import {DialogService} from '../../../shared/service/dialog.service';
+import {ItemFieldsCriteria} from '../../../shared/dto/item-fields-criteria.dto';
 
 @Component({
   selector: 'app-menu-panel',
@@ -19,18 +21,20 @@ export class MenuPanelComponent implements OnInit, OnChanges {
   @Output('multipleEdit') multipleEdit = new EventEmitter();
   @Output('delete') onDelete = new EventEmitter<{}>();
   @Output('saveForCurrent') onSaveForCurrent = new EventEmitter();
-  @Output('saveForItemNumber') onSaveForItemNumber = new EventEmitter<string[]>();
+  @Output('saveForItemNumber') onSaveForItemNumber = new EventEmitter<any>();
   @Output('reset') onReset = new EventEmitter();
-  
+
   itemNumber: string;
 
   constructor(
-    private router: Router,
-    private rboCodeService: RboCodeService
-  ) { }
+    private rboCodeService: RboCodeService,
+    private dialogService: DialogService,
+    private router: Router
+  ) {
+  }
 
   ngOnInit() {
-    
+
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -48,7 +52,7 @@ export class MenuPanelComponent implements OnInit, OnChanges {
   }
 
   onMultipleEdit() {
-    this.multipleEdit.emit();  
+    this.multipleEdit.emit();
   }
 
   delete(deleteOptions?: {}) {
@@ -60,7 +64,12 @@ export class MenuPanelComponent implements OnInit, OnChanges {
   }
 
   saveForItemNumber(itemNumbers?: string[]) {
-    this.onSaveForItemNumber.emit(itemNumbers);
+    this.dialogService.openSaveForAllConfigurationDialog(this.item, false).subscribe(itemFieldsCriteria => {
+      this.onSaveForItemNumber.emit({
+        itemNumbers: itemNumbers,
+        itemFieldsCriteria: itemFieldsCriteria
+      });
+    });
   }
 
   onResetClick() {

@@ -3,10 +3,10 @@ import {ExportHttpService} from '../../service/http/export.http.service';
 import {MatDialog} from '@angular/material';
 import {ProgressBarService} from '../../service/progress-bar.service';
 import {FileUtils} from '../../utils/file_utils';
-import { DialogService } from '../../service/dialog.service';
-import { FieldConfigHttpService } from '../../service/http/field-config-http.service';
-import { flatMap } from 'rxjs/operators';
-import { FieldConfigExportType, ExprotFieldConfigDto } from '../../dto/export-field-config.dto';
+import {DialogService} from '../../service/dialog.service';
+import {FieldConfigHttpService} from '../../service/http/field-config-http.service';
+import {flatMap} from 'rxjs/operators';
+import {FieldConfigExportType, ExprotFieldConfigDto} from '../../dto/export-field-config.dto';
 
 @Component({
   selector: 'app-export',
@@ -20,7 +20,8 @@ export class ExportComponent implements OnInit {
     private progressBarService: ProgressBarService,
     private exportService: ExportHttpService,
     public dialogService: DialogService
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
   }
@@ -38,7 +39,7 @@ export class ExportComponent implements OnInit {
 
   onExportBy() {
     this.dialogService.openItemNumberSelectDialog().subscribe(itemNumbers => {
-      this.exportBy(itemNumbers);  
+      this.exportBy(itemNumbers);
     });
   }
 
@@ -68,7 +69,7 @@ export class ExportComponent implements OnInit {
   }
 
   exportAllFields() {
-    this.exportFieldConfigs(new ExprotFieldConfigDto(FieldConfigExportType.ALL));  
+    this.exportFieldConfigs(new ExprotFieldConfigDto(FieldConfigExportType.ALL));
   }
 
   buildDtoAndExport(getDataFunction, dialogTitle, exportType: FieldConfigExportType) {
@@ -89,7 +90,7 @@ export class ExportComponent implements OnInit {
     this.progressBarService.show();
     this.exportService.exportFieldConfigs(dto)
       .subscribe(result => {
-        console.log(result);
+        FileUtils.blobToDownload(result.fileData, result.fileName);
         this.progressBarService.hide();
       }, error => this.progressBarService.hide());
   }

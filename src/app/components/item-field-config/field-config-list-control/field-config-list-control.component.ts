@@ -4,7 +4,6 @@ import {Router} from '@angular/router';
 import {ItemManager} from '../../../shared/utils/item.manager';
 import {AppProperties} from '../../../shared/domain/app-properties';
 import {ItemFieldConfigHolder} from '../../../shared/utils/item-field-config-holder';
-import {SaveItemFieldConfigDto} from '../../../shared/dto/save-item-field-config.dto';
 import {ItemFieldConfigHttpService} from '../../../shared/service/http/item-field-config-http.service';
 import {ProgressBarService} from '../../../shared/service/progress-bar.service';
 import {MatDialog} from '@angular/material';
@@ -14,8 +13,9 @@ import {ItemCrudOperationsDto} from '../../../shared/dto/item-crud-operations.dt
 import {ItemFieldConfig} from '../../../shared/domain/item-field-config';
 import {MultipleEditDialogComponent} from '../multiple-edit-dialog/multiple-edit-dialog.component';
 import {DialogService} from '../../../shared/service/dialog.service';
-import { RboCodeService } from '../../../shared/service/rbo-code.service';
-import { FieldConfig } from 'src/app/shared/domain/field-config';
+import {RboCodeService} from '../../../shared/service/rbo-code.service';
+import {FieldConfig} from 'src/app/shared/domain/field-config';
+import {ItemFieldsCriteria} from '../../../shared/dto/item-fields-criteria.dto';
 
 
 @Component({
@@ -31,8 +31,6 @@ export class FieldConfigListControlComponent implements OnInit {
 
   filterType: string;
   itemNumber: string;
-
-  public btnType = DeleteComponent.DELETE_BTN_TYPE_DANGER;
 
   constructor(
     private router: Router,
@@ -68,8 +66,8 @@ export class FieldConfigListControlComponent implements OnInit {
 
   onSaveAllForItem(itemNumbers?: string[]) {
     this.dialogService.openSaveForAllConfigurationDialog(this.itemFieldConfigHolder.item)
-      .subscribe(saveForAllStrategy => {
-        this.saveItemFieldConfig(true, saveForAllStrategy, itemNumbers);
+      .subscribe((itemFieldsCriteria: ItemFieldsCriteria) => {
+        this.saveItemFieldConfig(true, itemFieldsCriteria, itemNumbers);
       });
   }
 
@@ -77,7 +75,7 @@ export class FieldConfigListControlComponent implements OnInit {
     this.saveItemFieldConfig(false);
   }
 
-  private buildCrudOperationsDto(itemFieldConfigs: ItemFieldConfig[], forAll: boolean, selectedItemNumbers?: string[]): ItemCrudOperationsDto {
+  private buildCrudOperationsDto(itemFieldConfigs: ItemFieldConfig[], forAll: boolean, selectedItemNumbers?: string[], itemFieldsCriteria?: ItemFieldsCriteria): ItemCrudOperationsDto {
     let itemNumbers = [this.getCurrentItemNumber()];
     if (selectedItemNumbers && selectedItemNumbers.length > 0) {
       itemNumbers = itemNumbers.concat(selectedItemNumbers);
@@ -86,7 +84,8 @@ export class FieldConfigListControlComponent implements OnInit {
       Item.copyWithoutFieldConfigs(this.itemFieldConfigHolder.item),
       itemNumbers,
       itemFieldConfigs,
-      forAll
+      forAll,
+      itemFieldsCriteria
     );
   }
 
@@ -95,9 +94,10 @@ export class FieldConfigListControlComponent implements OnInit {
     if (itemFieldConfigs.length === 0) {
       return;
     }
-    let itemNumbers = options ? options.itemNumbers : undefined;
+    const itemNumbers = options ? options.itemNumbers : undefined;
+    const fieldsCriteria = options ? options.fieldsCriteria : undefined;
     this.progressBarService.show();
-    this.itemFieldConfigHttpService.delete(this.buildCrudOperationsDto(itemFieldConfigs, !!options, itemNumbers))
+    this.itemFieldConfigHttpService.delete(this.buildCrudOperationsDto(itemFieldConfigs, !!options, itemNumbers, fieldsCriteria))
       .subscribe(
         (result) => {
           this.messageService.success('Item field configs have succesfult deleted');
@@ -108,10 +108,10 @@ export class FieldConfigListControlComponent implements OnInit {
           this.progressBarService.hide();
           console.error(error);
         }
-      );    
+      );
   }
 
-  private saveItemFieldConfig(saveForAll: boolean, saveForAllStrategy?: string, selectedItemNumbers?: string[]) {
+  private saveItemFieldConfig(saveForAll: boolean, itemFieldsCriteria?: ItemFieldsCriteria, selectedItemNumbers?: string[]) {
     let changedItemFields = this.itemFieldConfigHolder.getChangedItemFields();
     if (changedItemFields == null || changedItemFields.length === 0) {
       return;
@@ -123,12 +123,12 @@ export class FieldConfigListControlComponent implements OnInit {
     }
 
     this.progressBarService.show();
-    let saveItemFieldConfigDto = new SaveItemFieldConfigDto(
+    const saveItemFieldConfigDto = new ItemCrudOperationsDto(
       Item.copyWithoutFieldConfigs(this.itemFieldConfigHolder.item),
       itemNumbers,
       changedItemFields,
       saveForAll,
-      saveForAllStrategy
+      itemFieldsCriteria
     );
 
     this.itemFieldConfigHttpService.save(saveItemFieldConfigDto).subscribe(
@@ -155,7 +155,7 @@ export class FieldConfigListControlComponent implements OnInit {
   }
 
   goToMandatoryFields() {
-    this.router.navigate(['/mandatory-data', this.itemFieldConfigHolder.item.id, this.rboCodeService.getRboObject()]); 
+    this.router.navigate(['/mandatory-data', this.itemFieldConfigHolder.item.id, this.rboCodeService.getRboObject()]);
   }
 
   onBackClick() {

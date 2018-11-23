@@ -1,14 +1,12 @@
 import {AbstractHttpService} from './abstract.service';
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Observable, of} from 'rxjs';
-import {catchError, map, tap} from 'rxjs/operators';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {catchError} from 'rxjs/operators';
 import {MessageService} from '../message.service';
 import {ItemFieldConfig} from '../../domain/item-field-config';
-import {SaveItemFieldConfigDto} from '../../dto/save-item-field-config.dto';
-import {ItemWithItemFieldConfigDto} from '../../dto/item-with-item-field-config.dto';
-import { ItemCrudOperationsDto } from '../../dto/item-crud-operations.dto';
-import { RboCodeService } from '../rbo-code.service';
+import {ItemCrudOperationsDto} from '../../dto/item-crud-operations.dto';
+import {RboCodeService} from '../rbo-code.service';
 
 @Injectable({
   providedIn: 'root',
@@ -21,7 +19,7 @@ export class ItemFieldConfigHttpService extends AbstractHttpService {
     super(http, messageService, rboCodeService, ItemFieldConfigHttpService.BASE_PATH);
   }
 
-  public save(saveItemFieldConfigDto: SaveItemFieldConfigDto): Observable<any> {
+  public save(saveItemFieldConfigDto: ItemCrudOperationsDto): Observable<any> {
     return this.http.post(this.getRelatedUrl('/save'), saveItemFieldConfigDto, this.getHttpOptions())
       .pipe(
         catchError(this.handleTrowableError(`Failed save to item field configs`, saveItemFieldConfigDto))
@@ -45,7 +43,7 @@ export class ItemFieldConfigHttpService extends AbstractHttpService {
   public getInstructionsByItemId(itemId: string): Observable<ItemFieldConfig[]> {
     return this.http.get<ItemFieldConfig[]>(this.getRelatedUrl(`/instructions/${itemId}`), this.getHttpOptions())
       .pipe(
-        catchError(this.handleError(`Failed delete item fields configs for all items`, []))  
+        catchError(this.handleError(`Failed delete item fields configs for all items`, []))
       );
   }
 }

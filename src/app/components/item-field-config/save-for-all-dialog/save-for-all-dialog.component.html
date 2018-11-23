@@ -5,7 +5,7 @@
     </div>
 </h1>
 <div mat-dialog-content> 
-    <div class="radio-wrapper text-center">
+    <div class="radio-wrapper text-center" *ngIf="withSaveStrategy">
         <mat-radio-group [(ngModel)]="saveStrategy">
                 <mat-radio-button class="mr-3" [value]="getOverideChangeOptionValue()">
                     Override fields
@@ -30,7 +30,7 @@
         <button class="btn btn-light mr-2" 
                 (click)="onCancel()">Cancel</button>
         <button class="btn btn-primary" 
-                [mat-dialog-close]="saveStrategy"
+                (click)="createFieldsCriteria()"
                 cdkFocusInitial>Ok</button>
     </div>
 </div>

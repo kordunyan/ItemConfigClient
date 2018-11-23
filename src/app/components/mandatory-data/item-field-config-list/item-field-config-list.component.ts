@@ -131,8 +131,8 @@ export class ItemFieldConfigListComponent implements OnInit {
     return ItemManager.getItemFieldValue(this.item, AppProperties.FIELD_D2COMM_ITEM_NUMBER);
   }
 
-  saveForItemNumber(itemNumbers?: string[]) {
-    this.mandatoryDataService.saveForItemNumbers(this.getItemFieldConfigsWithNewData(), this.getItemNumber(), itemNumbers);
+  saveForItemNumber(itemCriteria: any) {
+    this.mandatoryDataService.saveForItemNumbers(this.getItemFieldConfigsWithNewData(), this.getItemNumber(), itemCriteria);
   }
 
   saveForCurrent() {

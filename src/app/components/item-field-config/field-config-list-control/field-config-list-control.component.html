@@ -37,6 +37,7 @@
                     <app-controll (save)="onSaveClick()"
                                   (saveForItemNumber)="onSaveAllForItem($event)"
                                   (delete)="delete($event)"
+                                  [item]="itemFieldConfigHolder.item"
                                   (reset)="onResetClick()">
                     </app-controll>
                   </div>
