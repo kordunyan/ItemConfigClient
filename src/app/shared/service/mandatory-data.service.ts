@@ -21,7 +21,7 @@ export class MandatoryDataService {
   ) {
   }
 
-  public delete(itemFieldConfigsWithSelectedData: ItemFieldConfig[], currentItemNumber, deleteOptions?: {}) {
+  public delete(itemFieldConfigsWithSelectedData: ItemFieldConfig[], currentItemNumber, deleteOptions?: any) {
     if (ArrayUtils.isEmpty(itemFieldConfigsWithSelectedData)) {
       return;
     }
@@ -30,7 +30,8 @@ export class MandatoryDataService {
     if (deleteForAll && ArrayUtils.isNotEmpty(deleteOptions['itemNumbers'])) {
       itemNumbers = itemNumbers.concat(deleteOptions['itemNumbers']);
     }
-    const dto = this.buildDeleteDto(itemFieldConfigsWithSelectedData, deleteForAll, itemNumbers);
+    const fieldsCriteria = deleteForAll ? deleteOptions['fieldsCriteria'] : undefined;
+    const dto = this.buildDeleteDto(itemFieldConfigsWithSelectedData, deleteForAll, itemNumbers, fieldsCriteria);
     this.deleteFromServer(dto, itemFieldConfigsWithSelectedData);
   }
 
@@ -39,7 +40,6 @@ export class MandatoryDataService {
   }
 
   public saveForItemNumbers(itemFieldConfigsWithNewData: ItemFieldConfig[], currentItemNumber, itemsCriteria: any) {
-    console.log(itemsCriteria);
     let selectedItemNumbers = [currentItemNumber];
     if (ArrayUtils.isNotEmpty(itemsCriteria.itemNumbers)) {
       selectedItemNumbers = selectedItemNumbers.concat(itemsCriteria.itemNumbers);
@@ -80,8 +80,9 @@ export class MandatoryDataService {
     }, error => this.progressBarService.hide());
   }
 
-  protected buildDeleteDto(itemFieldConfigs: ItemFieldConfig[], deleteForAll: boolean, itemNumbers?: string[]): DeleteMandatoryDataDto {
-    const result = new DeleteMandatoryDataDto(deleteForAll, itemNumbers);
+  protected buildDeleteDto(itemFieldConfigs: ItemFieldConfig[], deleteForAll: boolean, itemNumbers?: string[], 
+      fieldsCriteria?: ItemFieldsCriteria): DeleteMandatoryDataDto {
+    const result = new DeleteMandatoryDataDto(deleteForAll, itemNumbers, fieldsCriteria);
     result.translationsToDeleteByFieldName = this.buildTranslationsToDeleteByFieldName(itemFieldConfigs);
     result.fieldsToDeleteByFieldName = this.buildFieldsToDeleteByFieldName(itemFieldConfigs);
     return result;

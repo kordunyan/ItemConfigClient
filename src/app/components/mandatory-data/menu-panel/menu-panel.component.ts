@@ -39,7 +39,7 @@ export class MenuPanelComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (this.item) {
-      this.itemNumber = ItemManager.getItemFieldValue(this.item, AppProperties.FIELD_D2COMM_ITEM_NUMBER);
+      this.itemNumber = ItemManager.getItemNumber(this.item);
     }
   }
 
@@ -63,12 +63,10 @@ export class MenuPanelComponent implements OnInit, OnChanges {
     this.onSaveForCurrent.emit();
   }
 
-  saveForItemNumber(itemNumbers?: string[]) {
-    this.dialogService.openSaveForAllConfigurationDialog(this.item, false).subscribe(itemFieldsCriteria => {
-      this.onSaveForItemNumber.emit({
-        itemNumbers: itemNumbers,
-        itemFieldsCriteria: itemFieldsCriteria
-      });
+  saveForItemNumber(saveOptions: any) {
+    this.onSaveForItemNumber.emit({
+      itemNumbers: saveOptions.itemNumbers,
+      itemFieldsCriteria: saveOptions.fieldsCriteria
     });
   }
 

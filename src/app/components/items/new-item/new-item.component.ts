@@ -1,4 +1,4 @@
-import {Component, OnInit, Inject} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material';
 
 import {FieldConfig} from '../../../shared/domain/field-config';
@@ -15,9 +15,8 @@ import {FieldService} from '../../../shared/service/field.service';
 import {first, switchMap} from 'rxjs/operators';
 import {forkJoin} from 'rxjs';
 import {ItemManager} from '../../../shared/utils/item.manager';
-import {CopyItemDto} from '../../../shared/dto/copy-iten.dto';
+import {CopyItemDto, CopyFieldsStrategy} from '../../../shared/dto/copy-iten.dto';
 import {RboCodeService} from '../../../shared/service/rbo-code.service';
-import {RboHttpService} from '../../../shared/service/http/rbo-http.service';
 
 
 @Component({
@@ -33,10 +32,14 @@ export class NewItemComponent implements OnInit {
   isSaveProcess = false;
   itemFields: Field[] = [];
   itemMultipleFields: MultipleField[] = [];
-  isIpps: boolean = true;
-  isSb: boolean = true;
+  isIpps = true;
+  isSb = true;
+  copyFieldsStrategy: CopyFieldsStrategy = CopyFieldsStrategy.FROM_SUITABLE_ITEM;
+  withItemFieldConfigs = true;
+  withMandatoryData = false;
   copyItem: Item;
   multipleFieldsMap = {};
+  hasMultipleFieldsWithMultipleValues = false;
 
   constructor(
     private fieldConfigService: FieldConfigHttpService,
@@ -91,6 +94,16 @@ export class NewItemComponent implements OnInit {
     }
   }
 
+  changedMultipleField() {
+    let withMultupleValue = false;
+    this.itemMultipleFields.forEach(multipleField => {
+      if (multipleField.values.length > 1) {
+        withMultupleValue = true;  
+      }
+    });
+    this.hasMultipleFieldsWithMultipleValues = withMultupleValue;
+  }
+
   public generateItemFields() {
     this.fieldConfigs.forEach((fieldConfig: FieldConfig) => {
       if (this.hasCopyItemField(fieldConfig.name)) {
@@ -130,7 +143,14 @@ export class NewItemComponent implements OnInit {
   }
 
   copyNewItem() {
-    let copyItemDto = new CopyItemDto(this.createItems(), this.copyItem.id);
+    let copyItemDto = new CopyItemDto(
+      this.createItems(), 
+      ItemManager.getItemNumber(this.copyItem),
+      this.copyItem.id,
+      this.withItemFieldConfigs, 
+      this.copyFieldsStrategy,
+      this.withMandatoryData
+    );
     this.itemHttpService.copyAll(copyItemDto).subscribe(() => {
       this.isSaveProcess = false;
       this.progressBarService.hide();

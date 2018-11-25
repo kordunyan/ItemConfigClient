@@ -2,9 +2,12 @@ import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import {Field} from '../../../shared/domain/field';
 import {FieldHttpService} from '../../../shared/service/http/field-http.service';
 import {ProgressBarService} from '../../../shared/service/progress-bar.service';
-import {MessageService} from '../../../shared/service/message.service';
 import {ItemFieldCrudOperationsDto} from '../../../shared/dto/item-field-crud-operations.dto';
 import {DialogService} from '../../../shared/service/dialog.service';
+import { Item } from 'src/app/shared/domain/item';
+import { ItemManager } from 'src/app/shared/utils/item.manager';
+import { ArrayUtils } from 'src/app/shared/utils/array-utils';
+import { ItemFieldsCriteria } from 'src/app/shared/dto/item-fields-criteria.dto';
 
 @Component({
   selector: 'app-item-field',
@@ -14,7 +17,7 @@ import {DialogService} from '../../../shared/service/dialog.service';
 export class ItemFieldComponent implements OnInit {
 
   @Input('field') field: Field;
-  @Input('itemNumber') itemNumber: string;
+  @Input('item') item: Item;
   @Output('onFieldDeleted') onFieldDeleted = new EventEmitter<Field>();
   @Output('onFieldChanged') onFieldChanged = new EventEmitter();
 
@@ -25,7 +28,6 @@ export class ItemFieldComponent implements OnInit {
   constructor(
     private fieldHttpService: FieldHttpService,
     private progressBarService: ProgressBarService,
-    private messageService: MessageService,
     public dialogService: DialogService
   ) {
   }
@@ -52,26 +54,16 @@ export class ItemFieldComponent implements OnInit {
           this.progressBarService.hide();
           this.oldValue = this.field.value;
           this.isEdit = false;
-        },
-        (error) => this.progressBarService.hide(),
-      );
+      },() => this.progressBarService.hide());
   }
 
-  onSaveAllForItem() {
-    this.dialogService.openSaveForAllConfigurationDialog().subscribe((saveForAllStrategy) => {
-      if (saveForAllStrategy) {
-        let dto = new ItemFieldCrudOperationsDto([this.itemNumber], [this.field], saveForAllStrategy);
-        this.saveField(dto);
-      }
-    });
-  }
-
-  saveByItemNumbers() {
-    this.dialogService.openItemNumbersAndSaveStrategyDialog().subscribe((result) => {
-      result.itemNumbers.push(this.itemNumber);
-      let dto = new ItemFieldCrudOperationsDto(result.itemNumbers, [this.field], result.saveForAllStrategy);
-      this.saveField(dto);
-    });
+  saveForAll(saveOptions: any) {
+    let itemNumbers = [ItemManager.getItemNumber(this.item)];
+    if (ArrayUtils.isNotEmpty(saveOptions.itemNumbers)) {
+      itemNumbers = itemNumbers.concat(saveOptions.itemNumbers);
+    }
+    let dto = new ItemFieldCrudOperationsDto(itemNumbers, [this.field], saveOptions.fieldsCriteria);
+    this.saveField(dto);
   }
 
   saveField(dto: ItemFieldCrudOperationsDto) {
@@ -80,11 +72,7 @@ export class ItemFieldComponent implements OnInit {
       (result) => {
         this.progressBarService.hide();
         this.onFieldChanged.emit();
-      },
-      (error) => {
-        this.progressBarService.hide();
-      }
-    );
+      }, () => this.progressBarService.hide());
   }
 
   onChangeValue() {
@@ -101,25 +89,29 @@ export class ItemFieldComponent implements OnInit {
       (result) => {
         this.progressBarService.hide();
         this.onFieldDeleted.emit(this.field);
-      },
-      (error) => this.progressBarService.hide()
+      }, (error) => this.progressBarService.hide()
     );
   }
 
   onDeleteForAll(selectdItemNumbers?: string[]) {
-    let itemNumbers = [this.itemNumber];
-    if (selectdItemNumbers && selectdItemNumbers.length > 0) {
-      itemNumbers = itemNumbers.concat(selectdItemNumbers);
-    }
-    let dto = new ItemFieldCrudOperationsDto(itemNumbers, [this.field]);
+    this.dialogService.openSaveForAllConfigurationDialog(this.item, false)
+      .subscribe(fieldsCriteria => {
+        this.deleteForAll(fieldsCriteria, selectdItemNumbers);
+      });
+  }
+
+  deleteForAll(fieldsCriteria: ItemFieldsCriteria, selectedItemNumbers?: string[]) {
     this.progressBarService.show();
+    let itemNumbers = [ItemManager.getItemNumber(this.item)];
+    if (ArrayUtils.isNotEmpty(selectedItemNumbers)) {
+      itemNumbers = itemNumbers.concat(selectedItemNumbers);
+    }
+    const dto = new ItemFieldCrudOperationsDto(itemNumbers, [this.field], fieldsCriteria);
     this.fieldHttpService.deleteForALlItems(dto).subscribe(
-      (result) => {
+      () => {
         this.progressBarService.hide();
         this.onFieldChanged.emit();
-      },
-      (error) => this.progressBarService.hide()
-    );
+      },() => this.progressBarService.hide());
   }
 
 }

@@ -8,11 +8,9 @@ import {ItemFieldConfigHttpService} from '../../../shared/service/http/item-fiel
 import {ProgressBarService} from '../../../shared/service/progress-bar.service';
 import {MatDialog} from '@angular/material';
 import {MessageService} from '../../../shared/service/message.service';
-import {DeleteComponent} from '../../../shared/components/delete/delete.component';
 import {ItemCrudOperationsDto} from '../../../shared/dto/item-crud-operations.dto';
 import {ItemFieldConfig} from '../../../shared/domain/item-field-config';
 import {MultipleEditDialogComponent} from '../multiple-edit-dialog/multiple-edit-dialog.component';
-import {DialogService} from '../../../shared/service/dialog.service';
 import {RboCodeService} from '../../../shared/service/rbo-code.service';
 import {FieldConfig} from 'src/app/shared/domain/field-config';
 import {ItemFieldsCriteria} from '../../../shared/dto/item-fields-criteria.dto';
@@ -38,7 +36,6 @@ export class FieldConfigListControlComponent implements OnInit {
     private progressBarService: ProgressBarService,
     public dialog: MatDialog,
     private messageService: MessageService,
-    private dialogService: DialogService,
     private rboCodeService: RboCodeService
   ) {
   }
@@ -61,14 +58,11 @@ export class FieldConfigListControlComponent implements OnInit {
   }
 
   getCurrentItemNumber() {
-    return ItemManager.getItemFieldValue(this.itemFieldConfigHolder.item, AppProperties.FIELD_D2COMM_ITEM_NUMBER);
+    return ItemManager.getItemNumber(this.itemFieldConfigHolder.item);
   }
 
-  onSaveAllForItem(itemNumbers?: string[]) {
-    this.dialogService.openSaveForAllConfigurationDialog(this.itemFieldConfigHolder.item)
-      .subscribe((itemFieldsCriteria: ItemFieldsCriteria) => {
-        this.saveItemFieldConfig(true, itemFieldsCriteria, itemNumbers);
-      });
+  onSaveAllForItem(saveOptions: any) {
+    this.saveItemFieldConfig(true, saveOptions.fieldsCriteria, saveOptions.itemNumbers);
   }
 
   onSaveClick() {
@@ -130,7 +124,6 @@ export class FieldConfigListControlComponent implements OnInit {
       saveForAll,
       itemFieldsCriteria
     );
-
     this.itemFieldConfigHttpService.save(saveItemFieldConfigDto).subscribe(
       (result) => {
         this.messageService.success('Item fields configs have been succesfuly updated');

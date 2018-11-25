@@ -1,4 +1,6 @@
 <button class="btn btn-primary ml-1"
+        [ngClass]="{'btn-sm': small}"
+        [disabled]="disabled"
         *ngIf="withReset"
         title="Reset"
         (click)="onReset()">
@@ -6,22 +8,30 @@
 </button>
 <div class="btn-group" role="group" >
   <button class="btn btn-primary ml-1"
+        [ngClass]="{'btn-sm': small}"
+        [disabled]="disabled"
         (click)="onSave()"
         title="Save">
   <i class="fa fa-save" aria-hidden="true"></i>
 </button>
 <button class="btn btn-primary ml-1"
+        [ngClass]="{'btn-sm': small}"
+        [disabled]="disabled"
         (click)="onSaveForItemNumber()"
         title="Save fo item number">
   <i class="fa fa-copy" aria-hidden="true"></i>
 </button>
 <button class="btn btn-primary ml-1"
+        [ngClass]="{'btn-sm': small}"
+        [disabled]="disabled"      
         (click)="saveFotItemNumbers()"
         title="Save for item numbers">
   <i class="fa fa-check-square" aria-hidden="true"></i>
 </button>
 </div>
-<app-delete [btnType]="'danger'"
+<app-delete *ngIf="withDelete"
+            [small]="small"
+            [btnType]="'danger'"
             (onOkChoosen)="onDelete()"
             (onAllChoosen)="onDeleteCurrent()"
             (onByChoosen)="onDeleteByNumbers($event)"

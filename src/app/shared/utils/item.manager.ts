@@ -1,9 +1,12 @@
 import {Item} from '../domain/item';
 import {Field} from '../domain/field';
-import {FieldConfig} from '../domain/field-config';
 import {AppProperties} from '../domain/app-properties';
 
 export class ItemManager {
+
+  public static getItemNumber(item: Item): string {
+    return ItemManager.getItemFieldValue(item, AppProperties.FIELD_D2COMM_ITEM_NUMBER)
+  }
 
   public static getItemField(item: Item, fieldConfigName: string): Field {
     if (!item) {

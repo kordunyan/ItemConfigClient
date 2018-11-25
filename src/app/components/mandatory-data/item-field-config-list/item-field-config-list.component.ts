@@ -128,7 +128,7 @@ export class ItemFieldConfigListComponent implements OnInit {
   }
 
   getItemNumber(): string {
-    return ItemManager.getItemFieldValue(this.item, AppProperties.FIELD_D2COMM_ITEM_NUMBER);
+    return ItemManager.getItemNumber(this.item);
   }
 
   saveForItemNumber(itemCriteria: any) {

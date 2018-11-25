@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { MatChipInputEvent } from '@angular/material';
 import { ENTER, COMMA } from '@angular/cdk/keycodes';
 
@@ -7,7 +7,7 @@ import { ENTER, COMMA } from '@angular/cdk/keycodes';
   templateUrl: './chips.component.html',
   styleUrls: ['./chips.component.css']
 })
-export class ChipsComponent implements OnInit {
+export class ChipsComponent {
   separatorKeysCodes = [ENTER, COMMA];
   
   @Input() visible: boolean = true;
@@ -16,10 +16,9 @@ export class ChipsComponent implements OnInit {
   @Input() addOnBlur: boolean = true;
   @Input() values: string[] = [];
 
-  constructor() { }
+  @Output('change') change = new EventEmitter();
 
-  ngOnInit() {
-  }
+  constructor() { }
 
   add(event: MatChipInputEvent): void {
     let input = event.input;
@@ -31,6 +30,7 @@ export class ChipsComponent implements OnInit {
     if (input) {
       input.value = '';
     }
+    this.change.emit();
   }
 
   remove(value: any): void {
@@ -39,7 +39,6 @@ export class ChipsComponent implements OnInit {
     if (index >= 0) {
       this.values.splice(index, 1);
     }
+    this.change.emit();
   }
-  
-
 }

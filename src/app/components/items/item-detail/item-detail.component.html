@@ -33,7 +33,7 @@
           <app-item-field *ngFor="let field of itemFieldsHolder.itemFields"
                           (onFieldChanged)="reloadData()"
                           (onFieldDeleted)="onFieldDeleted($event)"
-                          [itemNumber]="itemNumber"
+                          [item]="item"
                           [field]="field"></app-item-field>
           
           <app-new-item-fields [fields]="itemFieldsHolder.newItemFields"

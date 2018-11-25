@@ -3,11 +3,9 @@ import {Item} from '../../../shared/domain/item';
 import {ItemFieldsHolder} from '../../../shared/utils/item-field-holder';
 import {FieldConfig} from '../../../shared/domain/field-config';
 import {Field} from '../../../shared/domain/field';
-import {FieldHttpService} from '../../../shared/service/http/field-http.service';
-import {FieldService} from '../../../shared/service/field.service';
 import {ProgressBarService} from '../../../shared/service/progress-bar.service';
 import {ItemHttpService} from '../../../shared/service/http/item-http.service';
-import {Router, ActivatedRoute} from '@angular/router';
+import {Router} from '@angular/router';
 import {AppProperties} from '../../../shared/domain/app-properties';
 import {ItemManager} from '../../../shared/utils/item.manager';
 import { RboCodeService } from '../../../shared/service/rbo-code.service';
@@ -30,7 +28,6 @@ export class ItemDetailComponent implements OnInit {
   itemNumber: string;
 
   constructor(
-    private fieldService: FieldService,
     private progressBarService: ProgressBarService,
     private itemHttpService: ItemHttpService,
     private router: Router,
@@ -40,7 +37,7 @@ export class ItemDetailComponent implements OnInit {
 
   ngOnInit() {
     this.itemFieldsHolder = new ItemFieldsHolder(this.item, this.fieldConfigs, this.multipleFieldsOrder);
-    this.itemNumber = ItemManager.getItemFieldValue(this.item, AppProperties.FIELD_D2COMM_ITEM_NUMBER);
+    this.itemNumber = ItemManager.getItemNumber(this.item);
   }
 
   onShow() {

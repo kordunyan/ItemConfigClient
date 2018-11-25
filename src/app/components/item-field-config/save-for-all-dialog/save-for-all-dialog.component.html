@@ -1,5 +1,5 @@
 <h1 mat-dialog-title>
-    <span>Options save for all</span>
+    <span>Item fields criteria</span>
     <div class="float-right" *ngIf="item && fieldsToSelect.length > 0">
         <button class="btn btn-sm btn-primary" (click)="addField()">Add Field +</button>
     </div>
@@ -18,8 +18,8 @@
 
     <form class="item-fields-values" *ngIf="item">
         <div class="form-group row" *ngFor="let field of multipleFields">
-            <label class="col-sm-4 mt-3 col-form-label">{{ field.fieldConfigName }}</label>
-            <div class="col-sm-8">
+            <label class="col-sm-5 mt-3 col-form-label">{{ field.fieldConfigName }}</label>
+            <div class="col-sm-7">
                 <app-chips [values]="field.values"></app-chips>
             </div>
         </div>

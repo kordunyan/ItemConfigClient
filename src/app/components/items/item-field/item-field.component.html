@@ -17,25 +17,15 @@
 
   <div class="col-sm-8 offset-sm-4 mt-2" *ngIf="isEdit">
     <div class="float-lg-right">
-      <button class="btn btn-primary mr-1 btn-sm"
-              (click)="onSaveClick()"
-              [disabled]="!isChangedValue"
-              title="Save">
-        <i class="fa fa-save" aria-hidden="true"></i>
-      </button>
-      <button class="btn btn-info mr-1 btn-sm"
-              [disabled]="!isChangedValue"
-              (click)="onSaveAllForItem()"
-              title="Save For All">
-        <i class="fa fa-copy" aria-hidden="true"></i>
-      </button>
-      <button class="btn btn-primary btn-sm mr-1"
-              [disabled]="!isChangedValue"
-              (click)="saveByItemNumbers()"
-              title="Save By Item Numbers">
-        <i class="fa fa-check-square" aria-hidden="true"></i>
-      </button>
-      <button class="btn btn-danger mr-1 btn-sm"
+      <app-controll [withReset]="false"
+                  [withDelete]="false"
+                  [item]="item"
+                  [small]="true"
+                  [disabled]="!isChangedValue"
+                  (save)="onSaveClick()"
+                  (saveForItemNumber)="saveForAll($event)">
+      </app-controll>
+      <button class="btn btn-danger ml-1 btn-sm"
               (click)="onCancelClick()">
         <i class="fa fa-close" aria-hidden="true"></i>
       </button>
@@ -49,6 +39,7 @@
                   [withByItemNumbers]="true"
                   (onOkChoosen)="onDelete()"
                   (onAllChoosen)="onDeleteForAll()"
-                  (onByChoosen)="onDeleteForAll($event)"></app-delete>
+                  (onByChoosen)="onDeleteForAll($event)">
+      </app-delete>
     </div>
 </div>

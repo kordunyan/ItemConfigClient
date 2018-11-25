@@ -10,13 +10,17 @@ import {Item} from '../../domain/item';
 export class ControllComponent implements OnInit {
 
   @Input('withReset') withReset = true;
+  @Input('withDelete') withDelete = true;
   @Input('item') item: Item;
+  @Input('small') small = false;
+  @Input('withSaveStrategy') withSaveStrategy = true;
+  @Input('disabled') disabled = false; 
 
   @Output('add') add = new EventEmitter();
   @Output('reset') reset = new EventEmitter();
   @Output('save') save = new EventEmitter();
-  @Output('saveForItemNumber') saveForItemNumber = new EventEmitter<string[]>();
-  @Output('delete') delete = new EventEmitter<{}>();
+  @Output('saveForItemNumber') saveForItemNumber = new EventEmitter<any>();
+  @Output('delete') delete = new EventEmitter<any>();
 
   constructor(
     private dialogService: DialogService
@@ -39,13 +43,23 @@ export class ControllComponent implements OnInit {
   }
 
   onSaveForItemNumber() {
-    this.saveForItemNumber.emit();
+    this.saveWithFieldsCriteria();  
   }
 
   saveFotItemNumbers() {
-    this.dialogService.openItemNumberSelectDialog().subscribe(result => {
-      this.saveForItemNumber.emit(result);
+    this.dialogService.openItemNumberSelectDialog().subscribe(itemNumbers => { 
+      this.saveWithFieldsCriteria(itemNumbers);
     });
+  }
+
+  saveWithFieldsCriteria(itemNumbers?: string[]) {
+    this.dialogService.openSaveForAllConfigurationDialog(this.item, this.withSaveStrategy)
+      .subscribe(fieldsCriteria => {
+        this.saveForItemNumber.emit({
+          fieldsCriteria: fieldsCriteria,
+          itemNumbers: itemNumbers
+        });
+      })
   }
 
   onDelete() {
@@ -54,7 +68,7 @@ export class ControllComponent implements OnInit {
 
   onDeleteCurrent() {
     if (this.item) {
-      this.dialogService.openSaveForAllConfigurationDialog(this.item)
+      this.dialogService.openSaveForAllConfigurationDialog(this.item, false)
         .subscribe(fieldsCriteria => {
           this.delete.emit({
             deleteForAll: true,
@@ -67,10 +81,21 @@ export class ControllComponent implements OnInit {
   }
 
   onDeleteByNumbers(itemNumbers: string[]) {
-    this.delete.emit({
-      deleteForAll: true,
-      itemNumbers: itemNumbers
-    });
+    if (this.item) {
+      this.dialogService.openSaveForAllConfigurationDialog(this.item, false)
+        .subscribe(fieldsCriteria => {
+          this.delete.emit({
+            deleteForAll: true,
+            itemNumbers: itemNumbers,
+            fieldsCriteria: fieldsCriteria
+          });
+        });
+    } else {
+      this.delete.emit({
+        deleteForAll: true,
+        itemNumbers: itemNumbers
+      });
+    }
   }
 
 }

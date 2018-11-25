@@ -1,12 +1,10 @@
 import {AbstractHttpService} from './abstract.service';
 import {Injectable} from '@angular/core';
 import {MessageService} from '../message.service';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {Field} from '../../domain/field';
-import {catchError, map, tap} from 'rxjs/operators';
+import {catchError} from 'rxjs/operators';
 import {Observable} from 'rxjs';
-import {NewFieldsDTO} from '../../dto/new-fields.dto';
-import {FieldForAllItemsDto} from '../../dto/field-for-all-items.dto';
 import {ItemFieldCrudOperationsDto} from '../../dto/item-field-crud-operations.dto';
 import { RboCodeService } from '../rbo-code.service';
 
