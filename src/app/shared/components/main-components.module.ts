@@ -14,7 +14,6 @@ import {ExcludedFieldsComponent} from './excluded-fields/excluded-fields.compone
 import {ExportComponent} from './export/export.component';
 import {ScrollTopComponent} from './scroll-top/scroll-top.component';
 import {SelectValuesDialogComponent} from './select-values-dialog/select-values-dialog.component';
-import {SelectValuesButtonComponent} from './select-values-button/select-values-button.component';
 import {RboSelectComponent} from './rbo-select/rbo-select.component';
 import {HeaderComponent} from './header/header.component';
 import {RouterModule} from '@angular/router';
@@ -48,7 +47,6 @@ import { InsertOptionDialog } from './insert-options-dialog/insert-option-dialog
     InsertOptionDialog,
     ScrollTopComponent,
     SelectValuesDialogComponent,
-    SelectValuesButtonComponent,
     RboSelectComponent,
     ExportItemNumberComponent,
     MultipleFieldsComponent,
@@ -79,7 +77,6 @@ import { InsertOptionDialog } from './insert-options-dialog/insert-option-dialog
     ExportComponent,
     ScrollTopComponent,
     SelectValuesDialogComponent,
-    SelectValuesButtonComponent,
     RboSelectComponent,
     ExportItemNumberComponent,
     MultipleFieldsComponent,

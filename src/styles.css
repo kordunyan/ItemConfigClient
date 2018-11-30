@@ -8,3 +8,7 @@
     cursor: pointer;
     padding: 2px 3px;
 }
+
+.cursor-pointer {
+  cursor: pointer;
+}

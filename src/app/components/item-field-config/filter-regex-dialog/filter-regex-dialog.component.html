@@ -5,14 +5,15 @@
               'btn-light': isJsonMode,
               'btn-primary': !isJsonMode
             }"
-            (click)="setIsJsonMode(false)"
+            (click)="setJsonMode(false)"
             class="btn">Text</button>
     <button type="button"
             [ngClass]="{
               'btn-primary': isJsonMode,
               'btn-light': !isJsonMode
             }"
-            (click)="setIsJsonMode(true)"
+            [disabled]="!instructionFields"
+            (click)="setJsonMode(true)"
             class="btn btn-primary">JSON</button>
   </div>
 </h1>
@@ -40,10 +41,9 @@
         </tbody>
       </table>
     </div>
-    <div class="mb-2 ml-2 mt-2" *ngIf="instructionFields.length > 0">
-      <app-select-values-button [buttonCaption]="'Add Field'"
-                                (valuesSelected)="addNewSearchByRegexFields($event)"
-                                [values]="instructionFields"></app-select-values-button>
+    <div class="mb-2 ml-2 mt-2">
+      <button class="btn btn-primary mr-1" (click)="addInstructionFields()" *ngIf="instructionFields.length > 0">Instruction Field</button>
+      <button class="btn btn-primary">Field</button>
     </div>
   </div>
   <div class="form-group mt-3" *ngIf="!isJsonMode">

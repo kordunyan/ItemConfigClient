@@ -1,10 +1,12 @@
 import {Component, Inject} from '@angular/core';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatAutocompleteSelectedEvent} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
 import {ItemFieldConfig} from '../../../shared/domain/item-field-config';
 import {SearchByRegexField} from '../../../shared/domain/search-by-regex-field';
+import {OwnedSearchByRegexField} from '../../../shared/domain/owned-search-by-regex-field';
+import {ArrayUtils} from '../../../shared/utils/array-utils';
 import {DialogService} from '../../../shared/service/dialog.service';
-import {ItemHttpService} from '../../../shared/service/http/item-http.service';
-import { OwnedSearchByRegexField } from '../../../shared/domain/owned-search-by-regex-field';
+import {OptionsSelectDialog} from '../../../shared/components/options-select-dialog/options-select-dialog';
+import {filter} from 'rxjs/operators';
 
 
 @Component({
@@ -17,6 +19,7 @@ export class FilterRegexDialogComponent {
   private static readonly EMPTY = '';
 
   itemFieldConfig: ItemFieldConfig;
+  instructionFieldsMap = {};
   instructionFields: string[];
   isJsonMode = false;
   searchByRegexFields: SearchByRegexField[] = [];
@@ -25,16 +28,67 @@ export class FilterRegexDialogComponent {
 
   constructor(
     public dialogRef: MatDialogRef<FilterRegexDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) data: any,
+    public dialog: MatDialog,
   ) {
     this.itemFieldConfig = data.itemFieldConfig;
-    this.instructionFields = data.instructionFields.slice();
+    this.instructionFields = ArrayUtils.isEmpty(data.instructionFields) ? [] : data.instructionFields.slice();
+    this.textRegex = this.itemFieldConfig.filterRegex;
+    this.createInstructionFieldsMap();
+    console.log(this.instructionFieldsMap);
     this.initMode();
-    if (this.isJsonMode) {
-      this.initJsonMode();
+  }
+
+  createInstructionFieldsMap() {
+    this.instructionFields.forEach(fieldName => this.instructionFieldsMap[fieldName] = fieldName);
+  }
+
+  initMode() {
+    if (this.isEmptyFilterRegex()) {
+      this.setJsonMode();
+      return;
     }
-    this.addDefaultSearchByRegexField();
-    
+    const parsedRegexFields = this.parseToSearchByRegexFields();
+    if (ArrayUtils.isNotEmpty(parsedRegexFields)) {
+      this.ownedSearchByRegexFields = parsedRegexFields;
+      this.deleteSelectedInstructionFields(parsedRegexFields.map(regexField => regexField.fieldName));
+      this.setJsonMode();
+    } else {
+      this.setTextMode();
+    }
+  }
+
+  parseToSearchByRegexFields(): OwnedSearchByRegexField[] {
+    try {
+      const object = JSON.parse(this.textRegex);
+      if (ArrayUtils.isNotEmpty(object.searchByRegexFields)) {
+        return this.buildOwnedSearchByRegexFields(object.searchByRegexFields);
+      }
+      return null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  isEmptyFilterRegex(): boolean {
+    return this.textRegex == undefined || this.textRegex.length === 0;
+  }
+
+  addInstructionFields() {
+    this.dialog.open(OptionsSelectDialog, {
+      width: '500px',
+      data: {
+        options: this.instructionFields,
+        title: 'Select Instruction Fields',
+        getFieldValueFunction: (v) => v
+      }
+    }).beforeClose()
+      .pipe(
+        filter(result => ArrayUtils.isNotEmpty(result))
+      )
+      .subscribe(selectedFields => {
+        this.addNewSearchByRegexFields(selectedFields);
+      });
   }
 
   addDefaultSearchByRegexField() {
@@ -51,12 +105,12 @@ export class FilterRegexDialogComponent {
     this.deleteSelectedInstructionFields(this.searchByRegexFields.map(field => field.fieldName));
   }
 
-  buildOwnedSearchByRegexFields() {
-    this.ownedSearchByRegexFields = this.searchByRegexFields.map(searchByRegexField => {
+  buildOwnedSearchByRegexFields(searchByRegexFields: SearchByRegexField[]): OwnedSearchByRegexField[] {
+    return searchByRegexFields.map(searchByRegexField => {
       return new OwnedSearchByRegexField(
         searchByRegexField.fieldName,
         searchByRegexField.regex,
-        this.instructionFields.indexOf(searchByRegexField.fieldName) < 0  
+        this.instructionFieldsMap[searchByRegexField.fieldName] == undefined
       );
     });
   }
@@ -99,28 +153,6 @@ export class FilterRegexDialogComponent {
     }).map(searchByRegexField => SearchByRegexField.copy(searchByRegexField));
   }
 
-  initMode() {
-    this.textRegex = this.itemFieldConfig.filterRegex;
-    if (this.itemFieldConfig.filterRegex === null || this.itemFieldConfig.filterRegex.length === 0) {
-      this.setIsJsonMode(true);
-      return;
-    }
-    try {
-      const object = JSON.parse(this.itemFieldConfig.filterRegex);
-      if (object.searchByRegexFields) {
-        this.searchByRegexFields = object.searchByRegexFields;
-        if (this.searchByRegexFields.length > 0) {
-          this.buildOwnedSearchByRegexFields();
-        }
-        this.setIsJsonMode(true);
-      } else {
-        this.setIsJsonMode(false);
-      }
-    } catch (e) {
-      this.setIsJsonMode(false);
-    }
-  }
-
   addNewSearchByRegexFields(fields: string[]) {
     this.createNewSearchByRegexFields(fields).forEach(searchByRegexField => {
       this.ownedSearchByRegexFields.push(searchByRegexField);
@@ -145,8 +177,12 @@ export class FilterRegexDialogComponent {
     this.dialogRef.close();
   }
 
-  setIsJsonMode(mode: boolean) {
-    this.isJsonMode = mode;
+  setTextMode() {
+    this.isJsonMode = false;
+  }
+
+  setJsonMode() {
+    this.isJsonMode = true;
   }
 
 }

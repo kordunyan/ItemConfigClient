@@ -7,11 +7,11 @@ import {DeleteDialog} from '../components/delete-dialog/delete-dialog.component'
 import {FilterRegexDialogComponent} from '../../components/item-field-config/filter-regex-dialog/filter-regex-dialog.component';
 import {ItemFieldConfig} from '../domain/item-field-config';
 import {SelectValuesDialogComponent} from '../components/select-values-dialog/select-values-dialog.component';
-import { OptionsSelectDialog } from '../components/options-select-dialog/options-select-dialog';
-import { ArrayUtils } from '../utils/array-utils';
-import { ItemHttpService } from './http/item-http.service';
-import { ProgressBarService } from './progress-bar.service';
-import { Item } from '../domain/item';
+import {OptionsSelectDialog} from '../components/options-select-dialog/options-select-dialog';
+import {ArrayUtils} from '../utils/array-utils';
+import {ItemHttpService} from './http/item-http.service';
+import {ProgressBarService} from './progress-bar.service';
+import {Item} from '../domain/item';
 import {ItemFieldsCriteria} from '../dto/item-fields-criteria.dto';
 
 @Injectable({
@@ -47,9 +47,9 @@ export class DialogService {
         instructionFields: instructionFields
       }
     }).beforeClose()
-    .pipe(
-      filter(result => result)
-    );
+      .pipe(
+        filter(result => result)
+      );
   }
 
   openItemNumberSelectDialog(): Observable<string[]> {
@@ -58,8 +58,8 @@ export class DialogService {
       .pipe(
         flatMap(itemNumbers => {
           this.progressBarService.hide();
-          return this.openOptionsSelectDialog(itemNumbers, 'Select Item Number', (name) => name)
-        }) 
+          return this.openOptionsSelectDialog(itemNumbers, 'Select Item Number', (name) => name);
+        })
       );
   }
 
@@ -72,9 +72,9 @@ export class DialogService {
         getFieldValueFunction: getFieldValueFunction
       }
     }).beforeClose()
-    .pipe(
-      filter(result => ArrayUtils.isNotEmpty(result))
-    );
+      .pipe(
+        filter(result => ArrayUtils.isNotEmpty(result))
+      );
   }
 
   openItemNumbersAndSaveStrategyDialog(): Observable<any> {

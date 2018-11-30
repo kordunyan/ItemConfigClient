@@ -4,9 +4,9 @@ import {Observable, of} from 'rxjs';
 import {ProgressBarService} from '../../../shared/service/progress-bar.service';
 import {ActivatedRoute} from '@angular/router';
 import {RboCodeService} from '../../../shared/service/rbo-code.service';
-import { FormControl } from '@angular/forms';
-import { startWith, map } from 'rxjs/operators';
-import { MessageService } from 'src/app/shared/service/message.service';
+import {FormControl} from '@angular/forms';
+import {startWith, map} from 'rxjs/operators';
+import {MessageService} from 'src/app/shared/service/message.service';
 
 @Component({
   selector: 'app-item-list',
@@ -43,15 +43,21 @@ export class ItemListComponent implements OnInit {
   initFilter() {
     this.filteredItems = this.itemNumberInput.valueChanges.pipe(
       startWith<string>(''),
-      map((itemNumber: string) => {
-        return itemNumber ? this._filter(itemNumber) : this.items.slice()
+      map(itemNumber => {
+        try {
+          return new RegExp(itemNumber, 'i');
+        } catch (e) {
+          return false;
+        }
+      }),
+      map((filterRegex: RegExp) => {
+        return filterRegex ? this._filter(filterRegex) : this.items.slice();
       })
     );
   }
 
-  private _filter(itemNumber: string): string[] {
-    const inLowerCase = itemNumber.trim().toLowerCase();
-    return this.items.filter(item => item.toLocaleLowerCase().indexOf(inLowerCase) >= 0);
+  private _filter(filterRegexp: RegExp): string[] {
+    return this.items.filter(itemNumber => filterRegexp.test(itemNumber));
   }
 
   onDeleteItemNumber(itemNumber: string) {
@@ -59,7 +65,7 @@ export class ItemListComponent implements OnInit {
     this.itemService.deleteByItemNumber(itemNumber).subscribe(
       (result) => {
         this.items = this.items.filter(i => i !== itemNumber);
-        this.filteredItems = of(this.items);
+        this.initFilter();
         this.messageService.success(`Item: '${itemNumber}' were deleted`);
         this.progressBarService.hide();
       },
