@@ -5,19 +5,44 @@
     </div>
 </h1>
 <div mat-dialog-content> 
-    <div class="radio-wrapper text-center" *ngIf="withSaveStrategy">
-        <mat-radio-group [(ngModel)]="saveStrategy">
-                <mat-radio-button class="mr-3" [value]="getOverideChangeOptionValue()">
-                    Override fields
-                </mat-radio-button>
-                <mat-radio-button [value]="getOnlyForNewOptionValue()">
-                    Save new fields
-                </mat-radio-button>
-          </mat-radio-group>
+    <div class="row pt-3 options-wrapper">
+        <div class="col-sm-4 offset-sm-1" *ngIf="withSaveStrategy">
+            <div class="radio-wrapper" >
+                <mat-radio-group [(ngModel)]="fieldsCriteria.saveForAllStrategy">
+                    <mat-radio-button class="d-block" [value]="getOverideChangeOptionValue()">
+                        Override fields
+                    </mat-radio-button>
+                    <mat-radio-button class="d-block" [value]="getOnlyForNewOptionValue()">
+                        Save new fields
+                    </mat-radio-button>
+                </mat-radio-group>
+            </div>
+        </div>
+        <div class="col-sm-4" 
+            [ngClass]="{'offset-sm-3': !withSaveStrategy}">
+            <mat-checkbox class="d-block" 
+                          [(ngModel)]="fieldsCriteria.withBatchType"
+                          name="withBatchBuilderType">
+                With Batch Type
+            </mat-checkbox>  
+        </div>    
+        <div class="col-sm-3">
+            <mat-checkbox class="d-block" 
+                [(ngModel)]="fieldsCriteria.ipps"
+                [disabled]="!fieldsCriteria.withBatchType"
+                name="ipps">
+                IPPS
+            </mat-checkbox>
+            <mat-checkbox class="d-block" 
+                [(ngModel)]="fieldsCriteria.sb"
+                [disabled]="!fieldsCriteria.withBatchType"
+                name="sb">
+                SB
+            </mat-checkbox> 
+        </div>
     </div>
-
     <form class="item-fields-values" *ngIf="item">
-        <div class="form-group row" *ngFor="let field of multipleFields">
+        <div class="form-group row" *ngFor="let field of fieldsCriteria.multipleFields">
             <label class="col-sm-5 mt-3 col-form-label">{{ field.fieldConfigName }}</label>
             <div class="col-sm-7">
                 <app-chips [values]="field.values"></app-chips>

@@ -20,21 +20,22 @@ export class SaveForAllDialogComponent {
   public static readonly OVERRIDE_CHANGED = 'OVERRIDE_CHANGED';
 
   withSaveStrategy = true;
-  saveStrategy: string;
   item: Item;
-  multipleFields: MultipleField[] = [];
   selectedFieldsMap = {};
   fieldsToSelect: Field[] = [];
+  fieldsCriteria: ItemFieldsCriteria = new ItemFieldsCriteria(null, []);
 
   constructor(
     private dialogRef: MatDialogRef<SaveForAllDialogComponent>,
     @Inject(MAT_DIALOG_DATA) data: any,
     private dialog: MatDialog
   ) {
-    this.saveStrategy = this.getOverideChangeOptionValue();
+    this.fieldsCriteria.saveForAllStrategy = this.getOverideChangeOptionValue();
     this.item = data.item;
     if (this.item) {
       this.fieldsToSelect = this.item.fields;
+      this.fieldsCriteria.ipps = this.item.ipps;
+      this.fieldsCriteria.sb = this.item.sb;
     }
     if (data.withSaveStrategy !== undefined) {
       this.withSaveStrategy = data.withSaveStrategy;
@@ -82,11 +83,11 @@ export class SaveForAllDialogComponent {
 
   private addMultipleField(fields: Field[]) {
     fields.map(field => MultipleField.createFromField(field))
-      .forEach(multipleField => this.multipleFields.push(multipleField));
+      .forEach(multipleField => this.fieldsCriteria.multipleFields.push(multipleField));
   }
 
   createFieldsCriteria() {
-    this.dialogRef.close(new ItemFieldsCriteria(this.saveStrategy, this.multipleFields));
+    this.dialogRef.close(this.fieldsCriteria);
   }
 
 }

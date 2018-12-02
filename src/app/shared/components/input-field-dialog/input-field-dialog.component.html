@@ -1,0 +1,30 @@
+<h1 mat-dialog-title>Field Name</h1>
+<div mat-dialog-content> 
+
+  <form #fieldNameForm="ngForm" class="mt-2">
+      <div class="form-group">
+          <input type="text"
+                 name="fieldName"
+                 required
+                 [(ngModel)]="fieldName"
+                 #name="ngModel"
+                 class="form-control"
+                 [ngClass]="{'is-invalid' : name.touched && name.invalid}"
+                 id="name" />
+        </div>
+  </form>
+</div>
+<div mat-dialog-actions>
+    <div class="text-right w-100">
+        <button class="btn btn-light mr-2" 
+                (click)="onCancel()">
+          Cancel
+        </button>
+        <button class="btn btn-primary" 
+                [disabled]="!fieldNameForm.form.valid"
+                [mat-dialog-close]="fieldName" 
+                cdkFocusInitial>
+          Ok
+        </button>
+    </div>
+</div>

@@ -23,6 +23,7 @@ import { ProgressBarComponent } from './progress-bar/progress-bar.component';
 import { ControllComponent } from './controll/controll.component';
 import { OptionsSelectDialog } from './options-select-dialog/options-select-dialog';
 import { InsertOptionDialog } from './insert-options-dialog/insert-option-dialog';
+import { InputFieldDialog } from './input-field-dialog/input-field-dialog.component';
 
 
 @NgModule({
@@ -52,14 +53,16 @@ import { InsertOptionDialog } from './insert-options-dialog/insert-option-dialog
     MultipleFieldsComponent,
     ProgressBarComponent,
     ControllComponent,
-    OptionsSelectDialog
+    OptionsSelectDialog,
+    InputFieldDialog
   ],
   entryComponents: [
     DeleteDialog,
     ChooseFieldDialog,
     InsertOptionDialog,
     SelectValuesDialogComponent,
-    OptionsSelectDialog
+    OptionsSelectDialog,
+    InputFieldDialog
   ],
   exports: [
     HeaderComponent,
@@ -83,7 +86,8 @@ import { InsertOptionDialog } from './insert-options-dialog/insert-option-dialog
     ProgressBarComponent,
     ControllComponent,
     OptionsSelectDialog,
-    InsertOptionDialog
+    InsertOptionDialog,
+    InputFieldDialog
   ]
 })
 export class MainComponentsModule {

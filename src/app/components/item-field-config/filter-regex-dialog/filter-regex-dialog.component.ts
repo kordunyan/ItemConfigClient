@@ -7,6 +7,7 @@ import {ArrayUtils} from '../../../shared/utils/array-utils';
 import {DialogService} from '../../../shared/service/dialog.service';
 import {OptionsSelectDialog} from '../../../shared/components/options-select-dialog/options-select-dialog';
 import {filter} from 'rxjs/operators';
+import { InputFieldDialog } from 'src/app/shared/components/input-field-dialog/input-field-dialog.component';
 
 
 @Component({
@@ -35,8 +36,8 @@ export class FilterRegexDialogComponent {
     this.instructionFields = ArrayUtils.isEmpty(data.instructionFields) ? [] : data.instructionFields.slice();
     this.textRegex = this.itemFieldConfig.filterRegex;
     this.createInstructionFieldsMap();
-    console.log(this.instructionFieldsMap);
     this.initMode();
+    this.addDefaultSearchByRegexField();
   }
 
   createInstructionFieldsMap() {
@@ -91,6 +92,18 @@ export class FilterRegexDialogComponent {
       });
   }
 
+  addField() {
+    this.dialog.open(InputFieldDialog, {
+      width: '400px'
+    }).beforeClose()
+    .pipe(
+      filter(result => result != undefined)
+    )
+    .subscribe(newFieldName => {
+      this.addNewSearchByRegexFields([newFieldName]);  
+    });
+  }
+
   addDefaultSearchByRegexField() {
     if (this.instructionFields.length === 1 && this.getValidOwnedSearchByRegexFields().length === 0) {
       this.addNewSearchByRegexFields(this.instructionFields);
@@ -103,16 +116,6 @@ export class FilterRegexDialogComponent {
 
   initJsonMode() {
     this.deleteSelectedInstructionFields(this.searchByRegexFields.map(field => field.fieldName));
-  }
-
-  buildOwnedSearchByRegexFields(searchByRegexFields: SearchByRegexField[]): OwnedSearchByRegexField[] {
-    return searchByRegexFields.map(searchByRegexField => {
-      return new OwnedSearchByRegexField(
-        searchByRegexField.fieldName,
-        searchByRegexField.regex,
-        this.instructionFieldsMap[searchByRegexField.fieldName] == undefined
-      );
-    });
   }
 
   onDelete(deletedSearchByRegexField: OwnedSearchByRegexField) {
@@ -169,8 +172,22 @@ export class FilterRegexDialogComponent {
     });
   }
 
+  buildOwnedSearchByRegexFields(searchByRegexFields: SearchByRegexField[]): OwnedSearchByRegexField[] {
+    return searchByRegexFields.map(searchByRegexField => {
+      return new OwnedSearchByRegexField(
+        searchByRegexField.fieldName,
+        searchByRegexField.regex,
+        this.isValidOwner(searchByRegexField.fieldName)
+      );
+    });
+  }
+
   createNewSearchByRegexFields(fields: string[]) {
-    return fields.map(field => new OwnedSearchByRegexField(field));
+    return fields.map(field => new OwnedSearchByRegexField(field, '', this.isValidOwner(field)));
+  }
+
+  isValidOwner(fieldName): boolean {
+    return this.instructionFieldsMap[fieldName] == undefined
   }
 
   onCancel() {
