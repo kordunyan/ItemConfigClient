@@ -4,10 +4,10 @@ import {Observable, of} from 'rxjs';
 import {MessageService} from '../message.service';
 import {Header} from '../../domain/header';
 import {RboCodeService} from '../rbo-code.service';
+import {AppProperties} from '../../domain/app-properties';
 
 @Injectable()
 export abstract class AbstractHttpService {
-  private static API_URL = 'http://localhost:8080/api';
   protected HEADERS = new HttpHeaders({'Content-Type': 'application/json; charset=utf-8'});
 
   constructor(
@@ -28,7 +28,7 @@ export abstract class AbstractHttpService {
   }
 
   public getUrl(uri?: string) {
-    return uri ? `${AbstractHttpService.API_URL}${uri}` : AbstractHttpService.API_URL;
+    return uri ? `${AppProperties.API_BASE_URL}${uri}` : AppProperties.API_BASE_URL;
   }
 
   public getRelatedUrl(uri?: string) {

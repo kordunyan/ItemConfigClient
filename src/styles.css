@@ -1,14 +1,26 @@
 /* You can add global styles to this file, and also import other style files */
+
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import "../node_modules/toastr/build/toastr.css";
+@import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
+@import "../node_modules/font-awesome/css/font-awesome.css";
 
 .edit-btn {
-    background: transparent;
-    border:none;
-    outline: none;
-    cursor: pointer;
-    padding: 2px 3px;
+  background: transparent;
+  border:none;
+  outline: none;
+  cursor: pointer;
+  padding: 2px 3px;
 }
 
 .cursor-pointer {
   cursor: pointer;
+}
+
+.mat-dialog-container {
+  height: auto;
+}
+
+.fa {
+  padding: 3px 0;
 }

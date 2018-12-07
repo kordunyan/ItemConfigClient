@@ -16,7 +16,7 @@ export class HeaderComponent implements OnInit {
   rbos$: Observable<RboDto[]>;
 
   constructor(
-    private rboCodeService: RboCodeService,
+    public rboCodeService: RboCodeService,
     private rboHttpService: RboHttpService,
     private router: Router
   ) {
