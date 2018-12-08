@@ -54,11 +54,12 @@ export class FieldConfigTableComponent implements OnInit, OnChanges {
 
   filterItemFieldConfigs() {
     this.dataSource.filter = this.filterValue.trim().toLocaleLowerCase();
+    this.updateAllItemSelected();
   }
 
   selectDeselectAll(change: MatCheckboxChange) {
     this.allItemsSelected = change.checked;
-    this.itemFieldConfigs.forEach(itemFieldConfig => itemFieldConfig.checked = change.checked);
+    this.dataSource.filteredData.forEach(itemFieldConfig => itemFieldConfig.checked = change.checked);
   }
 
   onChangeSelection() {
@@ -66,10 +67,10 @@ export class FieldConfigTableComponent implements OnInit, OnChanges {
   }
 
   updateAllItemSelected() {
-    this.allItemsSelected = this.getSelectedItemFieldConfigs().length === this.itemFieldConfigs.length;
+    this.allItemsSelected = this.getSelectedItemFieldConfigs().length === this.dataSource.filteredData.length;
   }
 
   getSelectedItemFieldConfigs(): ItemFieldConfig[] {
-    return this.itemFieldConfigs.filter(itemFieldConfig => itemFieldConfig.checked === true);
+    return this.dataSource.filteredData.filter(itemFieldConfig => itemFieldConfig.checked === true);
   }
 }

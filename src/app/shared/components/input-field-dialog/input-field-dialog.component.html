@@ -9,8 +9,11 @@
                  [(ngModel)]="fieldName"
                  #name="ngModel"
                  class="form-control"
-                 [ngClass]="{'is-invalid' : name.touched && name.invalid}"
+                 (input)="inputFieldName()"
+                 [ngClass]="{'is-invalid' : (name.touched && name.invalid) || fieldExists}"
+                 cdkFocusInitial
                  id="name" />
+            <div class="invalid-feedback" *ngIf="fieldExists">Field name olready exists</div>
         </div>
   </form>
 </div>
@@ -21,9 +24,8 @@
           Cancel
         </button>
         <button class="btn btn-primary" 
-                [disabled]="!fieldNameForm.form.valid"
-                [mat-dialog-close]="fieldName" 
-                cdkFocusInitial>
+                [disabled]="!fieldNameForm.form.valid || fieldExists"
+                [mat-dialog-close]="fieldName">
           Ok
         </button>
     </div>

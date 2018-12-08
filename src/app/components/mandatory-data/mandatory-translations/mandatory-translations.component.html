@@ -3,6 +3,9 @@
       <span class="d-inline-block">Translations</span>
       <div class="button-wrapper float-right"
             *ngIf="itemFieldConfig.id && languages.length">
+          <button class="btn btn-primary btn-sm mr-1" (click)="selectAll()">
+            <i class="fa fa-check-square-o" aria-hidden="true"></i>   
+          </button>
           <button class="btn btn-primary btn-sm" 
                   (click)="reset()">
               <i class="fa fa-refresh" aria-hidden="true"></i>

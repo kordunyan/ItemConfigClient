@@ -26,6 +26,7 @@ export class FilterRegexDialogComponent {
   searchByRegexFields: SearchByRegexField[] = [];
   ownedSearchByRegexFields: OwnedSearchByRegexField[] = [];
   textRegex: string;
+  buildForTextMode = false;
 
   constructor(
     public dialogRef: MatDialogRef<FilterRegexDialogComponent>,
@@ -46,6 +47,7 @@ export class FilterRegexDialogComponent {
 
   initMode() {
     if (this.isEmptyFilterRegex()) {
+      this.buildForTextMode = true;
       this.setJsonMode();
       return;
     }
@@ -53,6 +55,7 @@ export class FilterRegexDialogComponent {
     if (ArrayUtils.isNotEmpty(parsedRegexFields)) {
       this.ownedSearchByRegexFields = parsedRegexFields;
       this.deleteSelectedInstructionFields(parsedRegexFields.map(regexField => regexField.fieldName));
+      this.buildForTextMode = true;
       this.setJsonMode();
     } else {
       this.setTextMode();
@@ -94,7 +97,11 @@ export class FilterRegexDialogComponent {
 
   addField() {
     this.dialog.open(InputFieldDialog, {
-      width: '400px'
+      width: '400px',
+      data: {
+        existFields: this.ownedSearchByRegexFields,
+        getFieldValueFunction: field => field.fieldName
+      }
     }).beforeClose()
     .pipe(
       filter(result => result != undefined)
@@ -195,6 +202,9 @@ export class FilterRegexDialogComponent {
   }
 
   setTextMode() {
+    if (this.buildForTextMode) {
+      this.textRegex = this.buildJsonFilterRegex();
+    }
     this.isJsonMode = false;
   }
 

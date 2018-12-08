@@ -37,7 +37,15 @@ export class MandatoryTranslationsComponent implements OnChanges {
   }
 
   reset() {
-    this.itemFieldConfig.mandatoryTranslations.forEach(mandatoryTranslation => mandatoryTranslation.selected = false);
+    this.toggle(false);  
+  }
+
+  selectAll() {
+    this.toggle(true);
+  }
+
+  toggle(selected: boolean) {
+    this.itemFieldConfig.mandatoryTranslations.forEach(mandatoryTranslation => mandatoryTranslation.selected = selected);
     this.itemFieldConfig.hasSelectedMandatoryData = ItemFieldConfigManager.hasSelectedMandatoryData(this.itemFieldConfig);
   }
 

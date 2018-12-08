@@ -1,4 +1,4 @@
-/*
+
 .table-container {
   max-height: 750px;
   overflow: auto;
@@ -17,4 +17,4 @@ th{
 
 .table-row:hover {
   background: rgba(0,0,0,.075);
-}*/
+}

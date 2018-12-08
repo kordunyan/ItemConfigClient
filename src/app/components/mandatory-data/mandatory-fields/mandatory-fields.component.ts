@@ -14,7 +14,7 @@ export class MandatoryFieldsComponent {
   @Input('itemFieldConfig') itemFieldConfig: ItemFieldConfig;
   @Input('instructionsFieldConfigs') instructionsFieldConfigs: FieldConfig[];
   @Input('height') height: string = '100px';
-  
+
   constructor() {
   }
 
@@ -36,7 +36,15 @@ export class MandatoryFieldsComponent {
   }
 
   reset() {
-    this.itemFieldConfig.mandatoryFields.forEach(fieldConfig => fieldConfig.selected = false);
+    this.toggle(false);
+  }
+
+  selectAll() {
+    this.toggle(true);
+  }
+
+  toggle(selected: boolean) {
+    this.itemFieldConfig.mandatoryFields.forEach(fieldConfig => fieldConfig.selected = selected);
     this.itemFieldConfig.hasSelectedMandatoryData = ItemFieldConfigManager.hasSelectedMandatoryData(this.itemFieldConfig);
   }
 }

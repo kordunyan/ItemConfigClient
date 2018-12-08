@@ -55,7 +55,6 @@ export class SaveForAllDialogComponent {
   }
 
   addField() {
-
     this.dialog.open(OptionsSelectDialog, {
       width: '500px',
       data: {

@@ -4,5 +4,5 @@
 }
 
 table tr.is-invalid {
-  border:1px solid #ff2541;
+  background: #eee;
 }

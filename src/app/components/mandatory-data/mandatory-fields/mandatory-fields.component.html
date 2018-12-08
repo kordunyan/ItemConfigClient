@@ -3,7 +3,13 @@
       <span class="d-inline-block">Fields</span>
       <div class="button-wrapper float-right"
             *ngIf="itemFieldConfig.id && instructionsFieldConfigs.length">
-            <button class="btn btn-primary btn-sm" 
+            <button class="btn btn-primary btn-sm mr-1" (click)="selectAll()">
+              <i class="fa fa-check-square-o" aria-hidden="true"></i>
+            </button>
+            <button class="btn btn-primary btn-sm mr-1">
+              <i class="fa fa-check-square-o" aria-hidden="true"></i>
+            </button>
+            <button class="btn btn-primary btn-sm"
                     (click)="reset()">
               <i class="fa fa-refresh" aria-hidden="true"></i>
             </button>
@@ -13,8 +19,8 @@
             </app-add-mandatory-field>
       </div>
   </div>
-  <div class="card-body max-height-scrollbar" 
-        [ngStyle]="{'max-height': height, 'min-height': height}" 
+  <div class="card-body max-height-scrollbar"
+        [ngStyle]="{'max-height': height, 'min-height': height}"
         [ngClass]="{'empty-list': !instructionsFieldConfigs.length}">
       <app-field-config *ngFor="let field of itemFieldConfig.mandatoryFields"
                         (changedSelection)="changedSelection($event)"
