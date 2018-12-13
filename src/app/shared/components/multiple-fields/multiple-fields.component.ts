@@ -1,7 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { Item } from '../../domain/item';
-import { ItemManager } from '../../utils/item.manager';
-import { FieldService } from '../../service/field.service';
+import {Component, OnInit, Input} from '@angular/core';
+import {Item} from '../../domain/item';
+import {ItemManager} from '../../utils/item.manager';
+import {FieldService} from '../../service/field.service';
+import {MessageService} from '../../service/message.service';
+import {DocumentUtils} from '../../utils/document-utils';
 
 @Component({
   selector: 'app-multiple-fields',
@@ -15,7 +17,11 @@ export class MultipleFieldsComponent implements OnInit {
 
   _multipleFields: string[] = [];
 
-  constructor(private fieldService: FieldService) { }
+  constructor(
+    private fieldService: FieldService,
+    private messageService: MessageService
+  ) {
+  }
 
   ngOnInit() {
     if (this.multipleFields) {
@@ -24,6 +30,13 @@ export class MultipleFieldsComponent implements OnInit {
       this.fieldService.getMultipleFieldNames().subscribe(result => {
         this._multipleFields = result;
       });
+    }
+  }
+
+  clipboard(fieldName) {
+    const value = this.getItemFieldValue(fieldName);
+    if (DocumentUtils.clipboard(value)) {
+      this.messageService.info(`Copied: ${value}`);
     }
   }
 

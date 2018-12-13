@@ -24,6 +24,7 @@ import { ControllComponent } from './controll/controll.component';
 import { OptionsSelectDialog } from './options-select-dialog/options-select-dialog';
 import { InsertOptionDialog } from './insert-options-dialog/insert-option-dialog';
 import { InputFieldDialog } from './input-field-dialog/input-field-dialog.component';
+import { ClipboardItemNumberComponent } from './clipboard-item-number/clipboard-item-number.component';
 
 
 @NgModule({
@@ -54,7 +55,8 @@ import { InputFieldDialog } from './input-field-dialog/input-field-dialog.compon
     ProgressBarComponent,
     ControllComponent,
     OptionsSelectDialog,
-    InputFieldDialog
+    InputFieldDialog,
+    ClipboardItemNumberComponent
   ],
   entryComponents: [
     DeleteDialog,
@@ -87,7 +89,8 @@ import { InputFieldDialog } from './input-field-dialog/input-field-dialog.compon
     ControllComponent,
     OptionsSelectDialog,
     InsertOptionDialog,
-    InputFieldDialog
+    InputFieldDialog,
+    ClipboardItemNumberComponent
   ]
 })
 export class MainComponentsModule {

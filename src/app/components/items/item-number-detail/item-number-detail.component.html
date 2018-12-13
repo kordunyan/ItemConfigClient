@@ -1,7 +1,6 @@
 <div class="card mt-4">
   <div class="card-header">
-    <span class="float-left mt-1"><b>Item:</b> {{ itemNumber }}</span>
-
+    <app-clipboard-item-number class="float-left mt-1" [itemNumber]="itemNumber"></app-clipboard-item-number>
     <div class="float-right">
         <app-export-item-number [itemNumber]="itemNumber" class="mr-2"></app-export-item-number>
         <button class="btn btn-primary mr-2" (click)="onToggle()">

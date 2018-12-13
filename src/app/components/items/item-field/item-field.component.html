@@ -5,6 +5,7 @@
            class="form-control-plaintext"
            *ngIf="!isEdit"
            readonly
+           (click)="clipborad()"
            [(value)]="field.value">
     
     <input type="text" 

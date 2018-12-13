@@ -8,6 +8,8 @@ import { Item } from 'src/app/shared/domain/item';
 import { ItemManager } from 'src/app/shared/utils/item.manager';
 import { ArrayUtils } from 'src/app/shared/utils/array-utils';
 import { ItemFieldsCriteria } from 'src/app/shared/dto/item-fields-criteria.dto';
+import {MessageService} from '../../../shared/service/message.service';
+import {DocumentUtils} from '../../../shared/utils/document-utils';
 
 @Component({
   selector: 'app-item-field',
@@ -28,7 +30,8 @@ export class ItemFieldComponent implements OnInit {
   constructor(
     private fieldHttpService: FieldHttpService,
     private progressBarService: ProgressBarService,
-    public dialogService: DialogService
+    public dialogService: DialogService,
+    private messageService: MessageService
   ) {
   }
 
@@ -44,6 +47,12 @@ export class ItemFieldComponent implements OnInit {
   onCancelClick() {
     this.field.value = this.oldValue;
     this.isEdit = false;
+  }
+
+  clipborad() {
+    if (DocumentUtils.clipboard(this.field.value)) {
+      this.messageService.info(`Copied: ${this.field.value}`);
+    }
   }
 
   onSaveClick() {

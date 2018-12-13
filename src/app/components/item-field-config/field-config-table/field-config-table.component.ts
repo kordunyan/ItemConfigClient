@@ -2,6 +2,8 @@ import {Component, Input, OnInit, OnChanges, SimpleChanges} from '@angular/core'
 import {ItemFieldConfig} from '../../../shared/domain/item-field-config';
 import {MatCheckboxChange, MatTableDataSource} from '@angular/material';
 import {DialogService} from '../../../shared/service/dialog.service';
+import {DocumentUtils} from '../../../shared/utils/document-utils';
+import {MessageService} from '../../../shared/service/message.service';
 
 @Component({
   selector: 'app-field-confog-table',
@@ -22,7 +24,9 @@ export class FieldConfigTableComponent implements OnInit, OnChanges {
 
   allItemsSelected = false;
 
-  constructor() {
+  constructor(
+    private messageService: MessageService
+  ) {
   }
 
   ngOnInit() {
@@ -49,6 +53,12 @@ export class FieldConfigTableComponent implements OnInit, OnChanges {
     };
     if (this.filterValue) {
       this.filterItemFieldConfigs();
+    }
+  }
+
+  clipboard(fieldConfigName) {
+    if (DocumentUtils.clipboard(fieldConfigName)) {
+      this.messageService.info(`Copied: ${fieldConfigName}`);
     }
   }
 

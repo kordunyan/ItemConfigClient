@@ -1,6 +1,6 @@
 <div class="card mb-3">
   <div class="card-header">
-    <span class="mt-2 d-inline-block mr-4"><b>Mandatory Data: </b>{{ itemNumber }}</span>
+    <app-clipboard-item-number class="mt-2 d-inline-block mr-4" [itemNumber]="itemNumber"></app-clipboard-item-number>
     <app-multiple-fields [item]="item"></app-multiple-fields>
     <div class="float-right">
       <app-export-item-number [itemNumber]="itemNumber" class="mr-1"></app-export-item-number>

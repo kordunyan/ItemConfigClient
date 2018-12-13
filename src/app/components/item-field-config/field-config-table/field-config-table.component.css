@@ -31,3 +31,7 @@ table {
 .regex-wrap {
     width: 150px;
 }
+
+.pointer {
+  cursor: pointer;
+}

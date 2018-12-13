@@ -2,7 +2,7 @@
     <div class="card mt-4">
         <div class="card-header">
           <div class="float-left mt-1">
-            <span class="mr-4"><b>Item:</b> {{itemNumber}}</span>
+            <app-clipboard-item-number class="mr-4" [itemNumber]="itemNumber"></app-clipboard-item-number>
             <app-multiple-fields [item]="itemFieldConfigHolder.item"></app-multiple-fields>
           </div>
           <div class="float-right">
