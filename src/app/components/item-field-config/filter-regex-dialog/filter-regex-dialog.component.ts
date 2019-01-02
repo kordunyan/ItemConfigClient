@@ -27,6 +27,7 @@ export class FilterRegexDialogComponent {
   ownedSearchByRegexFields: OwnedSearchByRegexField[] = [];
   textRegex: string;
   buildForTextMode = false;
+  invalidRegexMessage: string;
 
   constructor(
     public dialogRef: MatDialogRef<FilterRegexDialogComponent>,
@@ -68,8 +69,10 @@ export class FilterRegexDialogComponent {
       if (ArrayUtils.isNotEmpty(object.searchByRegexFields)) {
         return this.buildOwnedSearchByRegexFields(object.searchByRegexFields);
       }
+      this.invalidRegexMessage = 'missing [searchByRegexFields] object';
       return null;
     } catch (e) {
+      this.invalidRegexMessage = e;
       return null;
     }
   }
@@ -146,13 +149,13 @@ export class FilterRegexDialogComponent {
     this.dialogRef.close(true);
   }
 
-  buildJsonFilterRegex(): string {
+  buildJsonFilterRegex(pretty = false): string {
     const noEmptySearchByRegexFields = this.getNoEmptySearchByRegexFields();
     if (noEmptySearchByRegexFields.length > 0) {
       const rsultObject = {
         searchByRegexFields: noEmptySearchByRegexFields
       };
-      return JSON.stringify(rsultObject);
+      return JSON.stringify(rsultObject, null, pretty ? 2 : 0);
     }
     return FilterRegexDialogComponent.EMPTY;
   }
@@ -194,7 +197,7 @@ export class FilterRegexDialogComponent {
   }
 
   isValidOwner(fieldName): boolean {
-    return this.instructionFieldsMap[fieldName] == undefined
+    return this.instructionFieldsMap[fieldName] == undefined;
   }
 
   onCancel() {
@@ -203,7 +206,7 @@ export class FilterRegexDialogComponent {
 
   setTextMode() {
     if (this.buildForTextMode) {
-      this.textRegex = this.buildJsonFilterRegex();
+      this.textRegex = this.buildJsonFilterRegex(true);
     }
     this.isJsonMode = false;
   }

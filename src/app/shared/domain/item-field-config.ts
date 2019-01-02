@@ -1,6 +1,6 @@
 import {FieldConfig} from './field-config';
-import { MandatoryTranslation } from './mandatory-translation';
-import { MandatoryField } from './mandatory-field';
+import {MandatoryTranslation} from './mandatory-translation';
+import {MandatoryField} from './mandatory-field';
 
 export class ItemFieldConfig {
 
@@ -12,6 +12,8 @@ export class ItemFieldConfig {
   public static readonly DEFAULT_FILTER_REGEX = null;
   public static readonly DEFAULT_CAN_ADD_LATER = false;
   public static readonly DEFAULT_STORE_LAST_USER_INPUT = false;
+
+  public changed = false;
 
   constructor(
     public fieldConfig: FieldConfig,
@@ -52,7 +54,7 @@ export class ItemFieldConfig {
   }
 
   public static copyOnlyMandatoryData(itemFieldConfig: ItemFieldConfig) {
-    const result =  ItemFieldConfig.default(itemFieldConfig.fieldConfig); 
+    const result = ItemFieldConfig.default(itemFieldConfig.fieldConfig);
     result.mandatoryFields = itemFieldConfig.mandatoryFields;
     result.mandatoryTranslations = itemFieldConfig.mandatoryTranslations;
     result.id = itemFieldConfig.id;

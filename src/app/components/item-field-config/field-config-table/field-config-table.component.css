@@ -35,3 +35,7 @@ table {
 .pointer {
   cursor: pointer;
 }
+
+.changed {
+  background: rgba(221, 248, 253, 0.84);
+}

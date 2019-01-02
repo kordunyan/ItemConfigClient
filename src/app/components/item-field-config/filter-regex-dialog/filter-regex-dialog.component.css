@@ -6,3 +6,7 @@
 table tr.is-invalid {
   background: #eee;
 }
+
+textarea {
+  min-height: 400px;
+}

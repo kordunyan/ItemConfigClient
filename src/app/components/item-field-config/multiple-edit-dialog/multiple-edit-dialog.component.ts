@@ -5,6 +5,7 @@ import {FormControl} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {debounceTime, map, startWith} from 'rxjs/operators';
 import {ItemFieldConfigHolder} from '../../../shared/utils/item-field-config-holder';
+import {ItemFieldConfigManager} from '../../../shared/utils/item-field-config-manager';
 
 @Component({
   selector: 'app-multiple-edit-dialog',
@@ -95,6 +96,7 @@ export class MultipleEditDialogComponent {
     ItemFieldConfig.copyValues(this.selectedItemFieldConfigCopy, this.selectedItemFieldConfig);
     this.matchedItemFieldConfigsCopy.forEach(itemFieldConfigCopy => {
       let originItemFieldConfig = this.matchedFieldConfigsMap[itemFieldConfigCopy.fieldConfig.name];
+      originItemFieldConfig.changed = ItemFieldConfigManager.noEquals(itemFieldConfigCopy, originItemFieldConfig);
       ItemFieldConfig.copyValues(itemFieldConfigCopy, originItemFieldConfig);
     });
     this.dialogRef.close();

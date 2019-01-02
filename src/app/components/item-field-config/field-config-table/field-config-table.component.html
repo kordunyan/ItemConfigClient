@@ -98,6 +98,7 @@
         [ngClass]="{
           'no-acitve': !row.active && row.id,
           'new-no-active': !row.active && !row.id,
+          'changed': row.changed,
           'new-item': !row.id && row.active}"
         *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>

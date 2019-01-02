@@ -5,6 +5,7 @@ export class ItemFieldConfigFilter {
   public static readonly TYPE_ALL = 'ALL';
   public static readonly TYPE_NEW = 'NEW';
   public static readonly TYPE_ACTIVE = 'ACTIVE';
+  public static readonly TYPE_CHANGED = 'CHANGED';
 
   itemFieldConfigsChange;
   filteredItemFieldConfigs: ItemFieldConfig[] = [];
@@ -19,6 +20,10 @@ export class ItemFieldConfigFilter {
 
   static filterNew() {
     return (itemFieldConfig: ItemFieldConfig) => !itemFieldConfig.id;
+  }
+
+  static filterChanged() {
+    return (itemFieldConfig: ItemFieldConfig) => itemFieldConfig.changed;
   }
 
   public constructor(
@@ -51,6 +56,10 @@ export class ItemFieldConfigFilter {
         return ItemFieldConfigFilter.filterActive();
       case ItemFieldConfigFilter.TYPE_NEW:
         return ItemFieldConfigFilter.filterNew();
+      case ItemFieldConfigFilter.TYPE_CHANGED:
+        return ItemFieldConfigFilter.filterChanged();
+      default:
+        return ItemFieldConfigFilter.filterAll();
     }
   }
 
