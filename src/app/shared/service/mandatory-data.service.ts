@@ -5,9 +5,10 @@ import {ItemFieldConfig} from '../domain/item-field-config';
 import {DeleteMandatoryDataDto} from '../dto/delete-mandatory-data.dto';
 import {SaveMandatoryDataDto} from '../dto/save-mandatory-data.dto';
 import {ItemFieldConfigManager} from '../utils/item-field-config-manager';
-import { MandatoryDataHttpService } from './http/mandatory-data-http,service';
-import { Injectable } from '@angular/core';
+import {MandatoryDataHttpService} from './http/mandatory-data-http,service';
+import {Injectable} from '@angular/core';
 import {ItemFieldsCriteria} from '../dto/item-fields-criteria.dto';
+import {Observable, Subject} from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -35,8 +36,8 @@ export class MandatoryDataService {
     this.deleteFromServer(dto, itemFieldConfigsWithSelectedData);
   }
 
-  public save(itemFieldConfigsWithNewData: ItemFieldConfig[]) {
-    this.createDtoAndSave(itemFieldConfigsWithNewData, false);
+  public save(itemFieldConfigsWithNewData: ItemFieldConfig[]): Observable {
+    return this.createDtoAndSave(itemFieldConfigsWithNewData, false);
   }
 
   public saveForItemNumbers(itemFieldConfigsWithNewData: ItemFieldConfig[], currentItemNumber, itemsCriteria: any) {
@@ -48,40 +49,42 @@ export class MandatoryDataService {
   }
 
   protected createDtoAndSave(itemFieldConfigsWithNewData: ItemFieldConfig[], saveForAll, itemNumbers?: string[],
-      itemsCriteria?: ItemFieldsCriteria) {
+                             itemsCriteria?: ItemFieldsCriteria): Observable {
     if (ArrayUtils.isEmpty(itemFieldConfigsWithNewData)) {
       return;
     }
     const dto = this.buildSaveMandatoryDataDto(itemFieldConfigsWithNewData, saveForAll, itemNumbers, itemsCriteria);
-    this.saveOnServer(dto, itemFieldConfigsWithNewData);
+    return this.saveOnServer(dto);
   }
 
   protected buildSaveMandatoryDataDto(itemFieldConfigs: ItemFieldConfig[], saveForAll: boolean, itemNumbers?: string[],
-      itemsCriteria?: ItemFieldsCriteria): SaveMandatoryDataDto {
+                                      itemsCriteria?: ItemFieldsCriteria): SaveMandatoryDataDto {
     return new SaveMandatoryDataDto(itemFieldConfigs, saveForAll, itemNumbers, itemsCriteria);
   }
 
   protected replaceItemFieldConfigs(changedItemFieldConfigs: ItemFieldConfig[], itemFieldConfigsWithNewData: ItemFieldConfig[]) {
     changedItemFieldConfigs.forEach(changedField => {
       const itemFieldConfig = itemFieldConfigsWithNewData.find(fieldConfig => fieldConfig.id === changedField.id);
-      itemFieldConfig.mandatoryTranslations = changedField.mandatoryTranslations;
-      itemFieldConfig.mandatoryFields = changedField.mandatoryFields;
-      itemFieldConfig.hasNewMandatoryData = ItemFieldConfigManager.hasNewMandatoryData(itemFieldConfig);
-      itemFieldConfig.hasSelectedMandatoryData = ItemFieldConfigManager.hasSelectedMandatoryData(itemFieldConfig);
+      itemFieldConfig.mandatoryDataChecks = changedField.mandatoryDataChecks;
     });
   }
 
-  protected saveOnServer(dto: SaveMandatoryDataDto, itemFieldConfigsWithNewData: ItemFieldConfig[]) {
+  protected saveOnServer(dto: SaveMandatoryDataDto): Observable {
     this.progressBarService.show();
+    const resultSubject = new Subject();
     this.mandatoryDataHttpService.save(dto).subscribe(result => {
-      this.replaceItemFieldConfigs(result, itemFieldConfigsWithNewData);
       this.messageService.success('Mandatory data were saved');
       this.progressBarService.hide();
-    }, error => this.progressBarService.hide());
+      resultSubject.next(result);
+    }, error => {
+      this.progressBarService.hide();
+      resultSubject.error(error);
+    });
+    return resultSubject.asObservable();
   }
 
-  protected buildDeleteDto(itemFieldConfigs: ItemFieldConfig[], deleteForAll: boolean, itemNumbers?: string[], 
-      fieldsCriteria?: ItemFieldsCriteria): DeleteMandatoryDataDto {
+  protected buildDeleteDto(itemFieldConfigs: ItemFieldConfig[], deleteForAll: boolean, itemNumbers?: string[],
+                           fieldsCriteria?: ItemFieldsCriteria): DeleteMandatoryDataDto {
     const result = new DeleteMandatoryDataDto(deleteForAll, itemNumbers, fieldsCriteria);
     result.translationsToDeleteByFieldName = this.buildTranslationsToDeleteByFieldName(itemFieldConfigs);
     result.fieldsToDeleteByFieldName = this.buildFieldsToDeleteByFieldName(itemFieldConfigs);
@@ -90,17 +93,17 @@ export class MandatoryDataService {
 
   protected buildTranslationsToDeleteByFieldName(itemFieldConfigs: ItemFieldConfig[]) {
     const result = {};
-    itemFieldConfigs.forEach(itemFieldConfig => {
-      result[itemFieldConfig.fieldConfig.name] =
-        itemFieldConfig.mandatoryTranslations.filter(translation => translation.selected);
-    });
+    // itemFieldConfigs.forEach(itemFieldConfig => {
+    //   result[itemFieldConfig.fieldConfig.name] =
+    //     itemFieldConfig.mandatoryTranslations.filter(translation => translation.selected);
+    // });
     return result;
   }
 
   protected buildFieldsToDeleteByFieldName(itemFieldConfigs: ItemFieldConfig[]) {
     const result = {};
     itemFieldConfigs.forEach(itemFieldConfig => {
-      result[itemFieldConfig.fieldConfig.name] = itemFieldConfig.mandatoryFields.filter(field => field.selected);
+      //result[itemFieldConfig.fieldConfig.name] = itemFieldConfig.mandatoryFields.filter(field => field.selected);
     });
     return result;
   }

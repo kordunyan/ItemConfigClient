@@ -16,7 +16,7 @@ import {ItemManager} from 'src/app/shared/utils/item.manager';
 import {FormControl} from '@angular/forms';
 import {MatDialog} from '@angular/material';
 import {MultipleEditDialogComponent} from '../multiple-edit-dialog/multiple-edit-dialog.component';
-import { MandatoryDataService } from 'src/app/shared/service/mandatory-data.service';
+import {MandatoryDataService} from 'src/app/shared/service/mandatory-data.service';
 
 
 @Component({
@@ -67,6 +67,7 @@ export class ItemFieldConfigListComponent implements OnInit {
       this.instructionLanguages = result[4];
       this.initFilter();
       this.progressBarService.hide();
+      console.log(this.itemFieldConfigs);
     }, (error) => this.progressBarService.hide());
   }
 
@@ -145,9 +146,9 @@ export class ItemFieldConfigListComponent implements OnInit {
 
   resetAllSelection() {
     this.itemFieldConfigs.forEach(fieldConfig => {
-      fieldConfig.mandatoryFields.forEach(field => field.selected = false);
-      fieldConfig.mandatoryTranslations.forEach(translation => translation.selected = false);
-      fieldConfig.hasSelectedMandatoryData = false;  
+      //fieldConfig.mandatoryFields.forEach(field => field.selected = false);
+      //fieldConfig.mandatoryTranslations.forEach(translation => translation.selected = false);
+      fieldConfig.hasSelectedMandatoryData = false;
     });
   }
 }

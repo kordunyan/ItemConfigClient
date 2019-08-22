@@ -1,0 +1,19 @@
+.tabs-row {
+  height: 55px;
+}
+
+.tabs {
+  border: 1px solid rgba(0,0,0,.12);
+}
+
+.max-height-scrollbar {
+  max-height: 240px;
+  min-height: 240px;
+  overflow: auto;
+}
+
+.criteria-max-height {
+  max-height: 240px;
+  min-height: 240px;
+  overflow: auto;
+}

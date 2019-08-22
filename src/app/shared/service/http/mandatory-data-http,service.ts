@@ -6,7 +6,7 @@ import {AbstractHttpService} from './abstract.service';
 import {SaveMandatoryDataDto} from '../../dto/save-mandatory-data.dto';
 import {Observable} from 'rxjs';
 import {catchError} from 'rxjs/operators';
-import { DeleteMandatoryDataDto } from '../../dto/delete-mandatory-data.dto';
+import {DeleteMandatoryDataDto} from '../../dto/delete-mandatory-data.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -28,7 +28,7 @@ export class MandatoryDataHttpService extends AbstractHttpService {
   public delete(dto: DeleteMandatoryDataDto): Observable<any> {
     return this.http.post(this.getRelatedUrl('/delete'), dto, this.getHttpOptions())
       .pipe(
-        catchError(this.handleTrowableError('Failed to delete mandatory fields', dto))  
+        catchError(this.handleTrowableError('Failed to delete mandatory fields', dto))
       );
   }
 }

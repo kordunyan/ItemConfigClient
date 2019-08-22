@@ -24,3 +24,11 @@
 .fa {
   padding: 3px 0;
 }
+
+.overflow-auto {
+  overflow: auto;
+}
+
+.card-header-height {
+  height: 56px;
+}

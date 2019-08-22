@@ -24,6 +24,7 @@
     "@angular/router": "^7.1.1",
     "@types/jquery": "^3.3.22",
     "@types/toastr": "^2.1.35",
+    "angular2-cookie": "^1.2.6",
     "bootstrap": "^4.1.1",
     "core-js": "^2.5.4",
     "font-awesome": "^4.7.0",

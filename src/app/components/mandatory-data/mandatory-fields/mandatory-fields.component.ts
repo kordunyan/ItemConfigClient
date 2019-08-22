@@ -32,7 +32,7 @@ export class MandatoryFieldsComponent {
 
   addNewMandatoryFields(newFieldConfigs: FieldConfig[]) {
     const newMandatoryFields = newFieldConfigs.map(fieldConfig => new MandatoryField(fieldConfig));
-    this.itemFieldConfig.mandatoryFields = this.itemFieldConfig.mandatoryFields.concat(newMandatoryFields);
+    //this.itemFieldConfig.mandatoryFields = this.itemFieldConfig.mandatoryFields.concat(newMandatoryFields);
   }
 
   reset() {
@@ -44,7 +44,7 @@ export class MandatoryFieldsComponent {
   }
 
   toggle(selected: boolean) {
-    this.itemFieldConfig.mandatoryFields.forEach(fieldConfig => fieldConfig.selected = selected);
-    this.itemFieldConfig.hasSelectedMandatoryData = ItemFieldConfigManager.hasSelectedMandatoryData(this.itemFieldConfig);
+    //this.itemFieldConfig.mandatoryFields.forEach(fieldConfig => fieldConfig.selected = selected);
+    //this.itemFieldConfig.hasSelectedMandatoryData = ItemFieldConfigManager.hasSelectedMandatoryData(this.itemFieldConfig);
   }
 }

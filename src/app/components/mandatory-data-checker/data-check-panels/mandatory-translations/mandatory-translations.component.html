@@ -1,0 +1,18 @@
+<div class="card">
+  <div class="card-header card-header-height">
+    <span class="d-inline-block">Translations</span>
+    <div class="float-right">
+      <app-add-mandatory-translation
+        [languages]="languages"
+        (addNewData)="addTranslation($event)"
+        [mandatoryTranslations]="mandatoryDataCheck.mandatoryTranslations">
+      </app-add-mandatory-translation>
+    </div>
+  </div>
+  <div class="card-body overflow-auto" [ngStyle]="{'max-height': height, 'min-height': height}" >
+    <app-translation
+        [mandatoryTranslation]="mandatoryTranaslation"
+        *ngFor="let mandatoryTranaslation of mandatoryDataCheck.mandatoryTranslations">
+    </app-translation>
+  </div>
+</div>

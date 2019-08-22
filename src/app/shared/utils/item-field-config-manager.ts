@@ -1,5 +1,6 @@
 import {ItemFieldConfig} from '../domain/item-field-config';
 import {ArrayUtils} from './array-utils';
+import {MandatoryDataCheckManager} from './mandatory-data-check-manager';
 
 export class ItemFieldConfigManager {
 
@@ -70,15 +71,13 @@ export class ItemFieldConfigManager {
   }
 
   public static hasNewMandatoryData(itemFieldConfig: ItemFieldConfig): boolean {
-    if (ArrayUtils.isNotEmpty(itemFieldConfig.mandatoryFields)) {
-      const newFields = itemFieldConfig.mandatoryFields.find(field => !field.id);
-      if (newFields) {
-        return true;
-      }
+    const mandatoryDataChecks = itemFieldConfig.mandatoryDataChecks;
+    if (ArrayUtils.isEmpty(mandatoryDataChecks)) {
+      return false;
     }
-    if (ArrayUtils.isNotEmpty(itemFieldConfig.mandatoryTranslations)) {
-      const newTranslations = itemFieldConfig.mandatoryTranslations.find(translation => !translation.id);
-      if (newTranslations) {
+
+    for (const idx in mandatoryDataChecks) {
+      if (MandatoryDataCheckManager.hasNewMandatoryData(mandatoryDataChecks[idx])) {
         return true;
       }
     }

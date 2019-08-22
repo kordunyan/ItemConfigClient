@@ -1,0 +1,10 @@
+<ul class="list-group mb-1" (click)="select()">
+  <li class="list-group-item"
+      [ngClass]="{
+            'list-group-item-secondary': mandatoryTranslation.selected && mandatoryTranslation.id,
+            'list-group-item-warning': !mandatoryTranslation.id && !mandatoryTranslation.selected,
+            'bg-new-selected': !mandatoryTranslation.id && mandatoryTranslation.selected
+          }" >
+    {{ mandatoryTranslation.language.name }}
+  </li>
+</ul>

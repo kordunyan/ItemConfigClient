@@ -10,9 +10,9 @@ import {DialogService} from 'src/app/shared/service/dialog.service';
 })
 export class AddMandatoryTranslationComponent implements OnChanges {
 
-  @Input('mandatoryTranslations') mandatoryTranslations: MandatoryTranslation[];
-  @Input('languages') languages: Language[] = [];
-  @Output('addNewData') addNewData = new EventEmitter<string[]>();
+  @Input() mandatoryTranslations: MandatoryTranslation[];
+  @Input() languages: Language[] = [];
+  @Output() addNewData = new EventEmitter<string[]>();
   languagesToSelect: Language[] = [];
 
   constructor(private dialogService: DialogService) {

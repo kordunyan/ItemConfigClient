@@ -1,0 +1,10 @@
+<ul class="list-group mb-1" (click)="select()">
+  <li class="list-group-item"
+      [ngClass]="{
+            'list-group-item-secondary': mandatoryField.selected && mandatoryField.id,
+            'list-group-item-warning': !mandatoryField.id && !mandatoryField.selected,
+            'bg-new-selected': !mandatoryField.id && mandatoryField.selected
+          }" >
+    {{ mandatoryField.fieldConfig.name }}
+  </li>
+</ul>

@@ -13,7 +13,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatListModule} from '@angular/material/list';
 import {MatTableModule} from '@angular/material/table';
 import {MatMenuModule} from '@angular/material/menu';
-
+import {MatTabsModule} from '@angular/material/tabs';
 
 @NgModule({
   imports: [
@@ -30,7 +30,8 @@ import {MatMenuModule} from '@angular/material/menu';
     MatInputModule,
     MatListModule,
     MatTableModule,
-    MatMenuModule
+    MatMenuModule,
+    MatTabsModule
   ],
   exports: [
     MatCheckboxModule,
@@ -46,7 +47,8 @@ import {MatMenuModule} from '@angular/material/menu';
     MatInputModule,
     MatListModule,
     MatTableModule,
-    MatMenuModule
+    MatMenuModule,
+    MatTabsModule
   ],
   declarations: []
 })

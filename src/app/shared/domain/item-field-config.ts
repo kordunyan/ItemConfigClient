@@ -1,6 +1,7 @@
 import {FieldConfig} from './field-config';
 import {MandatoryTranslation} from './mandatory-translation';
 import {MandatoryField} from './mandatory-field';
+import {MandatoryDataCheck} from './mandatory-data-check';
 
 export class ItemFieldConfig {
 
@@ -14,6 +15,7 @@ export class ItemFieldConfig {
   public static readonly DEFAULT_STORE_LAST_USER_INPUT = false;
 
   public changed = false;
+  public selectedMandatoryDataCheckIdx: number;
 
   constructor(
     public fieldConfig: FieldConfig,
@@ -28,8 +30,7 @@ export class ItemFieldConfig {
     public id?: number,
     public checked?: boolean,
     public isTextField?: boolean,
-    public mandatoryTranslations?: MandatoryTranslation[],
-    public mandatoryFields?: MandatoryField[],
+    public mandatoryDataChecks?: MandatoryDataCheck[],
     public hasNewMandatoryData?: boolean,
     public hasSelectedMandatoryData?: boolean
   ) {
@@ -55,8 +56,6 @@ export class ItemFieldConfig {
 
   public static copyOnlyMandatoryData(itemFieldConfig: ItemFieldConfig) {
     const result = ItemFieldConfig.default(itemFieldConfig.fieldConfig);
-    result.mandatoryFields = itemFieldConfig.mandatoryFields;
-    result.mandatoryTranslations = itemFieldConfig.mandatoryTranslations;
     result.id = itemFieldConfig.id;
     return result;
   }

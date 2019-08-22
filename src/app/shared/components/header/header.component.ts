@@ -24,6 +24,7 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit() {
     this.rboCode = this.rboCodeService.getCurrentCode();
+    console.log(this.rboCode);
     this.rbos$ = this.rboHttpService.getAllRbos();
   }
 

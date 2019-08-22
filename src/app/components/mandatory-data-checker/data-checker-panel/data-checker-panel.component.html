@@ -1,0 +1,163 @@
+<div class="row">
+  <div class="col-sm-11 tabs-row">
+    <mat-tab-group *ngIf="selectedMandatoryDataCheck" class="tabs" [selectedIndex]="selectedIndex" (selectedIndexChange)="changeDataChecker($event)">
+      <mat-tab *ngFor="let d of itemFieldConfig.mandatoryDataChecks; let index = index" [label]="'Data Check # ' + index"></mat-tab>
+    </mat-tab-group>
+  </div>
+  <div class="col-sm-1">
+    <button type="button" class="mt-2 btn btn-primary" (click)="addNewMandatoryDataCheck()">
+      <i class="fa fa-plus" aria-hidden="true"></i>
+    </button>
+  </div>
+</div>
+
+<div class="row mt-3" *ngIf="selectedMandatoryDataCheck">
+  <div class="col-sm-4">
+    <app-mandatory-translations
+      [mandatoryDataCheck]="selectedMandatoryDataCheck"
+      [languages]="allLanguages"
+      [height]="'240px'">
+    </app-mandatory-translations>
+  </div>
+  <div class="col-sm-4">
+    <app-mandatory-fields
+      [mandatoryDataCheck]="selectedMandatoryDataCheck"
+      [instructionsFieldConfigs]="allFieldConfigs"
+      [height]="'240px'">
+    </app-mandatory-fields>
+  </div>
+  <div class="col-sm-4">
+    <div class="card">
+      <div class="card-header">
+        <span class="d-inline-block">Criteria Code</span>
+      </div>
+      <div class="card-body max-height-scrollbar">
+        <form>
+          <div class="form-group">
+            <input type="text" class="mb-1 form-control" placeholder="regex">
+            <input type="text" class="mb-1 form-control" placeholder="regex">
+            <input type="text" class="mb-1 form-control" placeholder="regex">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="row mt-3">
+  <div class="col-sm-6">
+    <div class="card">
+      <div class="card-header">
+        <span class="d-inline-block">Translation Criteria</span>
+      </div>
+      <div class="card-body criteria-max-height">
+        <table class="table">
+          <tr>
+            <td class="align-middle">Arabic</td>
+            <td class="align-middle">
+              <input type="text" class="mb-1 form-control" placeholder="regex">
+            </td>
+            <td class="align-middle">
+              <mat-checkbox></mat-checkbox>
+            </td>
+          </tr>
+          <tr>
+            <td class="align-middle">Arabic</td>
+            <td class="align-middle">
+              <input type="text" class="mb-1 form-control" placeholder="regex">
+            </td>
+            <td class="align-middle">
+              <mat-checkbox></mat-checkbox>
+            </td>
+          </tr>
+          <tr>
+            <td class="align-middle">Arabic</td>
+            <td class="align-middle">
+              <input type="text" class="mb-1 form-control" placeholder="regex">
+            </td>
+            <td class="align-middle">
+              <mat-checkbox></mat-checkbox>
+            </td>
+          </tr>
+          <tr>
+            <td class="align-middle">Arabic</td>
+            <td class="align-middle">
+              <input type="text" class="mb-1 form-control" placeholder="regex">
+            </td>
+            <td class="align-middle">
+              <mat-checkbox></mat-checkbox>
+            </td>
+          </tr>
+          <tr>
+            <td class="align-middle">Arabic</td>
+            <td class="align-middle">
+              <input type="text" class="mb-1 form-control" placeholder="regex">
+            </td>
+            <td class="align-middle">
+              <mat-checkbox></mat-checkbox>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6">
+    <div class="card">
+      <div class="card-header">
+        <span class="d-inline-block">Fields Criteria</span>
+      </div>
+      <div class="card-body criteria-max-height">
+
+        <table class="table">
+          <tr>
+            <td class="align-middle">Arabic</td>
+            <td class="align-middle">
+              <input type="text" class="mb-1 form-control" placeholder="regex">
+            </td>
+            <td class="align-middle">
+              <mat-checkbox></mat-checkbox>
+            </td>
+          </tr>
+          <tr>
+            <td class="align-middle">Arabic</td>
+            <td class="align-middle">
+              <input type="text" class="mb-1 form-control" placeholder="regex">
+            </td>
+            <td class="align-middle">
+              <mat-checkbox></mat-checkbox>
+            </td>
+          </tr>
+          <tr>
+            <td class="align-middle">Arabic</td>
+            <td class="align-middle">
+              <input type="text" class="mb-1 form-control" placeholder="regex">
+            </td>
+            <td class="align-middle">
+              <mat-checkbox></mat-checkbox>
+            </td>
+          </tr>
+          <tr>
+            <td class="align-middle">Arabic</td>
+            <td class="align-middle">
+              <input type="text" class="mb-1 form-control" placeholder="regex">
+            </td>
+            <td class="align-middle">
+              <mat-checkbox></mat-checkbox>
+            </td>
+          </tr>
+          <tr>
+            <td class="align-middle">Arabic</td>
+            <td class="align-middle">
+              <input type="text" class="mb-1 form-control" placeholder="regex">
+            </td>
+            <td class="align-middle">
+              <mat-checkbox></mat-checkbox>
+            </td>
+          </tr>
+        </table>
+
+      </div>
+    </div>
+  </div>
+</div>

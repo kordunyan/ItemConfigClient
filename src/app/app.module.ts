@@ -13,6 +13,7 @@ import {MainComponentsModule} from './shared/components/main-components.module';
 import {ItemFieldConfigModule} from './components/item-field-config/item-field-config.module';
 import {MandatoryDataModule} from './components/mandatory-data/mandatory-data.module';
 import {FieldConfigsModule} from './components/field-configs/field-configs.module';
+import { MandatoryDataCheckerModule } from './components/mandatory-data-checker/mandatory-data-checker.module';
 
 
 @NgModule({
@@ -30,6 +31,7 @@ import {FieldConfigsModule} from './components/field-configs/field-configs.modul
     ItemFieldConfigModule,
     MandatoryDataModule,
     FieldConfigsModule,
+    MandatoryDataCheckerModule,
     AppRoutingModule
   ],
   bootstrap: [AppComponent],

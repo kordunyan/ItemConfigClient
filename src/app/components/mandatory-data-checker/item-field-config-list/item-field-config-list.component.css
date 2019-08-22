@@ -1,0 +1,25 @@
+.max-height-scrollbar {
+  max-height: 300px;
+  min-height: 300px;
+  overflow: auto;
+}
+
+.items-max-height-scrollbar {
+  max-height: 580px;
+  min-height: 580px;
+  overflow: auto;
+}
+
+.criteria-max-height {
+  max-height: 300px;
+  min-height: 300px;
+  overflow: auto;
+}
+
+.max-height-scrollbar>a {
+  cursor: pointer;
+}
+
+.list-group-item-action {
+  padding: 7px 15px;
+}

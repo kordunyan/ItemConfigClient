@@ -12,9 +12,9 @@ import {ItemFieldConfigManager} from '../../../shared/utils/item-field-config-ma
 })
 export class MandatoryTranslationsComponent implements OnChanges {
 
-  @Input('itemFieldConfig') itemFieldConfig: ItemFieldConfig;
-  @Input('languages') languages: Language[] = [];
-  @Input('height') height: string = '100px';
+  @Input() itemFieldConfig: ItemFieldConfig;
+  @Input() languages: Language[] = [];
+  @Input() height = '100px';
 
   constructor() {
   }
@@ -31,13 +31,13 @@ export class MandatoryTranslationsComponent implements OnChanges {
   }
 
   private sortMandatoryTranslations() {
-    this.itemFieldConfig.mandatoryTranslations.sort((f1, f2) => {
-      return f1.language.name.localeCompare(f2.language.name);
-    });
+    // this.itemFieldConfig.mandatoryTranslations.sort((f1, f2) => {
+    //   return f1.language.name.localeCompare(f2.language.name);
+    // });
   }
 
   reset() {
-    this.toggle(false);  
+    this.toggle(false);
   }
 
   selectAll() {
@@ -45,8 +45,8 @@ export class MandatoryTranslationsComponent implements OnChanges {
   }
 
   toggle(selected: boolean) {
-    this.itemFieldConfig.mandatoryTranslations.forEach(mandatoryTranslation => mandatoryTranslation.selected = selected);
-    this.itemFieldConfig.hasSelectedMandatoryData = ItemFieldConfigManager.hasSelectedMandatoryData(this.itemFieldConfig);
+    // this.itemFieldConfig.mandatoryTranslations.forEach(mandatoryTranslation => mandatoryTranslation.selected = selected);
+    // this.itemFieldConfig.hasSelectedMandatoryData = ItemFieldConfigManager.hasSelectedMandatoryData(this.itemFieldConfig);
   }
 
   addTranslation(selectedLanguages: Language[]) {
@@ -57,6 +57,6 @@ export class MandatoryTranslationsComponent implements OnChanges {
 
   addNewMandatoryTrnalsations(languages: Language[]) {
     const newTranslations = languages.map(language => new MandatoryTranslation(language));
-    this.itemFieldConfig.mandatoryTranslations = this.itemFieldConfig.mandatoryTranslations.concat(newTranslations);
+    //this.itemFieldConfig.mandatoryTranslations = this.itemFieldConfig.mandatoryTranslations.concat(newTranslations);
   }
 }

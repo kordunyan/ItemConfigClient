@@ -1,0 +1,18 @@
+<div class="card">
+  <div class="card-header card-header-height">
+    <span class="d-inline-block">Fields</span>
+    <div class="float-right">
+      <app-add-mandatory-field
+        [instructionsFieldConfigs]="instructionsFieldConfigs"
+        [mandatoryFields]="mandatoryDataCheck.mandatoryFields"
+        (addNewData)="addFields($event)">
+      </app-add-mandatory-field>
+    </div>
+  </div>
+  <div class="card-body overflow-auto" [ngStyle]="{'max-height': height, 'min-height': height}">
+    <app-field-config
+      *ngFor="let mandatoryField of mandatoryDataCheck.mandatoryFields"
+      [mandatoryField]="mandatoryField">
+    </app-field-config>
+  </div>
+</div>
