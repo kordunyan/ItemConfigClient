@@ -46,18 +46,18 @@ export class ItemManager {
     items.sort((itemA, itemB) => {
       for (let i = 0; i < multipleFields.length; i++) {
         let fieldName = multipleFields[i];
-        let itemAFieldValue = itemsMultipleFields[itemA.id][fieldName].value;
-        let itemBFieldValue = itemsMultipleFields[itemB.id][fieldName].value;
-        if (itemAFieldValue === itemBFieldValue) {
-          continue;
-        }
-        if (itemAFieldValue === undefined) {
+        let itemAField = itemsMultipleFields[itemA.id][fieldName];
+        let itemBField = itemsMultipleFields[itemB.id][fieldName];
+        if (!itemAField || !itemAField.value) {
           return -1;
         }
-        if (itemBFieldValue === undefined) {
+        if (!itemBField || !itemBField.value) {
           return 1;
         }
-        return (itemAFieldValue > itemBFieldValue) ? 1 : -1;
+        if (itemAField.value === itemBField.value) {
+          continue;
+        }
+        return (itemAField.value > itemBField.value) ? 1 : -1;
       }
       return 0;
     });

@@ -8,7 +8,7 @@ import {ItemHttpService} from '../../../shared/service/http/item-http.service';
 import {Router} from '@angular/router';
 import {AppProperties} from '../../../shared/domain/app-properties';
 import {ItemManager} from '../../../shared/utils/item.manager';
-import { RboCodeService } from '../../../shared/service/rbo-code.service';
+import {RboCodeService} from '../../../shared/service/rbo-code.service';
 
 @Component({
   selector: 'app-item-detail',
@@ -23,7 +23,7 @@ export class ItemDetailComponent implements OnInit {
   @Output('onReloadData') onReloadData = new EventEmitter<Item>();
   @Output('onDeletedItem') onDeletedItem = new EventEmitter<Item>();
 
-  
+
   itemFieldsHolder: ItemFieldsHolder;
   itemNumber: string;
 
@@ -76,7 +76,7 @@ export class ItemDetailComponent implements OnInit {
   }
 
   goToMandatoryData() {
-    this.router.navigate(['/mandatory-data', this.item.id, this.rboCodeService.getRboObject()]);  
+    this.router.navigate(['/mandatory-data', this.item.id, this.rboCodeService.getRboObject()]);
   }
 
 }

@@ -61,9 +61,8 @@ export class ItemFieldsHolder {
   public addItemField(field: Field) {
     if (this.isMultiple(field.fieldConfigName)) {
       this.multipleItemFields.push(field);
-    } else {
-      this.itemFields.push(field);
     }
+    this.itemFields.push(field);
   }
 
   public isMultiple(fieldConfigName: string): boolean {

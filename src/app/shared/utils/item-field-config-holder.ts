@@ -117,7 +117,7 @@ export class ItemFieldConfigHolder extends AbstractItemFieldConfigHolder {
     this.item.itemFieldConfigs.forEach((itemFieldConfig: ItemFieldConfig) => {
       let copiedField = this.itemFieldConfigsCopyMap[itemFieldConfig.fieldConfig.name];
       ItemFieldConfigManager.minimizeFieldValues(itemFieldConfig);
-      if (copiedField == null) {
+      if (copiedField == null || itemFieldConfig.checked) {
         result.push(itemFieldConfig);
       } else if (ItemFieldConfigManager.noEquals(itemFieldConfig, copiedField)) {
         result.push(itemFieldConfig);

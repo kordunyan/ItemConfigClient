@@ -40,6 +40,10 @@ export class MultipleFieldsComponent implements OnInit {
     }
   }
 
+  hasMultipleField(fieldName: string) {
+    return !!ItemManager.getItemField(this.item, fieldName);
+  }
+
   getItemFieldValue(fieldName: string): string {
     return ItemManager.getItemFieldValue(this.item, fieldName);
   }
